@@ -71,6 +71,7 @@ variable_encoder <- function(variables){
   for(i in 1:n_vars){
     aux2 <- variables[[i]]
     aux3 <- case_when(
+      aux2 == "Total Factor Productivity" ~ "TFP",
       aux2 == "Capital Stock" ~ "K",
       aux2 == "Labor Stock" ~ "L",
       aux2 == "Wage Rate" ~ "WR", 
