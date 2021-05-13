@@ -1,19 +1,28 @@
+# Loading Libraries =================================
+
+# package_organiser <- function(string){
+#   if(!require(string, character.only = TRUE)){
+#   install.packages(string)
+#   library(string, character.only = TRUE)
+# }else{
+#   library(string, character.only = TRUE)
+# }
+# }
+# 
+
+
+library(tidyverse)
 library(shiny)
-# install.packages("shinythemes")
-# install.packages("hexbin")
 library(hexbin)
 library(plotly)
 library(shinythemes)
 library(DT)
-# install.packages("DT")
-# install.packages("MathJax")
-#library()
-
-# Plotting Setup =================================
 library(tidyverse)
 library(modelr)
 library(ggplot2) 
 library(stargazer) 
+
+# Plotting Setup =================================
 
 theme_set(
   theme_classic() + 
@@ -36,20 +45,19 @@ theme_set(
     )
   
 )
-# Reading in Functions =================================
-# getwd()
+# Reading Files =================================
+
 # setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 source("RawModelFunction.R")
 
-# Selection Options =================================
-# Basic Solow Model ---------------------------------
-meta_BS_variables
+# Meta Information =================================
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
 
-# Shiny App =================================
+### Shiny APP #############################
 shinyApp(
   # FrontEnd =================================
   ui = fluidPage(
+    # Meta Settings for Frontend ---------------------------------
     theme = shinytheme("cerulean"),
     titlePanel("Growth Models in Macroeconomic Theory"),
     tabsetPanel(
@@ -65,24 +73,27 @@ shinyApp(
       # Basic Solow Model ---------------------------------
       tabPanel("Basic Solow Model", fluid = TRUE,
                sidebarLayout(
+                 # Sidebar Panel  ---------------------------------
                  sidebarPanel(width = 2,
+                              # Variable Selector ---------------------------------
                               titlePanel("Variables"),
                               checkboxGroupInput("BS_vtv", 
                                                  label = "",
                                                  choices = meta_BS_variables, 
                                                  selected = meta_BS_variables[1:5]),
                               hr(),
+                              # Scale Selector ---------------------------------
                               selectInput("scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
                               hr(),
+                              # Starting Values ---------------------------------
                               titlePanel("Starting Values of Stocks"),
                               numericInput("BS_initval_L", "Initial Value of Labor Stock", 10),
                               numericInput("BS_initval_K", "Initial Value of Capital Stock", 10),
-                              
+                              # Parameters ---------------------------------
                               titlePanel("Parameter Values"),
                               # Periods ---------------------------------
-                              numericInput("BS_initparam_periods", "Periods", 200),
+                              numericInput("BS_nperiods_selected", "Periods", 200),
                               hr(),
-                              # Selectors for Parameter Changes ---------------------------------
                               # TFP ---------------------------------
                               numericInput("BS_initval_B", "Initial Value of Technology", 5),
                               checkboxInput("BS_changeinparam_tfp", "Change in TFP?"),
@@ -124,6 +135,7 @@ shinyApp(
                                 numericInput("BS_pc_popgrowth_newval", "New Value of Population Growth", 0.2)),
                               hr()
                               ),
+                 # Main Panel  ---------------------------------
                mainPanel(
                  # Model Equations  ---------------------------------
                  titlePanel("Model Equations"),
@@ -162,74 +174,65 @@ $$'),
       )
     
       ), 
-  # Server =================================
+### Server #############################
   server = function(input, output) {
-    # Simulation of Basic Solow Model ---------------------------------
-    # Presimsteps regarding parameter change ---------------------------------
+    # Basic Solow Growth Model =================================
+    # Parameter Grid ---------------------------------
     
-    testgrid <- reactive({
-      parameternames <- c("B", "alpha", "delta", "n", "s")
-      
-      pfcl <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_period else NA, 
+    BS_parametergrid <- reactive({
+      # Names of Parameters ---------------------------------
+      BS_parameternames <- c("B", "alpha", "delta", "n", "s")
+      # Periods of Changes ---------------------------------
+      BS_parameterchange_period <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_period else NA, 
                 if(input$BS_changeinparam_alpha) input$BS_pc_alpha_period else NA,
                 if(input$BS_changeinparam_delta) input$BS_pc_delta_period else NA, 
                 if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_period else NA, 
                 if(input$BS_changeinparam_savings) input$BS_pc_savings_period else NA)
-      initialparametervalues <- c(input$BS_initval_B,
+      # Starting Values of Parameters ---------------------------------
+      BS_parameterchange_valuebefore <- c(input$BS_initval_B,
                                   input$BS_initparam_alpha,
                                   input$BS_initparam_delta,
                                   input$BS_initparam_popgrowth,
                                   input$BS_initparam_savings
                                   )
-      nvl <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_newval else NA,
+      # Values of Parameters after Change ---------------------------------
+      BS_parameterchange_valueafter <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_newval else NA,
                if(input$BS_changeinparam_alpha) input$BS_pc_alpha_newval else NA,
                if(input$BS_changeinparam_delta) input$BS_pc_delta_newval else NA, 
                if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_newval else NA,
                if(input$BS_changeinparam_savings) input$BS_pc_savings_newval else NA)
+      # Creating the Grid ---------------------------------
       create_parameter_grid(
-        parameternames,
-        initialparametervalues,
-        pfcl,
-        nvl,
-        input$BS_initparam_periods
+        BS_parameternames,
+        BS_parameterchange_valuebefore,
+        BS_parameterchange_period,
+        BS_parameterchange_valueafter,
+        input$BS_nperiods_selected
       )
       
       })
-    BS_vtv_processed_encoded <- reactive({
-      case_when(
-        input$BS_vtv == "Capital Stock" ~ "K",
-        input$BS_vtv == "Labor Stock" ~ "L",
-        input$BS_vtv == "Wage Rate" ~ "WR", 
-        input$BS_vtv == "Rental Rate" ~ "RR",
-        input$BS_vtv == "Output" ~ "Y",
-        input$BS_vtv == "Log of Output" ~ "logY",
-        input$BS_vtv == "Growth Rate of Output" ~ "gY",
-        input$BS_vtv == "Output per Worker" ~ "YpW",
-        input$BS_vtv == "Log of Output per Worker" ~ "logYpW",
-        input$BS_vtv == "Growth Rate of Output per Worker" ~ "gYpW",
-        input$BS_vtv == "Output per Effective Worker" ~ "YpEW",
-        input$BS_vtv == "Log of Output per Effective Worker" ~ "logYpEW",
-        input$BS_vtv == "Growth Rate of Output per Effective Worker" ~ "gYpEW"
-      )
+    
+    BS_vtv_select_encoded <- reactive({
+      variable_encoder(input$BS_vtv)
     })
     
     BS_vtv_processed_sim <- reactive({
       aux <- BS_vtv_processed_encoded()
-      aux_non_standard_detect <- aux %in% c("L", "K", "RR", "WR", "Y")
+      aux_non_standard_detect <- aux %in% c("L", "K", "Y")
       aux[!aux_non_standard_detect]
     })
     output$test <- renderText({BS_vtv_processed_sim()})
+    
     BS_aux_data <- reactive({
-      SimulateBasicSolowModel(testgrid(), input$BS_initparam_periods, BS_vtv_processed_sim(),
+      SimulateBasicSolowModel(BS_parametergrid(), input$BS_nperiods_selected,
                               list(K = input$BS_initval_K, L = input$BS_initval_K))
     })
     
     output$BS_Data <- renderDataTable({BS_aux_data() %>% mutate_all(round, digits = 3)})
-    BS_vtv_processed_viz <- reactive({
-      BS_vtv_processed_encoded()
-      
-    })
-    output$BS_Viz <- renderPlot({VisualiseSimulation(BS_aux_data(), BS_vtv_processed_viz(), input$scales_free_or_fixed)})
+    
+    output$BS_Viz <- renderPlot(height = "auto" , {
+    VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$scales_free_or_fixed)
+      })
     
     
     

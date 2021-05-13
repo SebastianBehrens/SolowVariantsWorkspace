@@ -1,7 +1,7 @@
 
 
-# Creating Helper Functions =================================
-# path function ---------------------------------
+### 0 Preparations (helper functions) #############################
+# 0.1 individual parameter path  ---------------------------------
 create_path <- function(iv, pfc = NA, nv = NA, np){
   ## will create a vector of parameter values for periods 0 through n.
   # iv for initial value;
@@ -20,7 +20,7 @@ create_path <- function(iv, pfc = NA, nv = NA, np){
 # testing
 # create_path(2, 3, 4, 7)
 
-# path grid function ---------------------------------
+# 0.2 grid of individual parameter paths ---------------------------------
 create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
   # np <- 10
   aux <- tibble(period = c(0:np))
@@ -43,7 +43,7 @@ create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
 # testgrid <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, 50)
 
 
-# simulation table function ---------------------------------
+# 0.3 grid of paths of model variables ---------------------------------
 create_simulation_table <- function(vts, np) {
   # vts for variables to simulate
   aux <- tibble(period = c(0:np))
@@ -54,45 +54,21 @@ create_simulation_table <- function(vts, np) {
   return(aux)
 }
 
-# testing
-# vtstest <- c("testvar", "ja", "nein")
-# create_simulation_table(vtstest, 20)
-
-# start values filler (not used) ---------------------------------
+# 0.4 (not used) start values filler ---------------------------------
 # fill_start_values <- function(var, value, dataset){
 #   index <- which(dataset$period == 0)
 #   dataset[[index, var]] <- value
 #   return(dataset)
 # }
-# vts <- c("L", "K", "RR", "WR", "Y", vts)
-# sim_table <- create_simulation_table(vts, np)
 # fill_start_values("testvar", 5, sim_table)
-# Model Functions =================================
 
-# Simulating the Economy =================================
-meta_BS_variables <-
-  c(
-    "Capital Stock",
-    "Labor Stock",
-    "Wage Rate",
-    "Rental Rate",
-    "Output",
-    "Output per Worker",
-    "Output per Effective Worker",
-    "Log of Output",
-    "Log of Output per Worker",
-    "Log of Output per Effective Worker",
-    "Growth Rate of Output",
-    "Growth Rate of Output per Worker",
-    "Growth Rate of Output per Effective Worker"
-  )
 
+# 0.5 encoding variables ---------------------------------
 variable_encoder <- function(variables){
   # variables <- c("Output per Effective Worker")
   n_vars <- length(variables)
   aux <- as.double(rep(NA, n_vars))
   for(i in 1:n_vars){
-    i <- 1
     aux2 <- variables[[i]]
     aux3 <- case_when(
       aux2 == "Capital Stock" ~ "K",
@@ -114,14 +90,52 @@ variable_encoder <- function(variables){
   }
   return(aux)
 }
-variable_encoder(c("Output per Effective Worker"))
 
-SimulateBasicSolowModel <- function(paragrid, np, vts, startvals){
+# 0.6 visualise a simulation ---------------------------------
+VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
+  variables <- c("period", variables)
+  simulation_data %>% select(all_of(variables)) %>% 
+    pivot_longer(-period, names_to = "Variable") %>% 
+    mutate(Variable = as.factor(Variable)) %>% 
+    ggplot(aes(period, value, col = Variable)) + 
+    geom_line() + 
+    facet_wrap(~Variable, scales = scale_identifier, ncol = 2)+ 
+    labs(x = "Period", y = "Value") + 
+    theme(legend.position = "none")
+}
+
+# 0.99 testing ---------------------------------
+# vtstest <- c("testvar", "ja", "nein")
+# create_simulation_table(vtstest, 20)
+variable_encoder(c("Rental Rate"))
+
+
+### 1.0 Basic Solow Growth Model #############################
+
+# Meta-Information All Variables =================================
+meta_BS_variables <-
+  c(
+    "Capital Stock",
+    "Labor Stock",
+    "Wage Rate",
+    "Rental Rate",
+    "Output",
+    "Output per Worker",
+    "Output per Effective Worker",
+    "Log of Output",
+    "Log of Output per Worker",
+    "Log of Output per Effective Worker",
+    "Growth Rate of Output",
+    "Growth Rate of Output per Worker",
+    "Growth Rate of Output per Effective Worker"
+  )
+
+# 1.1 Simulate the Basic Solow Model =================================
+SimulateBasicSolowModel <- function(paragrid, np, startvals){
+  # Inputs ---------------------------------
   # paragrid for parameter grid;
   # np for number of periods;
-  # vts for vars to simulate
-  
-  # paragrid <- test
+  # vts for vars to simulat
   
   # Basic Model Functions ---------------------------------
   BS_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
@@ -131,13 +145,9 @@ SimulateBasicSolowModel <- function(paragrid, np, vts, startvals){
   BS_MF_Y <- function(B, K, L, alpha){B * K^alpha * L^(1-alpha)}
   
   # Initialize Simulation Table ---------------------------------
-  # vts <- c("YpW", "YpEW")
-  vts <- meta_BS_variables
-  vts <- 
-  sim_table <- create_simulation_table(vts, np)
+  sim_table <- create_simulation_table(variable_encoder(meta_BS_variables), np)
   
-  # Fill in Start Values for Period 0 ---------------------------------
-  # startvals <- list(L = 1, K = 2)
+  # Fill Start Values for Period 0 ---------------------------------
   aux_index <- which(sim_table$period == 0)
   sim_table[[aux_index, "L"]] <- startvals$L
   sim_table[[aux_index, "K"]] <- startvals$K
@@ -145,16 +155,8 @@ SimulateBasicSolowModel <- function(paragrid, np, vts, startvals){
                                          sim_table[["K"]][[which(sim_table$period == 0)]],
                                          sim_table[["L"]][[which(sim_table$period == 0)]],
                                          paragrid[["alpha"]][[which(paragrid$period == 0)]])
-  sim_table[[aux_index, "RR"]] <- BS_MF_RR(paragrid[["B"]][[which(paragrid$period == 0)]], 
-                                           sim_table[["K"]][[which(sim_table$period == 0)]],
-                                           sim_table[["L"]][[which(sim_table$period == 0)]],
-                                           paragrid[["alpha"]][[which(paragrid$period == 0)]])
   
-  sim_table[[aux_index, "WR"]] <- BS_MF_WR(paragrid[["B"]][[which(paragrid$period == 0)]], 
-                                           sim_table[["K"]][[which(sim_table$period == 0)]],
-                                           sim_table[["L"]][[which(sim_table$period == 0)]],
-                                           paragrid[["alpha"]][[which(paragrid$period == 0)]])
-  # Simulating Periods after Period 0 ---------------------------------
+  # Computing Variables after Period 0 ---------------------------------
   for (i in 1:np){
     # i <- 1
     # print(i)
@@ -169,61 +171,57 @@ SimulateBasicSolowModel <- function(paragrid, np, vts, startvals){
                                            sim_table[["K"]][[which(sim_table$period == i)]],
                                            sim_table[["L"]][[which(sim_table$period == i)]],
                                            paragrid[["alpha"]][[which(paragrid$period == i)]])
-    sim_table[[aux_index, "RR"]] <- BS_MF_RR(paragrid[["B"]][[which(paragrid$period == i)]], 
-                                             sim_table[["K"]][[which(sim_table$period == i)]],
-                                             sim_table[["L"]][[which(sim_table$period == i)]],
-                                             paragrid[["alpha"]][[which(paragrid$period == i)]])
-    
-    sim_table[[aux_index, "WR"]] <- BS_MF_WR(paragrid[["B"]][[which(paragrid$period == i)]], 
-                                             sim_table[["K"]][[which(sim_table$period == i)]],
-                                             sim_table[["L"]][[which(sim_table$period == i)]],
-                                             paragrid[["alpha"]][[which(paragrid$period == i)]])
-    
   }
   
   # Computing Additional Variables ---------------------------------
-  remaining_vars_to_compute <- names(sim_table) %in% c("L", "K", "RR", "WR", "Y")
+  
+  remaining_vars_to_compute <- names(sim_table) %in% c("period", "L", "K", "Y")
+  
   for(i in names(sim_table)[!remaining_vars_to_compute]){
-    print(i)
-    if(i == "YpW"){sim_table <- sim_table %>% mutate(YpW = Y/L)}
-    if(i == "YpEW"){sim_table <- sim_table %>% mutate(YpEW = Y/(paragrid[["B"]]*L))}
-    if(i == "logY"){sim_table <- sim_table %>% mutate(logY = log(Y))}
-    if(i == "logYpW"){sim_table <- sim_table %>% mutate(logYpW = log(YpW))}
-    if(i == "logYpEW"){sim_table <- sim_table %>% mutate(logYpEW = log(YpEW))}
-    if(i == "gY"){sim_table <- sim_table %>% mutate(gY = log(Y) - log(lag(Y)))}
-    if(i == "gYpW"){sim_table <- sim_table %>% mutate(gYpW = log(YpW) - log(lag(YpW)))}
-    if(i == "gYpEW"){sim_table <- sim_table %>% mutate(gYpEW= log(YpEW) - log(lag(YpEW)))}
+    # Variants of Output
+    if(i == "YpW"){sim_table[["YpW"]] <- sim_table[["Y"]]/sim_table[["L"]]}
+    if(i == "YpEW"){sim_table["YpEW"] <- sim_table[["Y"]]/(paragrid[["B"]] * sim_table[["L"]])}
+    # Logarithmised Variants
+    if(i == "logY"){sim_table[["logY"]] <- sim_table[["Y"]] %>% log()}
+    if(i == "logYpW"){sim_table[["logYpW"]] <- sim_table[["YpW"]] %>% log()}
+    if(i == "logYpEW"){sim_table[["logYpEW"]] <- sim_table[["YpEW"]] %>% log()}
+    # Variants of Growth
+    if(i == "gY"){sim_table[["gY"]] <- log(sim_table[["Y"]]) - log(lag(sim_table[["Y"]]))}
+    if(i == "gYpW"){sim_table[["gYpW"]] <- log(sim_table[["YpW"]]) - log(lag(sim_table[["YpW"]]))}
+    if(i == "gYpEW"){sim_table[["gYpEW"]] <- log(sim_table[["YpEW"]]) - log(lag(sim_table[["YpEW"]]))}
+    # Wage Rate
+    if(i == "WR"){
+      sim_table[["WR"]] <- BS_MF_WR(
+      paragrid[["B"]],
+      sim_table[["K"]],
+      sim_table[["L"]],
+      paragrid[["alpha"]])
+    }
+    # Rental Rate
+    if(i == "RR"){sim_table[["RR"]] <- BS_MF_RR(
+      paragrid[["B"]],
+      sim_table[["K"]],
+      sim_table[["L"]],
+      paragrid[["alpha"]])
+    }
+    
   }
-  
-  
   return(sim_table)
 }
 
-VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
-  # simulation_data <- testsimulation
-  # variables <- addvarstest
-  # scale_identifier <- "free"
-  variables <- c("period", variables)
-  simulation_data %>% select(variables) %>% 
-    pivot_longer(-period, names_to = "Variable") %>% 
-    mutate(Variable = as.factor(Variable)) %>% 
-    ggplot(aes(period, value, col = Variable)) + 
-    geom_line() + 
-    facet_wrap(~Variable, scales = scale_identifier, ncol = 2)+ 
-    labs(x = "Period", y = "Value") + 
-    theme(legend.position = "none")
-}
 
 ## Testing
-testnamel <- c("B", "alpha", "delta", "n", "s")
-testivl <- c(2,1/3,0.1, 0.04, 0.23)
-testpfcl <- c(NA,NA,NA, NA, NA)
-testnvl <- c(NA, NA, NA, NA, NA)
-testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, 200)
-
-testsimulation <- SimulateBasicSolowModel(testgridalt, 200, c(), list(K = 1, L = 1))
-# View(testsimulation)
-VisualiseSimulation(testsimulation, c("Y", "RR", "WR", addvarstest), "free")
+# testnamel <- c("B", "alpha", "delta", "n", "s")
+# testivl <- c(2,1/3,0.1, 0.04, 0.23)
+# testpfcl <- c(NA,NA,NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA)
+# np <- 5
+# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+# paragrid <- testgridalt
+# startvals <- list(K = 1, L = 1)
+# testsimulation <- SimulateBasicSolowModel(testgridalt, np, list(K = 1, L = 1))
+# # View(testsimulation)
+# VisualiseSimulation(testsimulation, c("Y", "RR", "WR"), "free")
 # 
 # 
 
@@ -265,6 +263,14 @@ VisualiseSimulation(testsimulation, c("Y", "RR", "WR", addvarstest), "free")
 # for (i in 2:periods){
 #   # i <- 2
 #   # i <- i + 1
+
+
+
+
+#########################################################################################
+#####################             Other Stuff                       #####################
+#########################################################################################
+
 #   # calculating variables to be added ---------------------------------
 #   Kinloop <- data$K[[i-1]]
 #   Linloop <- data$L[[i-1]]
