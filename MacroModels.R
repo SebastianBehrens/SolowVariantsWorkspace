@@ -109,36 +109,36 @@ shinyApp(
                                          numericInput("BS_pc_tfp_newval", "New Value of TFP", 20)),
                                        hr(),
                                        # Alpha ---------------------------------
-                                       numericInput("BS_initparam_alpha", "Alpha", 0.3),
+                                       numericInput("BS_initparam_alpha", "Alpha", 0.3, step = 0.05),
                                        checkboxInput("BS_changeinparam_alpha", "Change in Alpha?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_alpha == true", 
                                          numericInput("BS_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
-                                         numericInput("BS_pc_alpha_newval", "New Value of Alpha", 0.5)),
+                                         numericInput("BS_pc_alpha_newval", "New Value of Alpha", 0.5, step = 0.05)),
                                        hr(),
                                        # Delta ---------------------------------
-                                       numericInput("BS_initparam_delta", "Delta", 0.1),
+                                       numericInput("BS_initparam_delta", "Delta", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_delta", "Change in Delta?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_delta == true", 
                                          numericInput("BS_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
-                                         numericInput("BS_pc_delta_newval", "New Value of Delta", 0.5)),
+                                         numericInput("BS_pc_delta_newval", "New Value of Delta", 0.5, step = 0.05)),
                                        hr(),
                                        # Savings Rate ---------------------------------
-                                       numericInput("BS_initparam_savings", "Savings Rate", 0.1),
+                                       numericInput("BS_initparam_savings", "Savings Rate", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_savings", "Change in Savings Rate?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_savings == true", 
                                          numericInput("BS_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
-                                         numericInput("BS_pc_savings_newval", "New Value of Savings Rate", 0.5)),
+                                         numericInput("BS_pc_savings_newval", "New Value of Savings Rate", 0.5, step = 0.05)),
                                        hr(),
                                        # Population Growth ---------------------------------
-                                       numericInput("BS_initparam_popgrowth", "Population Growth", 0.1),
+                                       numericInput("BS_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_popgrowth", "Change in Population Growth?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_popgrowth == true", 
                                          numericInput("BS_pc_popgrowth_period", "Period of Change in Population Growth", 10, min = 0, max = 50),
-                                         numericInput("BS_pc_popgrowth_newval", "New Value of Population Growth", 0.2)),
+                                         numericInput("BS_pc_popgrowth_newval", "New Value of Population Growth", 0.2, step = 0.05)),
                                        hr()
                                 )
                               )),
