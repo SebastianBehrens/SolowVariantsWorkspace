@@ -1,0 +1,14 @@
+name: SolowVariants
+title: SolowVariants
+username:
+account: sebastianshinyapps
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 4125372
+bundleId: 4593705
+url: https://sebastianshinyapps.shinyapps.io/SolowVariants/
+when: 1620904396.23712
+lastSyncTime: 1620904396.23714
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: MacroModelsMath.Rmd

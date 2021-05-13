@@ -1,5 +1,7 @@
 library(shiny)
 # install.packages("shinythemes")
+# install.packages("hexbin")
+library(hexbin)
 library(plotly)
 library(shinythemes)
 library(DT)
@@ -36,13 +38,13 @@ theme_set(
 )
 # Reading in Functions =================================
 # getwd()
-setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 source("RawModelFunction.R")
 
 # Selection Options =================================
 # Basic Solow Model ---------------------------------
-meta_BS_vtv <- c("Capital Stock", "Labor Stock", "Wage Rate", "Rental Rate", "Output")
-meta_BS_ac <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
+meta_BS_variables
+meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
 
 # Shiny App =================================
 shinyApp(
@@ -67,9 +69,11 @@ shinyApp(
                               titlePanel("Variables"),
                               checkboxGroupInput("BS_vtv", 
                                                  label = "",
-                                                 choices = meta_BS_vtv, 
-                                                 selected = meta_BS_vtv),
-                              
+                                                 choices = meta_BS_variables, 
+                                                 selected = meta_BS_variables[1:5]),
+                              hr(),
+                              selectInput("scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
+                              hr(),
                               titlePanel("Starting Values of Stocks"),
                               numericInput("BS_initval_L", "Initial Value of Labor Stock", 10),
                               numericInput("BS_initval_K", "Initial Value of Capital Stock", 10),
@@ -78,6 +82,7 @@ shinyApp(
                               # Periods ---------------------------------
                               numericInput("BS_initparam_periods", "Periods", 200),
                               hr(),
+                              # Selectors for Parameter Changes ---------------------------------
                               # TFP ---------------------------------
                               numericInput("BS_initval_B", "Initial Value of Technology", 5),
                               checkboxInput("BS_changeinparam_tfp", "Change in TFP?"),
@@ -135,6 +140,7 @@ L_{t+1}&=(1+n)L_t
 \\end{aligned}
 $$'),
                  # Visualisation  ---------------------------------
+                 textOutput("test"),
                  titlePanel("Simulation"),
                  plotOutput("BS_Viz"),
                  # Model Simulation Data ---------------------------------
@@ -158,8 +164,6 @@ $$'),
       ), 
   # Server =================================
   server = function(input, output) {
-    # Conditions for changes in Parameters ---------------------------------
-    
     # Simulation of Basic Solow Model ---------------------------------
     # Presimsteps regarding parameter change ---------------------------------
     
@@ -191,24 +195,41 @@ $$'),
       )
       
       })
-    
-    
-    BS_aux_data <- reactive({
-      SimulateBasicSolowModel(testgrid(), input$BS_initparam_periods, c(), 
-                              list(K = input$BS_initval_K, L = input$BS_initval_K))
-    })
-    
-    output$BS_Data <- renderDataTable({BS_aux_data() %>% mutate_all(round, digits = 3)})
-    BS_vtv_processed <- reactive({
+    BS_vtv_processed_encoded <- reactive({
       case_when(
         input$BS_vtv == "Capital Stock" ~ "K",
         input$BS_vtv == "Labor Stock" ~ "L",
         input$BS_vtv == "Wage Rate" ~ "WR", 
         input$BS_vtv == "Rental Rate" ~ "RR",
-        input$BS_vtv == "Output" ~ "Y"
-                )
+        input$BS_vtv == "Output" ~ "Y",
+        input$BS_vtv == "Log of Output" ~ "logY",
+        input$BS_vtv == "Growth Rate of Output" ~ "gY",
+        input$BS_vtv == "Output per Worker" ~ "YpW",
+        input$BS_vtv == "Log of Output per Worker" ~ "logYpW",
+        input$BS_vtv == "Growth Rate of Output per Worker" ~ "gYpW",
+        input$BS_vtv == "Output per Effective Worker" ~ "YpEW",
+        input$BS_vtv == "Log of Output per Effective Worker" ~ "logYpEW",
+        input$BS_vtv == "Growth Rate of Output per Effective Worker" ~ "gYpEW"
+      )
     })
-    output$BS_Viz <- renderPlot({VisualiseSimulation(BS_aux_data(), BS_vtv_processed())})
+    
+    BS_vtv_processed_sim <- reactive({
+      aux <- BS_vtv_processed_encoded()
+      aux_non_standard_detect <- aux %in% c("L", "K", "RR", "WR", "Y")
+      aux[!aux_non_standard_detect]
+    })
+    output$test <- renderText({BS_vtv_processed_sim()})
+    BS_aux_data <- reactive({
+      SimulateBasicSolowModel(testgrid(), input$BS_initparam_periods, BS_vtv_processed_sim(),
+                              list(K = input$BS_initval_K, L = input$BS_initval_K))
+    })
+    
+    output$BS_Data <- renderDataTable({BS_aux_data() %>% mutate_all(round, digits = 3)})
+    BS_vtv_processed_viz <- reactive({
+      BS_vtv_processed_encoded()
+      
+    })
+    output$BS_Viz <- renderPlot({VisualiseSimulation(BS_aux_data(), BS_vtv_processed_viz(), input$scales_free_or_fixed)})
     
     
     
