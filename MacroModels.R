@@ -152,9 +152,9 @@ L_{t+1}&=(1+n)L_t
 \\end{aligned}
 $$'),
                  # Visualisation  ---------------------------------
-                 textOutput("test"),
+                 # textOutput("test"),
                  titlePanel("Simulation"),
-                 plotOutput("BS_Viz"),
+                 plotOutput("BS_Viz", height = "1000px"),
                  # Model Simulation Data ---------------------------------
                  titlePanel("Simulation Data"),
                  dataTableOutput("BS_Data")
@@ -175,7 +175,7 @@ $$'),
     
       ), 
 ### Server #############################
-  server = function(input, output) {
+  server = function(input, output, session) {
     # Basic Solow Growth Model =================================
     # Parameter Grid ---------------------------------
     
@@ -221,7 +221,7 @@ $$'),
       aux_non_standard_detect <- aux %in% c("L", "K", "Y")
       aux[!aux_non_standard_detect]
     })
-    output$test <- renderText({BS_vtv_processed_sim()})
+    # output$test <- renderText({output$plot_height})
     
     BS_aux_data <- reactive({
       SimulateBasicSolowModel(BS_parametergrid(), input$BS_nperiods_selected,
@@ -230,12 +230,11 @@ $$'),
     
     output$BS_Data <- renderDataTable({BS_aux_data() %>% mutate_all(round, digits = 3)})
     
-    output$BS_Viz <- renderPlot(height = "auto" , {
+    output$BS_Viz <- renderPlot({
     VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$scales_free_or_fixed)
       })
-    
-    
-    
-    
+
+    # to be taken out when app is published
+    session$onSessionEnded(stopApp)
   }
 )
