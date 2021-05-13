@@ -48,8 +48,9 @@ theme_set(
 # Reading Files =================================
 
 # setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+# getwd()
 source("HelperFunctions.R")
-source("BasicSolowModelSimulationFunction.R")
+source("BasicSolowModel.R")
 
 # Meta Information =================================
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
