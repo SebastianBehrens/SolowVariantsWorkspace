@@ -84,13 +84,22 @@ variable_encoder <- function(variables){
       aux2 == "Growth Rate of Output per Worker" ~ "gYpW",
       aux2 == "Output per Effective Worker" ~ "YpEW",
       aux2 == "Log of Output per Effective Worker" ~ "logYpEW",
-      aux2 == "Growth Rate of Output per Effective Worker" ~ "gYpEW"
+      aux2 == "Growth Rate of Output per Effective Worker" ~ "gYpEW",
+      aux2 == "National Output" ~ "Yn",
+      aux2 == "National Wealth" ~ "V",
+      aux2 == "Net Foreign Assets" ~ "F",
+      aux2 == "National Savings" ~ "Sn"
     )
     aux[[i]] <- aux3
     
   }
   return(aux)
 }
+
+"National Output"
+"National Wealth"
+"Net Foreign Assets"
+"National Savings"
 
 # 0.6 visualise a simulation ---------------------------------
 VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
