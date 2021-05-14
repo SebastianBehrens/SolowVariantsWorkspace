@@ -73,6 +73,8 @@ variable_encoder <- function(variables){
     aux3 <- case_when(
       aux2 == "Total Factor Productivity" ~ "TFP",
       aux2 == "Capital Stock" ~ "K",
+      aux2 == "Capital Stock per Worker" ~ "KpW",
+      aux2 == "Capital Stock per Effective Worker" ~ "KpEW",
       aux2 == "Labor Stock" ~ "L",
       aux2 == "Wage Rate" ~ "WR", 
       aux2 == "Rental Rate" ~ "RR",
@@ -114,11 +116,115 @@ VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
     theme(legend.position = "none")
 }
 
+
+# 0.7 computing additional variables ---------------------------------
+add_var_computer <- function(sim_data, add_vars, parameter_data, technology_variant, solowversion){
+  # sim_data for the simulation table created in every Solow Model Simulation Function (SimulateBasicSolowModel, SimulateGeneralSolowModel, SimulateExtendedSolowModelSmallOpenEconomy)
+  # add_vars for the vector indicating whether a variable needs to be computer or not (it will not need to be computer in the ensuing function if it is endogeneous to the model)
+  # parameter_data for the parameter grid
+  # technology variant for the version where TFP is indicated as endogeneous by A or exogeneous by B 
+  # solowversion for a string indicating the solow model version ("BS", "GS", "ESSOE", "ES....")
+  
+  
+  
+  # accomodating for different forms of technology:
+  # A (endogeneous variable) and B (parameter) in the different Solow Models
+  if(technology_variant == "endo"){
+    technology <- sim_data[["TFP"]]
+  }else if(technology_variant == "exo"){
+    technology <- parameter_data[["B"]]
+  }else{
+    stop("Technology location unclear")
+  }
+  
+  for(i in names(sim_data)[!add_vars]){
+    # Variants of Output
+    if(i == "YpW"){sim_data[["YpW"]] <- sim_data[["Y"]]/sim_data[["L"]]}
+    if(i == "YpEW"){sim_data["YpEW"] <- sim_data[["Y"]]/(technology * sim_data[["L"]])}
+    # Variants of Output Logarithmised
+    if(i == "logY"){sim_data[["logY"]] <- sim_data[["Y"]] %>% log()}
+    if(i == "logYpW"){sim_data[["logYpW"]] <- sim_data[["YpW"]] %>% log()}
+    if(i == "logYpEW"){sim_data[["logYpEW"]] <- sim_data[["YpEW"]] %>% log()}
+    # Variants of Capital
+    if(i == "KpW"){sim_data[["KpW"]] <- sim_data[["K"]]/sim_data[["L"]]}
+    if(i == "KpEW"){sim_data["YpEW"] <- sim_data[["K"]]/(technology * sim_data[["L"]])}
+    # Variants of Capital Logarithmised
+    if(i == "logK"){sim_data[["logY"]] <- sim_data[["Y"]] %>% log()}
+    if(i == "logKpW"){sim_data[["logYpW"]] <- sim_data[["YpW"]] %>% log()}
+    if(i == "logKpEW"){sim_data[["logYpEW"]] <- sim_data[["YpEW"]] %>% log()}
+    # Variants of Growth
+    if(i == "gY"){sim_data[["gY"]] <- log(sim_data[["Y"]]) - log(lag(sim_data[["Y"]]))}
+    if(i == "gYpW"){sim_data[["gYpW"]] <- log(sim_data[["YpW"]]) - log(lag(sim_data[["YpW"]]))}
+    if(i == "gYpEW"){sim_data[["gYpEW"]] <- log(sim_data[["YpEW"]]) - log(lag(sim_data[["YpEW"]]))}
+    
+    # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
+    # WR, RR for BS ---------------------------------
+    if(solowversion == "BS") {
+      source("BSModelFunctions.R")
+      if (i == "WR") {
+        sim_data[["WR"]] <- BS_MF_WR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+      }
+      # Rental Rate
+      if (i == "RR") {
+        sim_data[["RR"]] <- BS_MF_RR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+      }
+      
+    }
+    # WR, RR for GS ---------------------------------
+    if(solowversion == "GS") {
+      source("GSModelFunctions.R")
+      if (i == "WR") {
+        sim_data[["WR"]] <- GS_MF_WR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+      }
+      # Rental Rate
+      if (i == "RR") {
+        sim_data[["RR"]] <- GS_MF_RR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+      }
+      
+    }
+    # WR, RR for ESSOE ---------------------------------
+    if(solowversion == "ESSOE") {
+      if (i == "WR") {
+        source("ESSOEModelFunctions.R")
+        sim_data[["WR"]] <- ESSOE_MF_WR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+        
+      }
+      # Rental Rate
+      if (i == "RR") {
+        sim_data[["RR"]] <- ESSOE_MF_RR(technology,
+                                     sim_data[["K"]],
+                                     sim_data[["L"]],
+                                     parameter_data[["alpha"]])
+      }
+      
+    }
+    
+    
+  }
+  
+  return(sim_data)
+}
+
 # 0.99 testing ---------------------------------
 # vtstest <- c("testvar", "ja", "nein")
 # create_simulation_table(vtstest, 20)
-variable_encoder(c("Rental Rate"))
-
+# variable_encoder(c("Rental Rate"))
+# add_var_computer(tibble(L = 3, Y = 9, YpW = NA), c(T, T, F), c(), "exo", "BS")
 
 ### 1.0 Basic Solow Growth Model #############################
 
