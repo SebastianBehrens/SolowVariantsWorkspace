@@ -25,12 +25,8 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
     # np for number of periods;
     # vts for vars to simulat
     
-    # Basic Model Functions ---------------------------------
-    BS_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
-    BS_MF_LN <- function(n, L){(1+n) * L}
-    BS_MF_RR <- function(B, K, L, alpha){alpha * B * (K/L)^(alpha - 1)}
-    BS_MF_WR <- function(B, K, L, alpha){(1-alpha) * B * (K/L)^alpha}
-    BS_MF_Y <- function(B, K, L, alpha){B * K^alpha * L^(1-alpha)}
+    # Load Basic Model Functions ---------------------------------
+    source("BSModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_BS_variables), np)
@@ -63,36 +59,21 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
     
     # Computing Additional Variables ---------------------------------
     
-    remaining_vars_to_compute <- names(sim_table) %in% c("period", "L", "K", "Y")
+    remaining_vars_to_compute_bool <- names(sim_table) %in% c("period", "L", "K", "Y")
     
-    for(i in names(sim_table)[!remaining_vars_to_compute]){
-        # Variants of Output
-        if(i == "YpW"){sim_table[["YpW"]] <- sim_table[["Y"]]/sim_table[["L"]]}
-        if(i == "YpEW"){sim_table["YpEW"] <- sim_table[["Y"]]/(paragrid[["B"]] * sim_table[["L"]])}
-        # Logarithmised Variants
-        if(i == "logY"){sim_table[["logY"]] <- sim_table[["Y"]] %>% log()}
-        if(i == "logYpW"){sim_table[["logYpW"]] <- sim_table[["YpW"]] %>% log()}
-        if(i == "logYpEW"){sim_table[["logYpEW"]] <- sim_table[["YpEW"]] %>% log()}
-        # Variants of Growth
-        if(i == "gY"){sim_table[["gY"]] <- log(sim_table[["Y"]]) - log(lag(sim_table[["Y"]]))}
-        if(i == "gYpW"){sim_table[["gYpW"]] <- log(sim_table[["YpW"]]) - log(lag(sim_table[["YpW"]]))}
-        if(i == "gYpEW"){sim_table[["gYpEW"]] <- log(sim_table[["YpEW"]]) - log(lag(sim_table[["YpEW"]]))}
-        # Wage Rate
-        if(i == "WR"){
-            sim_table[["WR"]] <- BS_MF_WR(
-                paragrid[["B"]],
-                sim_table[["K"]],
-                sim_table[["L"]],
-                paragrid[["alpha"]])
-        }
-        # Rental Rate
-        if(i == "RR"){sim_table[["RR"]] <- BS_MF_RR(
-            paragrid[["B"]],
-            sim_table[["K"]],
-            sim_table[["L"]],
-            paragrid[["alpha"]])
-        }
-        
-    }
+    sim_table <- add_var_computer(sim_table, remaining_vars_to_compute_bool, paragrid, "exo", "BS")
     return(sim_table)
 }
+
+# Testing
+# testnamel <- c("B", "alpha", "delta", "n", "s")
+# testivl <- c(1, 1/3,0.1, 0.04, 0.23)
+# testpfcl <- c(NA,NA,NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA)
+# np <- 50
+# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+# paragrid <- testgridalt
+# startvals <- list(K = 1, L = 1)
+# testsimulation <- SimulateBasicSolowModel(testgridalt, np,startvals)
+# # View(testsimulation)
+# VisualiseSimulation(testsimulation, variable_encoder(meta_BS_variables[1:3]), "free")
