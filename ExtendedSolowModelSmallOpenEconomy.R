@@ -24,19 +24,14 @@ meta_ESSOE_variables <-
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
-SimulateGeneralSolowModel <- function(paragrid, np, startvals){
+SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
     # Inputs ---------------------------------
     # paragrid for parameter grid;
     # np for number of periods;
     # vts for vars to simulat
     
-    # Basic Model Functions ---------------------------------
-    ESSOE_MF_LN <- function(n, L){(1+n) * L}
-    ESSOE_MF_RR <- function(A, K, L, alpha){alpha * B * (K/(L))^(alpha - 1)}
-    ESSOE_MF_WR <- function(B, K, L, alpha){B* (1-alpha) * (K/(L))^alpha}
-    ESSOE_MF_K <- function(r, alpha, B, L){L/((r/(alpha * B))^(1/(1-alpha)))}
-    ESSOE_MF_Y <- function(A, K, L, alpha){K^alpha * (A*L)^(1-alpha)}
-    ESSOE_MF_Yn <- function(Y, r, F_var){Y + r * F_var}
+    # Load Basic Model Functions ---------------------------------
+    source("ESSOEModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESSOE_variables), np)
@@ -103,14 +98,14 @@ SimulateGeneralSolowModel <- function(paragrid, np, startvals){
 }
 
 # Testing
-testnamel <- c("B", "alpha", "delta", "n", "s", "r")
-testivl <- c(1, 1/3,0.1, 0.04, 0.23, 0.1)
-testpfcl <- c(NA,NA,NA, NA, NA, NA)
-testnvl <- c(NA, NA, NA, NA, NA, NA)
-np <- 50
-testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
-paragrid <- testgridalt
-startvals <- list(L = 1, V = 1)
+# testnamel <- c("B", "alpha", "delta", "n", "s", "r")
+# testivl <- c(1, 1/3,0.1, 0.04, 0.23, 0.1)
+# testpfcl <- c(NA,NA,NA, NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA, NA)
+# np <- 50
+# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+# paragrid <- testgridalt
+# startvals <- list(L = 1, V = 1)
 # testsimulation <- SimulateGeneralSolowModel(testgridalt, np,startvals)
 # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_ESSOE_variables), "free")
