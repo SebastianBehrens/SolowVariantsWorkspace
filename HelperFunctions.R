@@ -124,9 +124,12 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   # parameter_data for the parameter grid
   # technology variant for the version where TFP is indicated as endogeneous by A or exogeneous by B 
   # solowversion for a string indicating the solow model version ("BS", "GS", "ESSOE", "ES....")
-  
-  
-  
+  ## Testing ESSEO
+  # sim_data <- sim_table
+  # add_vars <- remaining_vars_to_compute_bool
+  # parameter_data <- paragrid
+  # technology_variant <- "exo"
+  # solowversion <- "ESSEO"
   # accomodating for different forms of technology:
   # A (endogeneous variable) and B (parameter) in the different Solow Models
   if(technology_variant == "endo"){
@@ -156,6 +159,10 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "gY"){sim_data[["gY"]] <- log(sim_data[["Y"]]) - log(lag(sim_data[["Y"]]))}
     if(i == "gYpW"){sim_data[["gYpW"]] <- log(sim_data[["YpW"]]) - log(lag(sim_data[["YpW"]]))}
     if(i == "gYpEW"){sim_data[["gYpEW"]] <- log(sim_data[["YpEW"]]) - log(lag(sim_data[["YpEW"]]))}
+    if(i == "gKpW"){sim_data[["gKpW"]] <- log(sim_data[["KpW"]]) - log(lag(sim_data[["KpW"]]))}
+    if(i == "gKpEW"){sim_data[["gKpEW"]] <- log(sim_data[["KpEW"]]) - log(lag(sim_data[["KpEW"]]))}
+    # Variants of Saving
+    if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
     
     # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
     # WR, RR for BS ---------------------------------
@@ -211,6 +218,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
                                      sim_data[["L"]],
                                      parameter_data[["alpha"]])
       }
+      
+      
       
     }
     

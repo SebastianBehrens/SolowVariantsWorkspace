@@ -56,6 +56,7 @@ source("GeneralSolowModel.R")
 # Meta Information =================================
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
 meta_GS_parameters <- c("g", "alpha", "delta", "savings rate", "population growth")
+meta_ESSOE_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth")
 
 ### Shiny APP #############################
 shinyApp(

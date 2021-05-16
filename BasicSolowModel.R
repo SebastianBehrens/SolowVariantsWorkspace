@@ -62,10 +62,11 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
     remaining_vars_to_compute_bool <- names(sim_table) %in% c("period", "L", "K", "Y")
     
     sim_table <- add_var_computer(sim_table, remaining_vars_to_compute_bool, paragrid, "exo", "BS")
+    
     return(sim_table)
 }
 
-# Testing
+# # Testing
 # testnamel <- c("B", "alpha", "delta", "n", "s")
 # testivl <- c(1, 1/3,0.1, 0.04, 0.23)
 # testpfcl <- c(NA,NA,NA, NA, NA)

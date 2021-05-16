@@ -52,6 +52,7 @@ SimulateGeneralSolowModel <- function(paragrid, np, startvals){
                                                 sim_table[["Y"]][[which(sim_table$period == i-1)]],
                                                 paragrid[["delta"]][[which(paragrid$period == i-1)]],
                                                 sim_table[["K"]][[which(sim_table$period == i-1)]])
+        
         sim_table[[aux_index, "Y"]] <- GS_MF_Y(sim_table[["TFP"]][[which(sim_table$period == i)]], 
                                                sim_table[["K"]][[which(sim_table$period == i)]],
                                                sim_table[["L"]][[which(sim_table$period == i)]],
@@ -60,40 +61,14 @@ SimulateGeneralSolowModel <- function(paragrid, np, startvals){
     
     # Computing Additional Variables ---------------------------------
     
-    remaining_vars_to_compute <- names(sim_table) %in% c("period","TFP", "L", "K", "Y")
-    for(i in names(sim_table)[!remaining_vars_to_compute]){
-        # Variants of Output
-        if(i == "YpW"){sim_table[["YpW"]] <- sim_table[["Y"]]/sim_table[["L"]]}
-        if(i == "YpEW"){sim_table["YpEW"] <- sim_table[["Y"]]/(sim_table[["TFP"]] * sim_table[["L"]])}
-        # Logarithmised Variants
-        if(i == "logY"){sim_table[["logY"]] <- sim_table[["Y"]] %>% log()}
-        if(i == "logYpW"){sim_table[["logYpW"]] <- sim_table[["YpW"]] %>% log()}
-        if(i == "logYpEW"){sim_table[["logYpEW"]] <- sim_table[["YpEW"]] %>% log()}
-        # Variants of Growth
-        if(i == "gY"){sim_table[["gY"]] <- log(sim_table[["Y"]]) - log(lag(sim_table[["Y"]]))}
-        if(i == "gYpW"){sim_table[["gYpW"]] <- log(sim_table[["YpW"]]) - log(lag(sim_table[["YpW"]]))}
-        if(i == "gYpEW"){sim_table[["gYpEW"]] <- log(sim_table[["YpEW"]]) - log(lag(sim_table[["YpEW"]]))}
-        # Wage Rate
-        if(i == "WR"){
-            sim_table[["WR"]] <- GS_MF_WR(
-                sim_table[["TFP"]],
-                sim_table[["K"]],
-                sim_table[["L"]],
-                paragrid[["alpha"]])
-        }
-        # Rental Rate
-        if(i == "RR"){sim_table[["RR"]] <- GS_MF_RR(
-            sim_table[["TFP"]],
-            sim_table[["K"]],
-            sim_table[["L"]],
-            paragrid[["alpha"]])
-        }
-        
-    }
+    remaining_vars_to_compute_bool <- names(sim_table) %in% c("period","TFP", "L", "K", "Y")
+    
+    sim_table <- add_var_computer(sim_table, remaining_vars_to_compute_bool, paragrid, "endo", "GS")
+    
     return(sim_table)
 }
 
-# Testing
+# # Testing
 # testnamel <- c("g", "alpha", "delta", "n", "s")
 # testivl <- c(0.1, 1/3,0.1, 0.04, 0.23)
 # testpfcl <- c(NA,NA,NA, NA, NA)
@@ -104,4 +79,4 @@ SimulateGeneralSolowModel <- function(paragrid, np, startvals){
 # startvals <- list(K = 1, L = 1, A = 1)
 # testsimulation <- SimulateGeneralSolowModel(testgridalt, np,startvals)
 # # View(testsimulation)
-# VisualiseSimulation(testsimulation, variable_encoder(meta_GS_variables), "free")
+# VisualiseSimulation(testsimulation, variable_encoder(meta_GS_variables[1:3]), "free")
