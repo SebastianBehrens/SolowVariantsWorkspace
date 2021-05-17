@@ -24,8 +24,8 @@ Then the whole table of simulated variables is passed to a visualiser function t
 # Elaboration on the Files
 MacroModels.R — contains shiny whole app
 
-<SolowVariant>ModelFunctions.R — model functions of every Solow Variant (Solow Variants are (for now) the Basic Solow Model (BS), the General Solow Model (GS), the Extended Solow Model for a Small Open Economy (ESSOE).
+\<SolowVariant\>ModelFunctions.R — model functions of every Solow Variant (Solow Variants are (for now) the Basic Solow Model (BS), the General Solow Model (GS), the Extended Solow Model for a Small Open Economy (ESSOE).
   
-<SolowVariant>.R — the simulation function for every Solow Variant (the order of calculations as well as the variables differ (especially for extendended Variants, which is the reason why I created separate simulation functions (for now).
+`<SolowVariant>.R` — the simulation function for every Solow Variant (the order of calculations as well as the variables differ (especially for extendended Variants, which is the reason why I created separate simulation functions (for now).
   
 
