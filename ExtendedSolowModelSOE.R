@@ -5,21 +5,37 @@ meta_ESSOE_variables <-
     c(
         "Capital Stock",
         "Labor Stock",
+        "Output",
+        
+        "Capital Stock per Worker",
+        "Output per Worker",
+        
+        "Capital Stock per Effective Worker",
+        "Output per Effective Worker",
+        
+        "Wage Rate",
+        "Rental Rate",
+        
         "National Output",
         "National Wealth",
         "Net Foreign Assets",
         "National Savings",
-        "Wage Rate",
-        "Rental Rate",
-        "Output",
-        "Output per Worker",
-        "Output per Effective Worker",
+        
         "Log of Output",
         "Log of Output per Worker",
         "Log of Output per Effective Worker",
+        
+        "Log of Capital Stock",
+        "Log of Capital Stock per Worker",
+        "Log of Capital Stock per Effective Worker",
+        
         "Growth Rate of Output",
         "Growth Rate of Output per Worker",
-        "Growth Rate of Output per Effective Worker"
+        "Growth Rate of Output per Effective Worker",
+        
+        "Growth Rate of Capital Stock",
+        "Growth Rate of Capital Stock per Worker",
+        "Growth Rate of Capital Stock per Effective Worker"
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
@@ -27,7 +43,6 @@ SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
     # Inputs ---------------------------------
     # paragrid for parameter grid;
     # np for number of periods;
-    # vts for vars to simulat
     
     # Load Basic Model Functions ---------------------------------
     source("ESSOEModelFunctions.R")
@@ -59,12 +74,14 @@ SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
     for (i in 1:np){
         # i <- 1
         aux_index <- which(sim_table$period == i)
+        # VN for V next since in period 0 only the initial values are computed. every iteration 
+        #                starts with computing the start values of V (the path defining variable)
         sim_table[[aux_index, "V"]] <- ESSOE_MF_VN(sim_table[[aux_index - 1, "Yn"]], 
                                                    paragrid[[aux_index - 1, "s"]],
                                                    sim_table[[aux_index - 1, "V"]])
         
-        sim_table[[aux_index, "L"]] <- ESSOE_MF_LN(paragrid[["n"]][[which(paragrid$period == i-1)]],
-                                                sim_table[["L"]][[which(sim_table$period == i-1)]])
+        sim_table[[aux_index, "L"]] <- ESSOE_MF_LN(paragrid[[aux_index - 1, "n"]],
+                                                sim_table[[aux_index - 1, "L"]])
         
         sim_table[[aux_index, "K"]] <- ESSOE_MF_K(paragrid[[aux_index, "r"]],
                                                   paragrid[[aux_index, "alpha"]],
@@ -89,20 +106,20 @@ SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
     
     remaining_vars_to_compute_bool <- names(sim_table) %in% c("period", "L", "K", "Y", "V", "F", "Yn")
     
-    sim_table <- add_var_computer(sim_table, remaining_vars_to_compute_bool, paragrid, "exo", "ESSEO")
+    sim_table <- add_var_computer(sim_table, remaining_vars_to_compute_bool, paragrid, "exo", "ESSOE")
     # View(sim_table)
     return(sim_table)
 }
 
 # Testing
-testnamel <- c("B", "alpha", "n", "s", "r")
-testivl <- c(1, 1/3,0.1, 0.2, 0.05)
-testpfcl <- c(NA,NA,NA, NA, NA)
-testnvl <- c(NA, NA, NA, NA, NA)
-np <- 50
-testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
-paragrid <- testgridalt
-startvals <- list(L = 1, V = 30)
-testsimulation <- SimulateExtendedSolowModelSmallOpenEconomy(testgridalt, np,startvals)
+# testnamel <- c("B", "alpha", "n", "s", "r")
+# testivl <- c(1, 1/3,0.1, 0.2, 0.05)
+# testpfcl <- c(NA,NA,NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA)
+# np <- 50
+# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+# paragrid <- testgridalt
+# startvals <- list(L = 1, V = 30)
+# testsimulation <- SimulateExtendedSolowModelSmallOpenEconomy(testgridalt, np,startvals)
 # View(testsimulation)
-VisualiseSimulation(testsimulation, variable_encoder(meta_ESSOE_variables), "free")
+# VisualiseSimulation(testsimulation, variable_encoder(meta_ESSOE_variables), "free")
