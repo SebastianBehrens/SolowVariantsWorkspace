@@ -65,8 +65,8 @@ $$
   
   For Shiny MathJax:
   
-  $$
-  \\begin{aligned}
+$$
+\\begin{aligned}
 Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\
 Y_n &= Y_t + \\bar{r}F_t \\\\
 V_t &= K_t + F_t\\\\
