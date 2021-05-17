@@ -5,17 +5,29 @@ meta_BS_variables <-
     c(
         "Capital Stock",
         "Labor Stock",
-        "Wage Rate",
-        "Rental Rate",
         "Output",
+        "Capital Stock per Worker",
         "Output per Worker",
         "Output per Effective Worker",
+        "Capital Stock per Effective Worker",
+        "Wage Rate",
+        "Rental Rate",
+        
+        "Log of Capital Stock",
+        "Log of Capital Stock per Worker",
+        "Log of Capital Stock per Effective Worker",
+        
         "Log of Output",
         "Log of Output per Worker",
         "Log of Output per Effective Worker",
+        
         "Growth Rate of Output",
         "Growth Rate of Output per Worker",
-        "Growth Rate of Output per Effective Worker"
+        "Growth Rate of Output per Effective Worker",
+        
+        "Growth Rate of Capital Stock",
+        "Growth Rate of Capital Stock per Worker",
+        "Growth Rate of Capital Stock per Effective Worker"
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
@@ -76,5 +88,6 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
 # paragrid <- testgridalt
 # startvals <- list(K = 1, L = 1)
 # testsimulation <- SimulateBasicSolowModel(testgridalt, np,startvals)
-# # View(testsimulation)
-# VisualiseSimulation(testsimulation, variable_encoder(meta_BS_variables[1:3]), "free")
+# # # View(testsimulation)
+# VisualiseSimulation(testsimulation, variable_encoder("Growth Rate of Capital Stock per Effective Worker"), "free")
+
