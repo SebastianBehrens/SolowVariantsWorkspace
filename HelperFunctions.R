@@ -136,12 +136,12 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   # technology variant for the version where TFP is indicated as endogeneous by A or exogeneous by B 
   # solowversion for a string indicating the solow model version ("BS", "GS", "ESSOE", "ES....")
  
-  ## Testing BS
+  ## Testing 
   # sim_data <- sim_table
   # add_vars <- remaining_vars_to_compute_bool
   # parameter_data <- paragrid
   # technology_variant <- "exo"
-  # solowversion <- "BS"
+  # solowversion <- "ESSOE"
   
   
   # accomodating for different forms of technology:
@@ -238,6 +238,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     }
     
     
+    
   }
   
   return(sim_data)
@@ -286,9 +287,6 @@ meta_BS_variables <-
 # VisualiseSimulation(testsimulation, c("Y", "RR", "WR"), "free")
 # 
 # 
-
-
-
 
 
 # Chapter 9 Model 
