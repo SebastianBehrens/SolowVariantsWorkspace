@@ -1,4 +1,4 @@
-### 1.0 Basic Solow Growth Model #############################
+### 2.0 General Solow Growth Model #############################
 
 # Meta-Information All Variables =================================
 meta_GS_variables <-
