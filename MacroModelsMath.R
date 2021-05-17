@@ -1,6 +1,6 @@
 # Basic Solow Model
 $$
-\begin{aligned}
+  \begin{aligned}
 Y_t &= BK_t^\alpha L_t^{1-\alpha} \\
 r_t &= \alpha B \left(\frac{K_t}{L_t}\right)^{\alpha -1}\\
 w_t &= (1-\alpha) \left(\frac{K_t}{L_t}\right)^\alpha \\
@@ -9,9 +9,9 @@ K_{t+1}&= sY_t + (1-\delta)K_t \\
 L_{t+1}&=(1+n)L_t
 \end{aligned}
 $$
-For Shiny MathJax
+  For Shiny MathJax
 $$
-\\begin{aligned}
+  \\begin{aligned}
 Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\
 r_t &= \\alpha B \\left(\\frac{K_t}{L_t}\\right)^{\\alpha -1}\\\\
 w_t &= (1-\\alpha) \\left(\\frac{K_t}{L_t}\\right)^\\alpha \\\\
@@ -20,10 +20,10 @@ K_{t+1}&= sY_t + (1-\\delta)K_t \\\\
 L_{t+1}&=(1+n)L_t
 \\end{aligned}
 $$
-
-# General Solow Model
-$$
-\begin{aligned}
+  
+  # General Solow Model
+  $$
+  \begin{aligned}
 Y_t &= K_t^\alpha (A_tL_t)^{1-\alpha} \\
 r_t &= \alpha \left(\frac{K_t}{A_tL_t}\right)^{\alpha -1}\\
 w_t &= (1-\alpha) \left(\frac{K_t}{A_tL_t}\right)^\alpha A_t\\
@@ -33,11 +33,11 @@ L_{t+1}&=(1+n)L_t \\
 A_{t+1} &= (1 + g)*A_t
 \end{aligned}
 $$
-
-
-For Shiny MathJax
+  
+  
+  For Shiny MathJax
 $$
-\\begin{aligned}
+  \\begin{aligned}
 Y_t &= K_t^\\alpha (A_tL_t)^{1-\\alpha} \\\\
 r_t &= \\alpha \\left(\\frac{K_t}{A_tL_t}\\right)^{\\alpha -1}\\\\
 w_t &= (1-\\alpha) \\left(\\frac{K_t}{A_tL_t}\\right)^\\alpha A_t\\\\
@@ -47,11 +47,11 @@ L_{t+1}&=(1+n)L_t \\\\
 A_{t+1} &= (1 + g)*A_t
 \\end{aligned}
 $$
-
-## Extended Solow Small Open Economy
-
-$$
-\begin{aligned}
+  
+  ## Extended Solow Small Open Economy
+  
+  $$
+  \begin{aligned}
 Y_t &= BK_t^\alpha L_t^{1-\alpha} \\
 Y_n &= Y_t + \bar{r}F_t \\
 V_t &= K_t + F_t\\
@@ -62,9 +62,9 @@ S_t &= V_{t+1} - V_t\\
 L_{t+1}&=(1+n)L_t \\
 \end{aligned}
 $$
-
-For Shiny MathJax:
-
+  
+  For Shiny MathJax:
+  
 $$
 \\begin{aligned}
 Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\
