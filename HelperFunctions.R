@@ -72,21 +72,36 @@ variable_encoder <- function(variables){
     aux2 <- variables[[i]]
     aux3 <- case_when(
       aux2 == "Total Factor Productivity" ~ "TFP",
+      
       aux2 == "Capital Stock" ~ "K",
+      aux2 == "Log of Capital Stock" ~ "logK",
+      aux2 == "Growth Rate of Capital Stock" ~ "gK",
+      
       aux2 == "Capital Stock per Worker" ~ "KpW",
+      aux2 == "Log of Capital Stock per Worker" ~ "logKpW",
+      aux2 == "Growth Rate of Capital Stock per Worker" ~ "gKpW",
+      
       aux2 == "Capital Stock per Effective Worker" ~ "KpEW",
+      aux2 == "Log of Capital Stock per Effective Worker" ~ "logKpEW",
+      aux2 == "Growth Rate of Capital Stock per Effective Worker" ~ "gKpEW",
+      
       aux2 == "Labor Stock" ~ "L",
+      
       aux2 == "Wage Rate" ~ "WR", 
       aux2 == "Rental Rate" ~ "RR",
+      
       aux2 == "Output" ~ "Y",
       aux2 == "Log of Output" ~ "logY",
       aux2 == "Growth Rate of Output" ~ "gY",
+      
       aux2 == "Output per Worker" ~ "YpW",
       aux2 == "Log of Output per Worker" ~ "logYpW",
       aux2 == "Growth Rate of Output per Worker" ~ "gYpW",
+      
       aux2 == "Output per Effective Worker" ~ "YpEW",
       aux2 == "Log of Output per Effective Worker" ~ "logYpEW",
       aux2 == "Growth Rate of Output per Effective Worker" ~ "gYpEW",
+      
       aux2 == "National Output" ~ "Yn",
       aux2 == "National Wealth" ~ "V",
       aux2 == "Net Foreign Assets" ~ "F",
@@ -98,10 +113,6 @@ variable_encoder <- function(variables){
   return(aux)
 }
 
-"National Output"
-"National Wealth"
-"Net Foreign Assets"
-"National Savings"
 
 # 0.6 visualise a simulation ---------------------------------
 VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
@@ -124,12 +135,15 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   # parameter_data for the parameter grid
   # technology variant for the version where TFP is indicated as endogeneous by A or exogeneous by B 
   # solowversion for a string indicating the solow model version ("BS", "GS", "ESSOE", "ES....")
-  ## Testing ESSEO
+ 
+  ## Testing BS
   # sim_data <- sim_table
   # add_vars <- remaining_vars_to_compute_bool
   # parameter_data <- paragrid
   # technology_variant <- "exo"
-  # solowversion <- "ESSEO"
+  # solowversion <- "BS"
+  
+  
   # accomodating for different forms of technology:
   # A (endogeneous variable) and B (parameter) in the different Solow Models
   if(technology_variant == "endo"){
@@ -139,7 +153,6 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   }else{
     stop("Technology location unclear")
   }
-  
   for(i in names(sim_data)[!add_vars]){
     # Variants of Output
     if(i == "YpW"){sim_data[["YpW"]] <- sim_data[["Y"]]/sim_data[["L"]]}
@@ -150,15 +163,16 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "logYpEW"){sim_data[["logYpEW"]] <- sim_data[["YpEW"]] %>% log()}
     # Variants of Capital
     if(i == "KpW"){sim_data[["KpW"]] <- sim_data[["K"]]/sim_data[["L"]]}
-    if(i == "KpEW"){sim_data["YpEW"] <- sim_data[["K"]]/(technology * sim_data[["L"]])}
+    if(i == "KpEW"){sim_data["KpEW"] <- sim_data[["K"]]/(technology * sim_data[["L"]])}
     # Variants of Capital Logarithmised
-    if(i == "logK"){sim_data[["logY"]] <- sim_data[["Y"]] %>% log()}
-    if(i == "logKpW"){sim_data[["logYpW"]] <- sim_data[["YpW"]] %>% log()}
-    if(i == "logKpEW"){sim_data[["logYpEW"]] <- sim_data[["YpEW"]] %>% log()}
+    if(i == "logK"){sim_data[["logK"]] <- sim_data[["K"]] %>% log()}
+    if(i == "logKpW"){sim_data[["logKpW"]] <- sim_data[["KpW"]] %>% log()}
+    if(i == "logKpEW"){sim_data[["logKpEW"]] <- sim_data[["KpEW"]] %>% log()}
     # Variants of Growth
     if(i == "gY"){sim_data[["gY"]] <- log(sim_data[["Y"]]) - log(lag(sim_data[["Y"]]))}
     if(i == "gYpW"){sim_data[["gYpW"]] <- log(sim_data[["YpW"]]) - log(lag(sim_data[["YpW"]]))}
     if(i == "gYpEW"){sim_data[["gYpEW"]] <- log(sim_data[["YpEW"]]) - log(lag(sim_data[["YpEW"]]))}
+    if(i == "gK"){sim_data[["gK"]] <- log(sim_data[["K"]]) - log(lag(sim_data[["K"]]))}
     if(i == "gKpW"){sim_data[["gKpW"]] <- log(sim_data[["KpW"]]) - log(lag(sim_data[["KpW"]]))}
     if(i == "gKpEW"){sim_data[["gKpEW"]] <- log(sim_data[["KpEW"]]) - log(lag(sim_data[["KpEW"]]))}
     # Variants of Saving
