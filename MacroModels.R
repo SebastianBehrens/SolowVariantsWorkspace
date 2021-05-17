@@ -1,3 +1,12 @@
+# Set Path
+setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+# getwd()
+
+
+
+
+
+
 # Loading Libraries =================================
 
 # package_organiser <- function(string){
@@ -45,10 +54,10 @@ theme_set(
     )
   
 )
+
+
 # Reading Files =================================
 
-# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
-# getwd()
 source("HelperFunctions.R")
 source("BasicSolowModel.R")
 source("GeneralSolowModel.R")
@@ -492,8 +501,7 @@ L_{t+1}&=(1+n)L_t \\\\
     output$GS_Viz <- renderPlot({
       VisualiseSimulation(GS_aux_data(), GS_vtv_select_encoded(), input$GS_scales_free_or_fixed)
     })
-    # to be taken out when app is published
-    session$onSessionEnded(stopApp)
+    
     # Extended Solow Growth Model — Small Open Economy =================================
     ESSOE_parametergrid <- reactive({
         # Names of Parameters ---------------------------------
@@ -549,5 +557,15 @@ L_{t+1}&=(1+n)L_t \\\\
     output$ESSOE_Viz <- renderPlot({
     VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)
       })
+    
+    
+    
+    
+    
+    
+    
+    
+    # to be taken out when app is published
+    session$onSessionEnded(stopApp)
   }
 )
