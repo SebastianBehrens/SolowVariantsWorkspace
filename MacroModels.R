@@ -52,6 +52,7 @@ theme_set(
 source("HelperFunctions.R")
 source("BasicSolowModel.R")
 source("GeneralSolowModel.R")
+source("ExtendedSolowModelSOE.R")
 
 # Meta Information =================================
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
@@ -66,7 +67,7 @@ shinyApp(
     theme = shinytheme("cerulean"),
     titlePanel("Growth Models in Macroeconomic Theory"),
     tabsetPanel(
-      # Start Page ---------------------------------
+    # Start Page ---------------------------------
       tabPanel("Start Page", fluid = TRUE,
                h3("This Shiny App aims to do the following:"),
                tags$ul(
@@ -75,35 +76,35 @@ shinyApp(
                  tags$li("Make the models and their inner workers more visual")
                )
                ),
-      # Basic Solow Model ---------------------------------
+    # Basic Solow Model ---------------------------------
       tabPanel("Basic Solow Model", fluid = TRUE,
                sidebarLayout(
-                 # Sidebar Panel  ---------------------------------
+      # Sidebar Panel  ---------------------------------
                  sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
                               fluidRow(
                                 column(width = 6,
-                                       # Variable Selector ---------------------------------
+        # Variable Selector ---------------------------------
                                        titlePanel("Variables"),
                                        checkboxGroupInput("BS_vtv", 
                                                           label = "",
                                                           choices = meta_BS_variables, 
                                                           selected = meta_BS_variables[1:5]),
                                        hr(),
-                                       # Scale Selector ---------------------------------
+        # Scale Selector ---------------------------------
                                        selectInput("BS_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
                                        hr(),
-                                       # Starting Values ---------------------------------
+        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        numericInput("BS_initval_L", "Initial Value of Labor Stock", 10),
                                        numericInput("BS_initval_K", "Initial Value of Capital Stock", 10)
                                 ),
                                 column(width = 6,
-                                       # Parameters ---------------------------------
+        # Parameters ---------------------------------
                                        titlePanel("Parameter Values"),
-                                       # Periods ---------------------------------
+        # Periods ---------------------------------
                                        numericInput("BS_nperiods_selected", "Periods", 200, step = 20),
                                        hr(),
-                                       # TFP ---------------------------------
+        # TFP ---------------------------------
                                        numericInput("BS_initval_B", "Initial Value of Technology", 5),
                                        checkboxInput("BS_changeinparam_tfp", "Change in TFP?"),
                                        conditionalPanel(
@@ -111,7 +112,7 @@ shinyApp(
                                          numericInput("BS_pc_tfp_period", "Period of Change in TFP", 10, min = 0, max = 50),
                                          numericInput("BS_pc_tfp_newval", "New Value of TFP", 20)),
                                        hr(),
-                                       # Alpha ---------------------------------
+        # Alpha ---------------------------------
                                        numericInput("BS_initparam_alpha", "Alpha", 0.3, step = 0.05),
                                        checkboxInput("BS_changeinparam_alpha", "Change in Alpha?"),
                                        conditionalPanel(
@@ -119,7 +120,7 @@ shinyApp(
                                          numericInput("BS_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
                                          numericInput("BS_pc_alpha_newval", "New Value of Alpha", 0.5, step = 0.05)),
                                        hr(),
-                                       # Delta ---------------------------------
+        # Delta ---------------------------------
                                        numericInput("BS_initparam_delta", "Delta", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_delta", "Change in Delta?"),
                                        conditionalPanel(
@@ -127,7 +128,7 @@ shinyApp(
                                          numericInput("BS_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
                                          numericInput("BS_pc_delta_newval", "New Value of Delta", 0.5, step = 0.05)),
                                        hr(),
-                                       # Savings Rate ---------------------------------
+        # Savings Rate ---------------------------------
                                        numericInput("BS_initparam_savings", "Savings Rate", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_savings", "Change in Savings Rate?"),
                                        conditionalPanel(
@@ -135,7 +136,7 @@ shinyApp(
                                          numericInput("BS_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
                                          numericInput("BS_pc_savings_newval", "New Value of Savings Rate", 0.5, step = 0.05)),
                                        hr(),
-                                       # Population Growth ---------------------------------
+        # Population Growth ---------------------------------
                                        numericInput("BS_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
                                        checkboxInput("BS_changeinparam_popgrowth", "Change in Population Growth?"),
                                        conditionalPanel(
@@ -145,9 +146,9 @@ shinyApp(
                                        hr()
                                 )
                               )),
-                 # Main Panel  ---------------------------------
+    # Main Panel  ---------------------------------
                mainPanel(
-                 # Model Equations  ---------------------------------
+      # Model Equations  ---------------------------------
                  titlePanel("Model Equations"),
                  withMathJax(),
                  p('
@@ -161,55 +162,55 @@ K_{t+1}&= sY_t + (1-\\delta)K_t \\\\
 L_{t+1}&=(1+n)L_t
 \\end{aligned}
 $$'),
-                 # Visualisation  ---------------------------------
+      # Visualisation  ---------------------------------
                  # textOutput("test"),
                  titlePanel("Simulation"),
                  plotOutput("BS_Viz", height = "1000px"),
-                 # Model Simulation Data ---------------------------------
+      # Model Simulation Data ---------------------------------
                  titlePanel("Simulation Data"),
                  dataTableOutput("BS_Data")
                )  
                )
                ),
-      # General Solow Model ---------------------------------
+    # General Solow Model ---------------------------------
       tabPanel("General Solow Model", fluid = TRUE,
                sidebarLayout(
-                 # Sidebar Panel  ---------------------------------
+      # Sidebar Panel  ---------------------------------
                  sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
                               fluidRow(
                                 column(width = 6,
-                                       # Variable Selector ---------------------------------
+        # Variable Selector ---------------------------------
                                        titlePanel("Variables"),
                                        checkboxGroupInput("GS_vtv", 
                                                           label = "",
                                                           choices = meta_GS_variables, 
                                                           selected = meta_GS_variables[1:5]),
                                        hr(),
-                                       # Scale Selector ---------------------------------
+        # Scale Selector ---------------------------------
                                        selectInput("GS_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
                                        hr(),
-                                       # Starting Values ---------------------------------
+        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        numericInput("GS_initval_L", "Initial Value of Labor Stock", 10),
                                        numericInput("GS_initval_K", "Initial Value of Capital Stock", 10),
                                        numericInput("GS_initval_A", "Initial Value of TFP", 10)
                                 ),
                                 column(width = 6,
-                                       # Parameters ---------------------------------
+        # Parameters ---------------------------------
                                        titlePanel("Parameter Values"),
-                                       # Periods ---------------------------------
+        # Periods ---------------------------------
                                        numericInput("GS_nperiods_selected", "Periods", 200, step = 20),
                                        hr(),
-                                       # TFP ---------------------------------
+        # TFP ---------------------------------
                                        numericInput("GS_initparam_g", "g", 0.1, step = 0.05),
-                                       ####### Exogeneous Shocks in GSM to be added
+        ## Remark: Exogeneous Shocks in GSM to be added
                                        checkboxInput("GS_changeinparam_g", "Change in g?"),
                                        conditionalPanel(
                                          condition = "input.GS_changeinparam_g == true",
                                          numericInput("GS_pc_g_period", "Period of Change in g", 10, min = 0, max = 50),
                                          numericInput("GS_pc_g_newval", "New Value of g", 0.3, step = 0.05)),
                                        hr(),
-                                       # Alpha ---------------------------------
+        # Alpha ---------------------------------
                                        numericInput("GS_initparam_alpha", "Alpha", 0.3, step = 0.05),
                                        checkboxInput("GS_changeinparam_alpha", "Change in Alpha?"),
                                        conditionalPanel(
@@ -217,7 +218,7 @@ $$'),
                                          numericInput("GS_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
                                          numericInput("GS_pc_alpha_newval", "New Value of Alpha", 0.5, step = 0.05)),
                                        hr(),
-                                       # Delta ---------------------------------
+        # Delta ---------------------------------
                                        numericInput("GS_initparam_delta", "Delta", 0.1, step = 0.05),
                                        checkboxInput("GS_changeinparam_delta", "Change in Delta?"),
                                        conditionalPanel(
@@ -225,7 +226,7 @@ $$'),
                                          numericInput("GS_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
                                          numericInput("GS_pc_delta_newval", "New Value of Delta", 0.5, step = 0.05)),
                                        hr(),
-                                       # Savings Rate ---------------------------------
+        # Savings Rate ---------------------------------
                                        numericInput("GS_initparam_savings", "Savings Rate", 0.1, step = 0.05),
                                        checkboxInput("GS_changeinparam_savings", "Change in Savings Rate?"),
                                        conditionalPanel(
@@ -233,7 +234,7 @@ $$'),
                                          numericInput("GS_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
                                          numericInput("GS_pc_savings_newval", "New Value of Savings Rate", 0.5, step = 0.05)),
                                        hr(),
-                                       # Population Growth ---------------------------------
+        # Population Growth ---------------------------------
                                        numericInput("GS_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
                                        checkboxInput("GS_changeinparam_popgrowth", "Change in Population Growth?"),
                                        conditionalPanel(
@@ -243,9 +244,9 @@ $$'),
                                        hr()
                                 )
                               )),
-                 # Main Panel  ---------------------------------
+      # Main Panel  ---------------------------------
                  mainPanel(
-                   # Model Equations  ---------------------------------
+        # Model Equations  ---------------------------------
                    titlePanel("Model Equations"),
                    withMathJax(),
                    p('
@@ -260,7 +261,7 @@ L_{t+1}&=(1+n)L_t \\\\
 A_{t+1} &= (1 + g)*A_t
 \\end{aligned}
 $$'),
-                   # Visualisation  ---------------------------------
+        # Visualisation  ---------------------------------
                    # textOutput("test"),
                    titlePanel("Simulation"),
                    plotOutput("GS_Viz", height = "1000px"),
@@ -270,13 +271,107 @@ $$'),
                  )  
                )
       ),
-      # Extended Solow Model (Small Open Economy) ---------------------------------
-      tabPanel("Extended Solow Model (Small Open Economy)", fluid = TRUE),
-      # Extended Solow Model (Human Capital) ---------------------------------
+    # Extended Solow Model (Small Open Economy) ---------------------------------
+      tabPanel("Extended Solow Model (Small Open Economy)", fluid = TRUE,
+               sidebarLayout(
+      # Sidebar Panel  ---------------------------------
+                 sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
+                              fluidRow(
+                                column(width = 6,
+        # Variable Selector ---------------------------------
+                                       titlePanel("Variables"),
+                                       checkboxGroupInput("ESSOE_vtv", 
+                                                          label = "",
+                                                          choices = meta_ESSOE_variables, 
+                                                          selected = meta_ESSOE_variables[1:5]),
+                                       hr(),
+        # Scale Selector ---------------------------------
+                                       selectInput("ESSOE_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
+                                       hr(),
+        # Starting Values ---------------------------------
+                                       titlePanel("Starting Values of Stocks"),
+                                       numericInput("ESSOE_initval_L", "Initial Value of Labor Stock", 10),
+                                       numericInput("ESSOE_initval_V", "Initial Value of National Wealth", 45)
+                                ),
+                                column(width = 6,
+        # Parameters ---------------------------------
+                                       titlePanel("Parameter Values"),
+        # Periods ---------------------------------
+                                       numericInput("ESSOE_nperiods_selected", "Periods", 200, step = 20),
+                                       hr(),
+        # TFP ---------------------------------
+                                       numericInput("ESSOE_initval_B", "Initial Value of Technology", 5),
+                                       checkboxInput("ESSOE_changeinparam_tfp", "Change in TFP?"),
+                                       conditionalPanel(
+                                         condition = "input.ESSOE_changeinparam_tfp == true", 
+                                         numericInput("ESSOE_pc_tfp_period", "Period of Change in TFP", 10, min = 0, max = 50),
+                                         numericInput("ESSOE_pc_tfp_newval", "New Value of TFP", 20)),
+                                       hr(),
+        # Alpha ---------------------------------
+                                       numericInput("ESSOE_initparam_alpha", "Alpha", 0.3, step = 0.05),
+                                       checkboxInput("ESSOE_changeinparam_alpha", "Change in Alpha?"),
+                                       conditionalPanel(
+                                         condition = "input.ESSOE_changeinparam_alpha == true", 
+                                         numericInput("ESSOE_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
+                                         numericInput("ESSOE_pc_alpha_newval", "New Value of Alpha", 0.5, step = 0.05)),
+                                       hr(),
+        # Real Interest Rate ---------------------------------
+                                       numericInput("ESSOE_initparam_realint", "Real Interest Rate", 0.1, step = 0.05),
+                                       checkboxInput("ESSOE_changeinparam_realint", "Change in the Real Interest Rate?"),
+                                       conditionalPanel(
+                                         condition = "input.ESSOE_changeinparam_realint == true", 
+                                         numericInput("ESSOE_pc_realint_period", "Period of Change in the Real Interest Rate", 10, min = 0, max = 50),
+                                         numericInput("ESSOE_pc_realint_newval", "New Value of the Real Interest Rate", 0.5, step = 0.05)),
+                                       hr(),
+        # Savings Rate ---------------------------------
+                                       numericInput("ESSOE_initparam_savings", "Savings Rate", 0.1, step = 0.05),
+                                       checkboxInput("ESSOE_changeinparam_savings", "Change in Savings Rate?"),
+                                       conditionalPanel(
+                                         condition = "input.ESSOE_changeinparam_savings == true", 
+                                         numericInput("ESSOE_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
+                                         numericInput("ESSOE_pc_savings_newval", "New Value of Savings Rate", 0.5, step = 0.05)),
+                                       hr(),
+        # Population Growth ---------------------------------
+                                       numericInput("ESSOE_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
+                                       checkboxInput("ESSOE_changeinparam_popgrowth", "Change in Population Growth?"),
+                                       conditionalPanel(
+                                         condition = "input.ESSOE_changeinparam_popgrowth == true", 
+                                         numericInput("ESSOE_pc_popgrowth_period", "Period of Change in Population Growth", 10, min = 0, max = 50),
+                                         numericInput("ESSOE_pc_popgrowth_newval", "New Value of Population Growth", 0.2, step = 0.05)),
+                                       hr()
+                                )
+                              )),
+    # Main Panel  ---------------------------------
+               mainPanel(
+      # Model Equations  ---------------------------------
+                 titlePanel("Model Equations"),
+                 withMathJax(),
+                 p('
+               $$
+\\begin{aligned}
+Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\
+Y_n &= Y_t + \\bar{r}F_t \\\\
+V_t &= K_t + F_t\\\\
+r_t &= \\alpha B \\left(\\frac{K_t}{L_t}\\right)^{\\alpha -1}\\\\
+w_t &= (1-\\alpha) B \\left(\\frac{K_t}{L_t}\\right)^\\alpha \\\\
+S_t &= sY_t \\\\
+S_t &= V_{t+1} - V_t\\\\
+L_{t+1}&=(1+n)L_t \\\\
+\\end{aligned}$$'),
+      # Visualisation  ---------------------------------
+                 # textOutput("test"),
+                 titlePanel("Simulation"),
+                 plotOutput("ESSOE_Viz", height = "1000px"),
+      # Model Simulation Data ---------------------------------
+                 titlePanel("Simulation Data"),
+                 dataTableOutput("ESSOE_Data")
+               )  
+               )),
+    # Extended Solow Model (Human Capital) ---------------------------------
       tabPanel("Extended Solow Model (Human Capital)", fluid = TRUE),
-      # Extended Solow Model (Scarce Resources) ---------------------------------
+    # Extended Solow Model (Scarce Resources) ---------------------------------
       tabPanel("Extended Solow Model (Scarce Resources)", fluid = TRUE),
-      # Extended Solow Model (Productive Externalities) ---------------------------------
+    # Extended Solow Model (Productive Externalities) ---------------------------------
       tabPanel("Extended Solow Model (Productive Externalities)", fluid = TRUE)
       )
     
@@ -284,31 +379,31 @@ $$'),
 ### Server #############################
   server = function(input, output, session) {
     # Basic Solow Growth Model =================================
-    # Parameter Grid ---------------------------------
+      # Parameter Grid ---------------------------------
     
     BS_parametergrid <- reactive({
-      # Names of Parameters ---------------------------------
+        # Names of Parameters ---------------------------------
       BS_parameternames <- c("B", "alpha", "delta", "n", "s")
-      # Periods of Changes ---------------------------------
+        # Periods of Changes ---------------------------------
       BS_parameterchange_period <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_period else NA, 
                 if(input$BS_changeinparam_alpha) input$BS_pc_alpha_period else NA,
                 if(input$BS_changeinparam_delta) input$BS_pc_delta_period else NA, 
                 if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_period else NA, 
                 if(input$BS_changeinparam_savings) input$BS_pc_savings_period else NA)
-      # Starting Values of Parameters ---------------------------------
+        # Starting Values of Parameters ---------------------------------
       BS_parameterchange_valuebefore <- c(input$BS_initval_B,
                                   input$BS_initparam_alpha,
                                   input$BS_initparam_delta,
                                   input$BS_initparam_popgrowth,
                                   input$BS_initparam_savings
                                   )
-      # Values of Parameters after Change ---------------------------------
+        # Values of Parameters after Change ---------------------------------
       BS_parameterchange_valueafter <- c(if(input$BS_changeinparam_tfp) input$BS_pc_tfp_newval else NA,
                if(input$BS_changeinparam_alpha) input$BS_pc_alpha_newval else NA,
                if(input$BS_changeinparam_delta) input$BS_pc_delta_newval else NA, 
                if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_newval else NA,
                if(input$BS_changeinparam_savings) input$BS_pc_savings_newval else NA)
-      # Creating the Grid ---------------------------------
+        # Creating the Grid ---------------------------------
       create_parameter_grid(
         BS_parameternames,
         BS_parameterchange_valuebefore,
@@ -341,31 +436,31 @@ $$'),
     VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$BS_scales_free_or_fixed)
       })
     # General Solow Growth Model =================================
-    # Parameter Grid ---------------------------------
+          # Parameter Grid ---------------------------------
     
     GS_parametergrid <- reactive({
-      # Names of Parameters ---------------------------------
+        # Names of Parameters ---------------------------------
       GS_parameternames <- c("g", "alpha", "delta", "n", "s")
-      # Periods of Changes ---------------------------------
+        # Periods of Changes ---------------------------------
       GS_parameterchange_period <- c(if(input$GS_changeinparam_g) input$GS_pc_g_period else NA, 
                                      if(input$GS_changeinparam_alpha) input$GS_pc_alpha_period else NA,
                                      if(input$GS_changeinparam_delta) input$GS_pc_delta_period else NA, 
                                      if(input$GS_changeinparam_popgrowth) input$GS_pc_popgrowth_period else NA, 
                                      if(input$GS_changeinparam_savings) input$GS_pc_savings_period else NA)
-      # Starting Values of Parameters ---------------------------------
+        # Starting Values of Parameters ---------------------------------
       GS_parameterchange_valuebefore <- c(input$GS_initparam_g,
                                           input$GS_initparam_alpha,
                                           input$GS_initparam_delta,
                                           input$GS_initparam_popgrowth,
                                           input$GS_initparam_savings
       )
-      # Values of Parameters after Change ---------------------------------
+        # Values of Parameters after Change ---------------------------------
       GS_parameterchange_valueafter <- c(if(input$GS_changeinparam_g) input$GS_pc_g_newval else NA,
                                          if(input$GS_changeinparam_alpha) input$GS_pc_alpha_newval else NA,
                                          if(input$GS_changeinparam_delta) input$GS_pc_delta_newval else NA, 
                                          if(input$GS_changeinparam_popgrowth) input$GS_pc_popgrowth_newval else NA,
                                          if(input$GS_changeinparam_savings) input$GS_pc_savings_newval else NA)
-      # Creating the Grid ---------------------------------
+        # Creating the Grid ---------------------------------
       create_parameter_grid(
         GS_parameternames,
         GS_parameterchange_valuebefore,
@@ -399,5 +494,60 @@ $$'),
     })
     # to be taken out when app is published
     session$onSessionEnded(stopApp)
+    # Extended Solow Growth Model — Small Open Economy =================================
+    ESSOE_parametergrid <- reactive({
+        # Names of Parameters ---------------------------------
+      ESSOE_parameternames <- c("B", "alpha", "r", "n", "s")
+        # Periods of Changes ---------------------------------
+      ESSOE_parameterchange_period <- c(if(input$ESSOE_changeinparam_tfp) input$ESSOE_pc_tfp_period else NA, 
+                if(input$ESSOE_changeinparam_alpha) input$ESSOE_pc_alpha_period else NA,
+                if(input$ESSOE_changeinparam_realint) input$ESSOE_pc_realint_period else NA, 
+                if(input$ESSOE_changeinparam_popgrowth) input$ESSOE_pc_popgrowth_period else NA, 
+                if(input$ESSOE_changeinparam_savings) input$ESSOE_pc_savings_period else NA)
+        # Starting Values of Parameters ---------------------------------
+      ESSOE_parameterchange_valuebefore <- c(input$ESSOE_initval_B,
+                                  input$ESSOE_initparam_alpha,
+                                  input$ESSOE_initparam_realint,
+                                  input$ESSOE_initparam_popgrowth,
+                                  input$ESSOE_initparam_savings
+                                  )
+        # Values of Parameters after Change ---------------------------------
+      ESSOE_parameterchange_valueafter <- c(if(input$ESSOE_changeinparam_tfp) input$ESSOE_pc_tfp_newval else NA,
+               if(input$ESSOE_changeinparam_alpha) input$ESSOE_pc_alpha_newval else NA,
+               if(input$ESSOE_changeinparam_realint) input$ESSOE_pc_realint_newval else NA, 
+               if(input$ESSOE_changeinparam_popgrowth) input$ESSOE_pc_popgrowth_newval else NA,
+               if(input$ESSOE_changeinparam_savings) input$ESSOE_pc_savings_newval else NA)
+        # Creating the Grid ---------------------------------
+      create_parameter_grid(
+        ESSOE_parameternames,
+        ESSOE_parameterchange_valuebefore,
+        ESSOE_parameterchange_period,
+        ESSOE_parameterchange_valueafter,
+        input$ESSOE_nperiods_selected
+      )
+      
+      })
+    # Encoding the selected Variables (for use in visualise function) ---------------------------------
+    ESSOE_vtv_select_encoded <- reactive({
+      variable_encoder(input$ESSOE_vtv)
+    })
+    # unnecessary ---------------------------------
+    ESSOE_vtv_processed_sim <- reactive({
+      aux <- ESSOE_vtv_processed_encoded()
+      aux_non_standard_detect <- aux %in% c("L", "K", "Y")
+      aux[!aux_non_standard_detect]
+    })
+    # output$test <- renderText({output$plot_height})
+    # Simulating the Economy ---------------------------------
+    ESSOE_aux_data <- reactive({
+      SimulateExtendedSolowModelSmallOpenEconomy(ESSOE_parametergrid(), input$ESSOE_nperiods_selected,
+                              list(L = input$ESSOE_initval_L, V = input$ESSOE_initval_V))
+    })
+    # Rendering the Simulation as a table ---------------------------------
+    output$ESSOE_Data <- renderDataTable({ESSOE_aux_data() %>% mutate_all(round, digits = 3)})
+    # Visualising the Simulation (the selected variables respectively) ---------------------------------
+    output$ESSOE_Viz <- renderPlot({
+    VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)
+      })
   }
 )
