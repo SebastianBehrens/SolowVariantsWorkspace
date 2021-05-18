@@ -104,6 +104,7 @@ variable_encoder <- function(variables){
       
       aux2 == "National Output" ~ "Yn",
       aux2 == "National Wealth" ~ "V",
+      aux2 == "National Wealth per Worker"~ "VpW",
       aux2 == "Net Foreign Assets" ~ "F",
       aux2 == "National Savings" ~ "Sn"
     )
@@ -177,6 +178,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "gKpEW"){sim_data[["gKpEW"]] <- log(sim_data[["KpEW"]]) - log(lag(sim_data[["KpEW"]]))}
     # Variants of Saving
     if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
+    if(i == "VpW"){sim_data[["VpW"]] <- sim_data[["V"]] / sim_data[["L"]]}
     
     # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
     # WR, RR for BS ---------------------------------
@@ -243,6 +245,37 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   
   return(sim_data)
 }
+
+# 0.8 compute steady state values and check correctness of simulations ---------------------------------
+simulation_correctness_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
+  # last_row for the last row of the simulation table (sim_table %>% tail(1))
+  # solow_variant for the different solow variants
+    aux <- tibble(variable = as.double(NA), last_value = as.double(NA), steadystate = as.double(NA))
+    aux_variables <- list(
+      s = tryCatch()
+    )
+    if(solow_variant == "BS") {
+      aux_steadystate_variables <- variable_encoder(meta_BS_variables[c(4, 5, 8, 9)])
+    }
+    
+    all_possible_steady_state_function_inputs <- 
+      list(
+        s = last_row_parameter %>% pull(s),
+        delta = last_row_parameter %>% pull(delta),
+        n = last_row_parameter %>% pull(n),
+        B = last_row_parameter %>% pull(B),
+        alpha = last_row
+      )
+    for(i in aux_steadystate_variables){
+      aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
+
+      doCall(aux_function_name, all_possible_steady_state_function_inputs)
+    }
+
+}
+
+
+
 
 # 0.99 testing ---------------------------------
 # vtstest <- c("testvar", "ja", "nein")
