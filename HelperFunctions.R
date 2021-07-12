@@ -73,17 +73,28 @@ variable_encoder <- function(variables){
     aux3 <- case_when(
       aux2 == "Total Factor Productivity" ~ "TFP",
       
+      aux2 == "Human Capital Stock" ~ "H",
+      aux2 == "Log of Human Capital Stock" ~ "logH",
       aux2 == "Capital Stock" ~ "K",
       aux2 == "Log of Capital Stock" ~ "logK",
       aux2 == "Growth Rate of Capital Stock" ~ "gK",
+      aux2 == "Growth Rate of Human Capital Stock" ~ "gH",
       
       aux2 == "Capital Stock per Worker" ~ "KpW",
       aux2 == "Log of Capital Stock per Worker" ~ "logKpW",
       aux2 == "Growth Rate of Capital Stock per Worker" ~ "gKpW",
       
+      aux2 == "Human Capital Stock per Worker" ~ "HpW",
+      aux2 == "Log of Human Capital Stock per Worker" ~ "logHpW",
+      aux2 == "Growth Rate of Human Capital Stock per Worker" ~ "gHpW",
+      
       aux2 == "Capital Stock per Effective Worker" ~ "KpEW",
       aux2 == "Log of Capital Stock per Effective Worker" ~ "logKpEW",
       aux2 == "Growth Rate of Capital Stock per Effective Worker" ~ "gKpEW",
+      
+      aux2 == "Human Capital Stock per Effective Worker" ~ "HpEW",
+      aux2 == "Log of Human Capital Stock per Effective Worker" ~ "logHpEW",
+      aux2 == "Growth Rate of Human Capital Stock per Effective Worker" ~ "gHpEW",
       
       aux2 == "Labor Stock" ~ "L",
       
@@ -165,10 +176,17 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     # Variants of Capital
     if(i == "KpW"){sim_data[["KpW"]] <- sim_data[["K"]]/sim_data[["L"]]}
     if(i == "KpEW"){sim_data["KpEW"] <- sim_data[["K"]]/(technology * sim_data[["L"]])}
+    # Variants of Human Capital
+    if(i == "HpW"){sim_data[["HpW"]] <- sim_data[["H"]]/sim_data[["L"]]}
+    if(i == "HpEW"){sim_data["HpEW"] <- sim_data[["H"]]/(technology * sim_data[["L"]])}
     # Variants of Capital Logarithmised
     if(i == "logK"){sim_data[["logK"]] <- sim_data[["K"]] %>% log()}
     if(i == "logKpW"){sim_data[["logKpW"]] <- sim_data[["KpW"]] %>% log()}
     if(i == "logKpEW"){sim_data[["logKpEW"]] <- sim_data[["KpEW"]] %>% log()}
+    # Variants of Human Capital Logarithmised
+    if(i == "logH"){sim_data[["logH"]] <- sim_data[["H"]] %>% log()}
+    if(i == "logHpW"){sim_data[["logHpW"]] <- sim_data[["HpW"]] %>% log()}
+    if(i == "logHpEW"){sim_data[["logHpEW"]] <- sim_data[["HpEW"]] %>% log()}
     # Variants of Growth
     if(i == "gY"){sim_data[["gY"]] <- log(sim_data[["Y"]]) - log(lag(sim_data[["Y"]]))}
     if(i == "gYpW"){sim_data[["gYpW"]] <- log(sim_data[["YpW"]]) - log(lag(sim_data[["YpW"]]))}
@@ -176,6 +194,9 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "gK"){sim_data[["gK"]] <- log(sim_data[["K"]]) - log(lag(sim_data[["K"]]))}
     if(i == "gKpW"){sim_data[["gKpW"]] <- log(sim_data[["KpW"]]) - log(lag(sim_data[["KpW"]]))}
     if(i == "gKpEW"){sim_data[["gKpEW"]] <- log(sim_data[["KpEW"]]) - log(lag(sim_data[["KpEW"]]))}
+    if(i == "gH"){sim_data[["gH"]] <- log(sim_data[["H"]]) - log(lag(sim_data[["H"]]))}
+    if(i == "gHpW"){sim_data[["gHpW"]] <- log(sim_data[["HpW"]]) - log(lag(sim_data[["HpW"]]))}
+    if(i == "gHpEW"){sim_data[["gHpEW"]] <- log(sim_data[["HpEW"]]) - log(lag(sim_data[["HpEW"]]))}
     # Variants of Saving
     if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
     if(i == "VpW"){sim_data[["VpW"]] <- sim_data[["V"]] / sim_data[["L"]]}
@@ -224,7 +245,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
         sim_data[["WR"]] <- ESSOE_MF_WR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
-                                     parameter_data[["alpha"]])
+                                     parameter_data[["alpha"]],
+                                     parameter_data[["phi"]])
         
       }
       # Rental Rate
@@ -232,8 +254,29 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
         sim_data[["RR"]] <- ESSOE_MF_RR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
-                                     parameter_data[["alpha"]])
+                                     parameter_data[["alpha"]],
+                                     parameter_data[["phi"]])
       }
+    } 
+      # WR, RR for ESHC ---------------------------------
+      if(solowversion == "ESHC") {
+        if (i == "WR") {
+          source("ESHCModelFunctions.R")
+          sim_data[["WR"]] <- ESHC_MF_WR(technology,
+                                          sim_data[["H"]],
+                                          sim_data[["K"]],
+                                          sim_data[["L"]],
+                                          parameter_data[["alpha"]])
+          
+        }
+        # Rental Rate
+        if (i == "RR") {
+          sim_data[["RR"]] <- ESHC_MF_RR(technology,
+                                          sim_data[["H"]],
+                                          sim_data[["K"]],
+                                          sim_data[["L"]],
+                                          parameter_data[["alpha"]])
+        }
       
       
       
@@ -248,33 +291,57 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
 
 # 0.8 compute steady state values and check correctness of simulations ---------------------------------
 simulation_correctness_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
+  last_row_simulation <- testsimulation[nrow(testsimulation), ]
+  last_row_parameter <- paragrid[nrow(paragrid), ]
+  solow_variant <- "ESHC"
   # last_row for the last row of the simulation table (sim_table %>% tail(1))
   # solow_variant for the different solow variants
-    aux <- tibble(variable = as.double(NA), last_value = as.double(NA), steadystate = as.double(NA))
-    aux_variables <- list(
-      s = tryCatch()
-    )
-    if(solow_variant == "BS") {
-      aux_steadystate_variables <- variable_encoder(meta_BS_variables[c(4, 5, 8, 9)])
-    }
+    aux <- tibble(variable = toString(NA), last_value = as.double(NA), steadystate = as.double(NA))
+    aux[[1,1]] <- NA
     
     all_possible_steady_state_function_inputs <- 
       list(
-        s = last_row_parameter %>% pull(s),
-        delta = last_row_parameter %>% pull(delta),
-        n = last_row_parameter %>% pull(n),
-        B = last_row_parameter %>% pull(B),
-        alpha = last_row
+        delta = last_row_parameter[["delta"]],
+        s = last_row_parameter[["s"]],
+        sK = last_row_parameter[["sK"]],
+        sH = last_row_parameter[["sH"]],
+        n = last_row_parameter[["n"]],
+        B = last_row_parameter[["B"]],
+        r = last_row_parameter[["r"]],
+        g = last_row_parameter[["g"]],
+        alpha = last_row_parameter[["alpha"]],
+        phi = last_row_parameter[["phi"]],
+        YpW = last_row_simulation[["YpW"]],
+        RR = last_row_simulation[["RR"]],
+        w = last_row_simulation[["WR"]],
+        A = last_row_simulation[["TFP"]]
       )
-    for(i in aux_steadystate_variables){
-      aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
-
-      doCall(aux_function_name, all_possible_steady_state_function_inputs)
+    
+    if(solow_variant == "BS") {
+      aux_steadystate_variables <- variable_encoder(meta_BS_variables[c(4, 5, 8, 9)])
+    }else if(solow_variant == "GS"){
+      aux_steadystate_variables <- variable_encoder(meta_GS_variables[c(6, 7, 8, 9)]) # CpW missing.
+    }else if(solow_variant == "ESSOE"){
+      aux_steadystate_variables <- variable_encoder(meta_ESSOE_variables[c(4, 5, 8, 12)]) # CpW missing.
+    }else if(solow_variant == "ESHC"){
+      aux_steadystate_variables <- variable_encoder(meta_ESHC_variables[c(8, 9, 10, 11)]) # CpW missing.
     }
+    
+    for(i in aux_steadystate_variables){
+      i <- aux_steadystate_variables[1]
+      aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
+      SS_val_computed <- doCall(aux_function_name, args = all_possible_steady_state_function_inputs)
+      aux <- aux %>% complete(variable = i, last_value = last_row_simulation[[i]], steadystate = SS_val_computed)
+    }
+    aux <- aux %>% drop_na()
+    aux <- aux %>% mutate_at(vars(steadystate, last_value), round, digits = 2)
+    aux <- aux %>% mutate(is_same = case_when(
+      last_value == steadystate ~ "Equal",
+      TRUE ~ "Different"
+    ))
+    return(aux)
 
 }
-
-
 
 
 # 0.99 testing ---------------------------------
@@ -282,6 +349,20 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 # create_simulation_table(vtstest, 20)
 # variable_encoder(c("Rental Rate"))
 # add_var_computer(tibble(L = 3, Y = 9, YpW = NA), c(T, T, F), c(), "exo", "BS")
+
+# last_row_simulation <- testsimulation[nrow(testsimulation), ]
+# last_row_parameter <- paragrid[nrow(paragrid), ]
+# solow_variant <- "GS"
+# 
+# result <- simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "GS")
+# 
+# result$last_value
+# result$steadystate
+
+
+
 
 ### 1.0 Basic Solow Growth Model #############################
 
