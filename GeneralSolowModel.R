@@ -3,20 +3,36 @@
 # Meta-Information All Variables =================================
 meta_GS_variables <-
     c(
-        "Total Factor Productivity",
         "Capital Stock",
         "Labor Stock",
+        "Output",
+        
+        "Capital Stock per Worker",
+        "Output per Worker",
+        
+        "Capital Stock per Effective Worker",
+        "Output per Effective Worker",
+        
         "Wage Rate",
         "Rental Rate",
-        "Output",
-        "Output per Worker",
-        "Output per Effective Worker",
+        
         "Log of Output",
         "Log of Output per Worker",
         "Log of Output per Effective Worker",
+        
+        "Log of Capital Stock",
+        "Log of Capital Stock per Worker",
+        "Log of Capital Stock per Effective Worker",
+        
         "Growth Rate of Output",
         "Growth Rate of Output per Worker",
-        "Growth Rate of Output per Effective Worker"
+        "Growth Rate of Output per Effective Worker",
+        
+        "Growth Rate of Capital Stock",
+        "Growth Rate of Capital Stock per Worker",
+        "Growth Rate of Capital Stock per Effective Worker",
+        
+        "Total Factor Productivity"
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
