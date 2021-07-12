@@ -118,6 +118,7 @@ variable_encoder <- function(variables){
       aux2 == "National Wealth per Worker"~ "VpW",
       aux2 == "Net Foreign Assets" ~ "F",
       aux2 == "National Savings" ~ "Sn"
+      
     )
     aux[[i]] <- aux3
     
@@ -245,8 +246,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
         sim_data[["WR"]] <- ESSOE_MF_WR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
-                                     parameter_data[["alpha"]],
-                                     parameter_data[["phi"]])
+                                     parameter_data[["alpha"]])
         
       }
       # Rental Rate
@@ -254,8 +254,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
         sim_data[["RR"]] <- ESSOE_MF_RR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
-                                     parameter_data[["alpha"]],
-                                     parameter_data[["phi"]])
+                                     parameter_data[["alpha"]])
       }
     } 
       # WR, RR for ESHC ---------------------------------
@@ -263,19 +262,21 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
         if (i == "WR") {
           source("ESHCModelFunctions.R")
           sim_data[["WR"]] <- ESHC_MF_WR(technology,
-                                          sim_data[["H"]],
-                                          sim_data[["K"]],
-                                          sim_data[["L"]],
-                                          parameter_data[["alpha"]])
+                                         sim_data[["H"]],
+                                         sim_data[["K"]],
+                                         sim_data[["L"]],
+                                         parameter_data[["alpha"]],
+                                         parameter_data[["phi"]])
           
         }
         # Rental Rate
         if (i == "RR") {
           sim_data[["RR"]] <- ESHC_MF_RR(technology,
-                                          sim_data[["H"]],
-                                          sim_data[["K"]],
-                                          sim_data[["L"]],
-                                          parameter_data[["alpha"]])
+                                         sim_data[["H"]],
+                                         sim_data[["K"]],
+                                         sim_data[["L"]],
+                                         parameter_data[["alpha"]],
+                                         parameter_data[["phi"]])
         }
       
       
@@ -291,9 +292,6 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
 
 # 0.8 compute steady state values and check correctness of simulations ---------------------------------
 simulation_correctness_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
-  last_row_simulation <- testsimulation[nrow(testsimulation), ]
-  last_row_parameter <- paragrid[nrow(paragrid), ]
-  solow_variant <- "ESHC"
   # last_row for the last row of the simulation table (sim_table %>% tail(1))
   # solow_variant for the different solow variants
     aux <- tibble(variable = toString(NA), last_value = as.double(NA), steadystate = as.double(NA))
