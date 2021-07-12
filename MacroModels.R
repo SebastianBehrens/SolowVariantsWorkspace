@@ -1,5 +1,5 @@
 # Set Path
-setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 # getwd()
 
 
@@ -30,7 +30,7 @@ library(tidyverse)
 library(modelr)
 library(ggplot2) 
 library(stargazer) 
-
+library(R.utils)
 # Plotting Setup =================================
 
 theme_set(
@@ -177,7 +177,10 @@ $$'),
                  plotOutput("BS_Viz", height = "1000px"),
       # Model Simulation Data ---------------------------------
                  titlePanel("Simulation Data"),
-                 dataTableOutput("BS_Data")
+                 dataTableOutput("BS_Data"),
+      # Correctness Checker ---------------------------------
+      titlePanel("How does the simulation compare to the theoretic steady state values?"),
+      dataTableOutput("BS_Correctness_Table")
                )  
                )
                ),
@@ -274,9 +277,12 @@ $$'),
                    # textOutput("test"),
                    titlePanel("Simulation"),
                    plotOutput("GS_Viz", height = "1000px"),
-                   # Model Simulation Data ---------------------------------
+        # Model Simulation Data ---------------------------------
                    titlePanel("Simulation Data"),
-                   dataTableOutput("GS_Data")
+                   dataTableOutput("GS_Data"),
+        # Correctness Checker ---------------------------------
+                  titlePanel("How does the simulation compare to the theoretic steady state values?"),
+                  dataTableOutput("GS_Correctness_Table")
                  )  
                )
       ),
@@ -373,7 +379,10 @@ L_{t+1}&=(1+n)L_t \\\\
                  plotOutput("ESSOE_Viz", height = "1000px"),
       # Model Simulation Data ---------------------------------
                  titlePanel("Simulation Data"),
-                 dataTableOutput("ESSOE_Data")
+                 dataTableOutput("ESSOE_Data"),
+      # Correctness Checker ---------------------------------
+      titlePanel("How does the simulation compare to the theoretic steady state values?"),
+      dataTableOutput("ESSOE_Correctness_Table")
                )  
                )),
     # Extended Solow Model (Human Capital) ---------------------------------
@@ -444,8 +453,17 @@ L_{t+1}&=(1+n)L_t \\\\
     output$BS_Viz <- renderPlot({
     VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$BS_scales_free_or_fixed)
       })
+    
+    BS_aux_correcttable <- reactive({
+      simulation_correctness_checker(BS_aux_data()[nrow(BS_aux_data()), ],
+                                     BS_parametergrid()[nrow(BS_parametergrid()), ],
+                                               "BS")
+    })
+    output$BS_Correctness_Table <- renderDataTable({
+      BS_aux_correcttable()
+    })
     # General Solow Growth Model =================================
-          # Parameter Grid ---------------------------------
+      # Parameter Grid ---------------------------------
     
     GS_parametergrid <- reactive({
         # Names of Parameters ---------------------------------
@@ -502,6 +520,14 @@ L_{t+1}&=(1+n)L_t \\\\
       VisualiseSimulation(GS_aux_data(), GS_vtv_select_encoded(), input$GS_scales_free_or_fixed)
     })
     
+    GS_aux_correcttable <- reactive({
+      simulation_correctness_checker(GS_aux_data()[nrow(GS_aux_data()), ],
+                                     GS_parametergrid()[nrow(GS_parametergrid()), ],
+                                     "GS")
+    })
+    output$GS_Correctness_Table <- renderDataTable({
+      GS_aux_correcttable()
+    })
     # Extended Solow Growth Model — Small Open Economy =================================
     ESSOE_parametergrid <- reactive({
         # Names of Parameters ---------------------------------
@@ -557,6 +583,15 @@ L_{t+1}&=(1+n)L_t \\\\
     output$ESSOE_Viz <- renderPlot({
     VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)
       })
+    
+    ESSOE_aux_correcttable <- reactive({
+      simulation_correctness_checker(ESSOE_aux_data()[nrow(ESSOE_aux_data()), ],
+                                     ESSOE_parametergrid()[nrow(ESSOE_parametergrid()), ],
+                                     "ESSOE")
+    })
+    output$ESSOE_Correctness_Table <- renderDataTable({
+      ESSOE_aux_correcttable()
+    })
     
     
     
