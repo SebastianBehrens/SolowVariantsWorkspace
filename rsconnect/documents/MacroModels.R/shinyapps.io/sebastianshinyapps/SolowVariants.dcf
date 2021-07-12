@@ -5,9 +5,9 @@ account: sebastianshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4125372
-bundleId: 4595054
+bundleId: 4606520
 url: https://sebastianshinyapps.shinyapps.io/SolowVariants/
-when: 1620927071.06056
+when: 1621244386.56749
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: MacroModelsMath.Rmd
+ignoredFiles: LICENSE|MacroModelsMath.R|MacroModelsMath.Rmd|README.md
