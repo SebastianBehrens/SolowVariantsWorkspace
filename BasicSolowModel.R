@@ -83,11 +83,11 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
 # testivl <- c(1, 1/3,0.1, 0.04, 0.23)
 # testpfcl <- c(NA,NA,NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA)
-# np <- 50
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt
+# np <- 50
 # startvals <- list(K = 1, L = 1)
 # testsimulation <- SimulateBasicSolowModel(testgridalt, np,startvals)
-# # # View(testsimulation)
-# VisualiseSimulation(testsimulation, variable_encoder("Growth Rate of Capital Stock per Effective Worker"), "free")
+# # # # View(testsimulation)
+# VisualiseSimulation(testsimulation, variable_encoder("Capital Stock per Worker"), "free")
 
