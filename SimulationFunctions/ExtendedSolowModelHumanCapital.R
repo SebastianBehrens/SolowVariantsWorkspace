@@ -52,7 +52,7 @@ SimulateExtendedSolowModelHumanCapital <- function(paragrid, np, startvals){
     # np for number of periods;
     
     # Load Basic Model Functions ---------------------------------
-    source("ESHCModelFunctions.R")
+    source("ModelFunctions/ESHCModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESHCvariables), np)

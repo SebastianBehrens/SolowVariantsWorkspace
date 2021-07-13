@@ -41,7 +41,7 @@ SimulateExtendedSolowModelScarceResourceLand <- function(paragrid, np, startvals
     # np for number of periods;
     
     # Load Basic Model Functions ---------------------------------
-    source("ESSRLModelFunctions.R")
+    source("ModelFunctions/ESSRLModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESSRL_variables), np)

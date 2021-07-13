@@ -46,7 +46,7 @@ SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
     # np for number of periods;
     
     # Load Basic Model Functions ---------------------------------
-    source("ESSOEModelFunctions.R")
+    source("ModelFunctions/ESSOEModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESSOE_variables), np)
