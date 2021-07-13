@@ -2,9 +2,7 @@
 
 This repo simulates multiple versions of the Solow Growth Model.
 
-One can select which variables to visualise as well as starting values of variables, parameters as well as changes in the parameters allowing for 'comparative statics' (rather comparative simulation).
-
-Each page shows the model functions (defining how endogeneous variables develop), plots of simuated variables (as selected) and the raw data of the simulation itself. 
+The create shiny app allows one to select which variables to visualise as well as to set starting values of certain stocks and parameters that define the full evolution of all endogeneous variables. Additionally, one can also enter changes in the parameters and see what happens. That is especially useful, as this is commonly asked in questions around the Solow growth models.
 
 # How to run the app:
 1. Set the path at the top of the file MacroModels.R to where the repo lives. 
