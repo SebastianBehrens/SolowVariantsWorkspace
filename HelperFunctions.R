@@ -209,7 +209,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
     # WR, RR for BS ---------------------------------
     if(solowversion == "BS") {
-      source("BSModelFunctions.R")
+      source("ModelFunctions/BSModelFunctions.R")
       if (i == "WR") {
         sim_data[["WR"]] <- BS_MF_WR(technology,
                                      sim_data[["K"]],
@@ -227,7 +227,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     }
     # WR, RR for GS ---------------------------------
     if(solowversion == "GS") {
-      source("GSModelFunctions.R")
+      source("ModelFunctions/GSModelFunctions.R")
       if (i == "WR") {
         sim_data[["WR"]] <- GS_MF_WR(technology,
                                      sim_data[["K"]],
@@ -246,7 +246,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     # WR, RR for ESSOE ---------------------------------
     if(solowversion == "ESSOE") {
       if (i == "WR") {
-        source("ESSOEModelFunctions.R")
+        source("ModelFunctions/ESSOEModelFunctions.R")
         sim_data[["WR"]] <- ESSOE_MF_WR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
@@ -264,7 +264,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
       # WR, RR for ESHC ---------------------------------
       if(solowversion == "ESHC") {
         if (i == "WR") {
-          source("ESHCModelFunctions.R")
+          source("ModelFunctions/ESHCModelFunctions.R")
           sim_data[["WR"]] <- ESHC_MF_WR(technology,
                                          sim_data[["H"]],
                                          sim_data[["K"]],
@@ -282,6 +282,22 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
                                          parameter_data[["alpha"]],
                                          parameter_data[["phi"]])
         }
+      
+      
+      
+      }
+    # WR, RR for ESSRO ---------------------------------
+    if(solowversion == "ESSRO") {
+      if (i == "WR") {
+        source("ModelFunctions/ESSROModelFunctions.R")
+        # The _WR and _RR functions don't exist yet, I will need to compute them by hand first. They are not given in the book.
+        # sim_data[["WR"]] <- ESSRO_MF_WR()
+        
+      }
+      # Rental Rate
+      if (i == "RR") {
+        # sim_data[["RR"]] <- ESSRO_MF_RR()
+      }
       
       
       
