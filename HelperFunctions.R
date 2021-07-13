@@ -117,7 +117,11 @@ variable_encoder <- function(variables){
       aux2 == "National Wealth" ~ "V",
       aux2 == "National Wealth per Worker"~ "VpW",
       aux2 == "Net Foreign Assets" ~ "F",
-      aux2 == "National Savings" ~ "Sn"
+      aux2 == "National Savings" ~ "Sn",
+      
+      aux2 == "Energy Use" ~ "E",
+      aux2 == "Resource Stock" ~ "R"
+      
       
     )
     aux[[i]] <- aux3
