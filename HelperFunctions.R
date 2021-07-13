@@ -343,7 +343,9 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       aux_steadystate_variables <- variable_encoder(meta_ESSOE_variables[c(4, 5, 8, 12)]) # CpW missing.
     }else if(solow_variant == "ESHC"){
       aux_steadystate_variables <- variable_encoder(meta_ESHC_variables[c(8, 9, 10, 11)]) # CpW missing.
-    }
+    }#else if(solow_variant == "ESSRO"){
+      # aux_steadystate_variables <- variable_encoder(meta_ESSRO_variables[c()])
+    # }
     
     for(i in aux_steadystate_variables){
       i <- aux_steadystate_variables[1]
