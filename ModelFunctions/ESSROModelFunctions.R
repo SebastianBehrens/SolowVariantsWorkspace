@@ -5,8 +5,8 @@ ESSRO_MF_LN <- function(n, L){(1+n) * L}
 ESSRO_MF_RN <- function(E, R){R - E}
 ESSRO_MF_E <- function(sE, R){sE * R}
 ESSRO_MF_AN <- function(g, A){(1+g) * A}
-ESSRO_MF_RR <- function(){}
-ESSRO_MF_WR <- function(){}
+# ESSRO_MF_RR <- function(){}
+# ESSRO_MF_WR <- function(){}
 # 
 # GS_SS_KpW <- function(s, n, g, delta, alpha, A){A * (s/(n + g + delta + n*g))^(1/(1-alpha))}
 # GS_SS_YpW <- function(s, n, g, delta, alpha, A){A * (s/(n + g + delta + n*g))^(alpha/(1-alpha))}
