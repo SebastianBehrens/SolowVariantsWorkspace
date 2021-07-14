@@ -364,6 +364,74 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 }
 
 
+# 0.9 compare different simulations
+compare_simulations <- function(simulation_list, sim_identifier_vector, vars_selection){
+  # simulation_list is list(sim1, sim2, sim3, ...)
+  # sim_identifier_vector is c("oil", "land", "oilland")
+  # vars_selection is a vector of the variables to plot.
+  # Important: vars_selection needs to have "period" and "sim-type" in it. those will not be added in this function
+  
+  # Verifying that inputs are 'correct' and can be worked with
+  if(length(simulation_list) != length(sim_identifier_vector)){
+    stop("Number of simulation identifier strings and number of simulations don't match.")
+  }
+  
+  for(i in seq_along(simulation_list)){
+   simulation_list[[i]] <- simulation_list[[i]] %>% mutate(kind = sim_identifier_vector[[i]])
+  }
+  # generating cumuative intersections of all column names. 
+  # only those that exist in all simulations can be plotted in a comparison plot of variables across all simulations.
+  list_of_col_names <- map(simulation_list, names)
+  col_names_shared <- list_of_col_names[[1]]
+  for(i in c(2:length(list_of_col_names))){
+    col_names_shared <- intersect(col_names_shared, list_of_col_names[[i]])
+  }
+  # stacking all simulations with the shared column names
+  sims_stacked <- simulation_list[[1]] %>% select(all_of(col_names_shared)) %>% mutate(sim_type = sim_identifier_vector[[1]])
+  for(i in c(2:length(simulation_list))){
+    i <- 2
+    sims_stacked <- sims_stacked %>% bind_rows(
+      simulation_list[[i]] %>% 
+        select(all_of(col_names_shared)) %>% 
+        mutate(sim_type = sim_identifier_vector[[i]])
+      )
+  }
+  
+  library(tidyverse)
+  
+  theme_set(
+    theme_classic() + 
+      theme(
+        axis.ticks.length = unit(-0.25, "cm"),
+        axis.text.x = element_text(margin = unit(c(0.4,0,0,0), "cm")),
+        axis.text.y = element_text(margin = unit(c(0,0.4,0,0), "cm")),
+        axis.line = element_blank(),
+        panel.grid.major.y = element_line(linetype = 2),
+        plot.title = element_text(hjust = 0.5),
+        text = element_text(family = "serif"),
+        legend.justification = c("right", "top"),
+        # legend.position = c(1, 1),
+        legend.position = c(.98, .98),
+        legend.background = element_rect(fill = NA, color = "black"),
+        panel.border = element_rect(fill = NA, size = 1.25),
+        strip.text = element_text(size = 12)
+        # legend.margin = margin(6, 10, 6, 6)
+        # legend.box.background = element_rect(colour = "black")
+      )
+    
+  )
+  
+  
+  sims_stacked %>% 
+    select(all_of(vars_selection)) %>% 
+    pivot_longer(-c("period", "sim_type"), names_to = "Variable") %>% 
+    mutate(Variable = as.factor(Variable)) %>% 
+    ggplot(aes(period, value, col = sim_type, group = sim_type)) + 
+    geom_line(alpha = 0.75) + 
+    facet_wrap(~Variable, scales = "free", ncol = 2) + 
+    labs(x = "Period", y = "Value")
+}
+
 # 0.99 testing ---------------------------------
 # vtstest <- c("testvar", "ja", "nein")
 # create_simulation_table(vtstest, 20)
@@ -381,28 +449,31 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 # result$last_value
 # result$steadystate
 
-
-
-
+# simulation_list <- list(testsimulation_general, testsimulation_land)
+# sim_identifier_vector <- c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land")
+# vars_selection <- names(sims_stacked)[c(1, 24, 4, 6, 18, 23)]
+# compare_simulations(list(testsimulation_general, testsimulation_land),
+#                     c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land"),
+#                     names(sims_stacked)[c(1, 24, 4, 6, 19, 23)])
 ### 1.0 Basic Solow Growth Model #############################
 
 # Meta-Information All Variables =================================
-meta_BS_variables <-
-  c(
-    "Capital Stock",
-    "Labor Stock",
-    "Wage Rate",
-    "Rental Rate",
-    "Output",
-    "Output per Worker",
-    "Output per Effective Worker",
-    "Log of Output",
-    "Log of Output per Worker",
-    "Log of Output per Effective Worker",
-    "Growth Rate of Output",
-    "Growth Rate of Output per Worker",
-    "Growth Rate of Output per Effective Worker"
-  )
+# meta_BS_variables <-
+#   c(
+#     "Capital Stock",
+#     "Labor Stock",
+#     "Wage Rate",
+#     "Rental Rate",
+#     "Output",
+#     "Output per Worker",
+#     "Output per Effective Worker",
+#     "Log of Output",
+#     "Log of Output per Worker",
+#     "Log of Output per Effective Worker",
+#     "Growth Rate of Output",
+#     "Growth Rate of Output per Worker",
+#     "Growth Rate of Output per Effective Worker"
+#   )
 
 
 
