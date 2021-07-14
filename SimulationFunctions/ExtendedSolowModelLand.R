@@ -1,4 +1,4 @@
-### 3.0 Basic Solow Growth Model #############################
+### 4.0 Extended Solow Growth Model with Scarce Resources — Land #############################
 
 # Meta-Information All Variables =================================
 meta_ESSRL_variables <-
@@ -90,14 +90,14 @@ SimulateExtendedSolowModelScarceResourceLand <- function(paragrid, np, startvals
 }
 
 # Testing
-testnamel <- c("alpha", "beta", "delta", "n", "s", "g", "X")
-testivl <- c(0.33, 0.2, 0.1, 0.02, 0.2, 0.05, 5)
-testpfcl <- c(NA,NA,NA, NA, NA, NA, NA)
-testnvl <- c(NA, NA, NA, NA, NA, NA, NA)
-np <- 50
-testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
-paragrid <- testgridalt
-startvals <- list(L = 1, K = 1, A = 1)
-testsimulation <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
-# View(testsimulation)
-VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRL_variables)[1:4], "free")
+# testnamel <- c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
+# testivl <- c(0.33, 0.2, 0.2, 0.1, 0.02, 0.2, 0.05, 5)
+# testpfcl <- c(NA,NA,NA, NA, NA, NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA)
+# np <- 50
+# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+# paragrid <- testgridalt
+# startvals <- list(L = 1, K = 1, A = 1)
+# testsimulation <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
+# # View(testsimulation)
+# VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRL_variables)[1:4], "free")
