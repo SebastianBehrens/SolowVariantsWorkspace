@@ -27,9 +27,10 @@ Every simulation function does the following steps:
 A visualisation function (`VisualiseSimulation`) can theb be used to visualize any variables in the simulation (`sim_table`).
 
 # Elaboration on the Files
-MacroModels.R — contains shiny whole app
+MacroModels.R — contains the whole shiny app
 
-\<SolowVariant\>ModelFunctions.R — model functions of every Solow Variant (Solow Variants are (for now) the Basic Solow Model (BS), the General Solow Model (GS), the Extended Solow Model for a Small Open Economy (ESSOE).
+\<SolowVariant\>ModelFunctions.R — contain model functions (so-called structural equations) of every Solow Variant as well as formulae for the steady state values of some key endogeneous variables.
+(Solow Variants are (for now) the Basic Solow Model (BS), the General Solow Model (GS), the Extended Solow Model for a Small Open Economy (ESSOE).
 
-\<SolowVariant\>.R` — the simulation function for every Solow Variant (the order of calculations as well as the variables differ (especially for extendended Variants, which is the reason why I created separate simulation functions (for now).
+\<SolowVariant\>.R` — each contain the simulation function for the respective Solow Variant as outlined above with steps 1. to 4..
 
