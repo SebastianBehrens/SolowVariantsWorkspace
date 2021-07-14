@@ -1,6 +1,6 @@
 # General Info
 
-This repo simulates multiple versions of the Solow Growth Model.
+This repo simulates different versions of the Solow Growth Model.
 
 The create shiny app allows one to select which variables to visualise as well as to set starting values of certain stocks and parameters that define the full evolution of all endogeneous variables. Additionally, one can also enter changes in the parameters and see what happens. That is especially useful, as this is commonly asked in questions around the Solow growth models.
 
