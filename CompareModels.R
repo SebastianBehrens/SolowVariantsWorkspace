@@ -1,4 +1,6 @@
 # Simulate Land Version
+source("HelperFunctions.R")
+source("SimulationFunctions/ExtendedSolowModelLand.R")
 testnamel <- c("alpha", "beta", "delta", "n", "s", "g", "X")
 testivl <- c(1/3, 0.2, 0.1, 0.02, 0.2, 0.05, 5)
 testpfcl <- c(NA,NA,NA, NA, NA, NA, NA)
@@ -10,6 +12,7 @@ startvals <- list(L = 1, K = 1, A = 1)
 testsimulation_land <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
 
 # Simulate General Version
+source("SimulationFunctions/GeneralSolowModel.R")
 testnamel <- c("g", "alpha", "delta", "n", "s")
 testivl <- c(0.05, 1/3,0.1, 0.02, 0.2)
 testpfcl <- c(NA,NA,NA, NA, NA)
