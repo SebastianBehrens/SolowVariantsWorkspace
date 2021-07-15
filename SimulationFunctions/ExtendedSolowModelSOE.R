@@ -20,6 +20,7 @@ meta_ESSOE_variables <-
         "National Wealth",
         "National Wealth per Worker",
         "Net Foreign Assets",
+        "Net Foreign Assets per Worker",
         "National Savings",
         
         "Log of Output",
@@ -37,6 +38,7 @@ meta_ESSOE_variables <-
         "Growth Rate of Capital Stock",
         "Growth Rate of Capital Stock per Worker",
         "Growth Rate of Capital Stock per Effective Worker"
+        
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
@@ -117,10 +119,14 @@ SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
 # testivl <- c(1, 1/3,0.1, 0.2, 0.05)
 # testpfcl <- c(NA,NA,NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA)
-# np <- 50
+# np <- 100
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt
 # startvals <- list(L = 1, V = 30)
 # testsimulation <- SimulateExtendedSolowModelSmallOpenEconomy(testgridalt, np,startvals)
+# simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "ESSOE")
+
 # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_ESSOE_variables), "free")
