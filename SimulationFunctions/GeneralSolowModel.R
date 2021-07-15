@@ -6,12 +6,15 @@ meta_GS_variables <-
         "Capital Stock",
         "Labor Stock",
         "Output",
+        "Consumption",
         
         "Capital Stock per Worker",
         "Output per Worker",
+        "Consumption per Worker",
         
         "Capital Stock per Effective Worker",
         "Output per Effective Worker",
+        "Consumption per Effective Worker",
         
         "Wage Rate",
         "Rental Rate",
@@ -89,10 +92,13 @@ SimulateGeneralSolowModel <- function(paragrid, np, startvals){
 # testivl <- c(0.1, 1/3,0.1, 0.04, 0.23)
 # testpfcl <- c(NA,NA,NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA)
-# np <- 50
+# np <- 200
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt
 # startvals <- list(K = 1, L = 1, A = 1)
 # testsimulation <- SimulateGeneralSolowModel(testgridalt, np,startvals)
+# simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "GS")
 # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_GS_variables[1:3]), "free")
