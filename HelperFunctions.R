@@ -120,7 +120,13 @@ variable_encoder <- function(variables){
       aux2 == "National Savings" ~ "Sn",
       
       aux2 == "Energy Use" ~ "E",
-      aux2 == "Resource Stock" ~ "R"
+      aux2 == "Resource Stock" ~ "R",
+      
+      aux2 == "Consumption" ~ "C",
+      aux2 == "Consumption per Worker" ~ "CpW",
+      aux2 == "Consumption per Effective Worker" ~ "CpEW"
+      
+      
       
       
     )
@@ -205,6 +211,12 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     # Variants of Saving
     if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
     if(i == "VpW"){sim_data[["VpW"]] <- sim_data[["V"]] / sim_data[["L"]]}
+    # Variants of Consumption
+    
+    if(i == "C"){sim_data[["C"]] <- sim_data[["Y"]] * (1- parameter_data[["s"]])}
+    if(i == "CpW"){sim_data[["CpW"]] <- sim_data[["C"]] / sim_data[["L"]]}
+    if(i == "CpEW"){sim_data[["CpEW"]] <- sim_data[["C"]] / (technology * sim_data[["L"]])}
+    
     
     # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
     # WR, RR for BS ---------------------------------
@@ -336,9 +348,10 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       )
     
     if(solow_variant == "BS") {
-      aux_steadystate_variables <- variable_encoder(meta_BS_variables[c(4, 5, 8, 9)])
+      # Remark: The selections variable_encoder(meta_GS_variables[c(6, 7, 8, 9)]) can be adjusted to simply c("KpW", "YpW", ...) as done for the BS
+      aux_steadystate_variables <- c("KpW", "YpW", "CpW", "WR", "RR")
     }else if(solow_variant == "GS"){
-      aux_steadystate_variables <- variable_encoder(meta_GS_variables[c(6, 7, 8, 9)]) # CpW missing.
+      aux_steadystate_variables <- c("KpW", "YpW", "CpW", "WR", "RR", "KpEW", "YpEW")
     }else if(solow_variant == "ESSOE"){
       aux_steadystate_variables <- variable_encoder(meta_ESSOE_variables[c(4, 5, 8, 12)]) # CpW missing.
     }else if(solow_variant == "ESHC"){
@@ -348,7 +361,6 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
     # }
     
     for(i in aux_steadystate_variables){
-      i <- aux_steadystate_variables[1]
       aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
       SS_val_computed <- doCall(aux_function_name, args = all_possible_steady_state_function_inputs)
       aux <- aux %>% complete(variable = i, last_value = last_row_simulation[[i]], steadystate = SS_val_computed)
@@ -364,7 +376,7 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 }
 
 
-# 0.9 compare different simulations
+# 0.9 compare different simulations ---------------------------------
 compare_simulations <- function(simulation_list, sim_identifier_vector, vars_selection){
   # simulation_list is list(sim1, sim2, sim3, ...)
   # sim_identifier_vector is c("oil", "land", "oilland")
@@ -444,183 +456,20 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
 # variable_encoder(c("Rental Rate"))
 # add_var_computer(tibble(L = 3, Y = 9, YpW = NA), c(T, T, F), c(), "exo", "BS")
 
-# last_row_simulation <- testsimulation[nrow(testsimulation), ]
-# last_row_parameter <- paragrid[nrow(paragrid), ]
-# solow_variant <- "GS"
-# 
-# result <- simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
-#                                paragrid[nrow(paragrid), ],
-#                                "GS")
-# 
+last_row_simulation <- testsimulation[nrow(testsimulation), ]
+last_row_parameter <- paragrid[nrow(paragrid), ]
+solow_variant <- "BS"
+
+result <- simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+                               paragrid[nrow(paragrid), ],
+                               "BS")
+
 # result$last_value
 # result$steadystate
 
-simulation_list <- list(testsimulation_general, testsimulation_land)
-sim_identifier_vector <- c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land")
-vars_selection <- names(testsimulation_general)[c(4, 6, 18, 23)]
-compare_simulations(list(testsimulation_general, testsimulation_land),
-                    c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land"),
-                    names(testsimulation_general)[c(4, 6, 19, 23)])
-### 1.0 Basic Solow Growth Model #############################
-
-# Meta-Information All Variables =================================
-# meta_BS_variables <-
-#   c(
-#     "Capital Stock",
-#     "Labor Stock",
-#     "Wage Rate",
-#     "Rental Rate",
-#     "Output",
-#     "Output per Worker",
-#     "Output per Effective Worker",
-#     "Log of Output",
-#     "Log of Output per Worker",
-#     "Log of Output per Effective Worker",
-#     "Growth Rate of Output",
-#     "Growth Rate of Output per Worker",
-#     "Growth Rate of Output per Effective Worker"
-#   )
-
-
-
-
-## Testing
-# testnamel <- c("B", "alpha", "delta", "n", "s")
-# testivl <- c(2,1/3,0.1, 0.04, 0.23)
-# testpfcl <- c(NA,NA,NA, NA, NA)
-# testnvl <- c(NA, NA, NA, NA, NA)
-# np <- 5
-# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
-# paragrid <- testgridalt
-# startvals <- list(K = 1, L = 1)
-# testsimulation <- SimulateBasicSolowModel(testgridalt, np, list(K = 1, L = 1))
-# # View(testsimulation)
-# VisualiseSimulation(testsimulation, c("Y", "RR", "WR"), "free")
-# 
-# 
-
-
-# Chapter 9 Model 
-# L_A <- function(sr, L){sr * L}
-# L_Y <- function(sr, L){(1-sr) * L}
-# Y <- function(K, A, LY, alpha){(K^alpha)*(A * LY)^(1-alpha)}
-# A_next <- function(rho, A, phi, lambda, LA){rho*(A^phi)*LA^lambda + A}
-# c_fun <- function(s, Y, L){((1-s) * Y)/L}
-
-# 
-# data <- tibble(
-#   K = K0,
-#   A = A0,
-#   L = L0,
-#   LA = L_A(sR, L0),
-#   LY = L_Y(sR, L0),
-#   Y = Y(K0, A0, (1-sR)*L0, alpha),
-#   c = c_fun(s, Y, L),
-#   k = K/L,
-#   y = Y/L,
-#   y_tilde = y/A,
-#   k_tilde = k/A,
-#   c_tilde = c/A,
-#   growth_k = NA,
-#   growth_y = NA,
-#   growth_c = NA,
-#   period = 1
-# )
-# 
-# 
-# # data
-# 
-# periods <- 200
-# for (i in 2:periods){
-#   # i <- 2
-#   # i <- i + 1
-
-
-
-
-#########################################################################################
-#####################             Other Stuff                       #####################
-#########################################################################################
-
-#   # calculating variables to be added ---------------------------------
-#   Kinloop <- data$K[[i-1]]
-#   Linloop <- data$L[[i-1]]
-#   Ainloop <- data$A[[i-1]]
-#   Yinloop <- data$Y[[i-1]]
-#   LA_inloop <- data$LA[[i-1]]
-#   LY_inloop <- data$LY[[i-1]]
-#   
-#   
-#   
-#   K_next_c <- K_next(s, Yinloop, delta, Kinloop)
-#   # if(i <= 12){
-#   #   K_next_c <- K0
-#   # }
-#   # 
-#   A_next_c <- A_next(rho, Ainloop, phi, lambda, LA_inloop)
-#   Y_next_c <- Y(K_next_c, A_next_c, LY_inloop, alpha)
-#   L_next_c <- L_next(n_path[[i-1]], Linloop)
-#   LA_next_c <- L_A(sR, L_next_c)
-#   LY_next_c <- L_Y(sR, L_next_c)
-#   c_next_c <- c_fun(s, Y_next_c, L_next_c)
-#   k_next_c <- K_next_c/L_next_c
-#   y_next_c <- Y_next_c/L_next_c
-#   y_tilde_next_c <- y_next_c/A_next_c
-#   k_tilde_next_c <- k_next_c/A_next_c
-#   c_tilde_next_c <- c_next_c/A_next_c
-#   
-#   
-#   data <- data %>%
-#     complete(
-#       K = K_next_c,
-#       A = A_next_c,
-#       L = L_next_c,
-#       LA = LA_next_c,
-#       LY = LY_next_c,
-#       Y = Y_next_c,
-#       c = c_next_c,
-#       k = k_next_c,
-#       y = y_next_c,
-#       k_tilde = k_tilde_next_c,
-#       c_tilde = c_tilde_next_c, 
-#       y_tilde = y_tilde_next_c,
-#       growth_k = log(k_next_c) - log(data$k[[i-1]]),
-#       growth_y = log(y_next_c) - log(data$y[[i-1]]),
-#       growth_c = log(c_next_c) - log(data$c[[i-1]]),
-#       period = i
-#     )
-#   data <- data %>% arrange(period) %>% relocate(period)
-#   
-# }
-# 
-# growth_rate_computer <- function(series){log(series) - log(lag(series))}
-# 
-# data <- data %>% mutate(sy_tilde = s* y_tilde,
-#                         gt = growth_rate_computer(A),
-#                         kt_lned = log(k),
-#                         y_lned = log(y),
-#                         c_lned= log(c),
-#                         gy = growth_rate_computer(data$y))
-# 
-# 
-# 
-# 
-# data <- data %>% select(-c("K", "LA", "LY","Y", "k", "c", "y", "growth_c", "growth_y", "growth_k"))
-# # data
-# data_long <- data %>% pivot_longer(-period) %>% mutate(name = as.factor(name))
-# # levels(data_long$name)
-# levels(data_long$name) <- c("Total factor productivity",
-#                             "Logarithm of consumption per worker",
-#                             "Consumption per effective worker",
-#                             "Growth of TFP",
-#                             "Growth of output per worker",
-#                             "Capital per effective worker",
-#                             "Logarithm of capital per worker",
-#                             "Workforce",
-#                             "Investment rate times output per effective worker",
-#                             "Logarithm of output per worker", 
-#                             "Output per effective worker")
-# 
-# # data_long %>% mutate(period = period - 1) %>% tail()
-# 
-# data_long %>% mutate(period = period - 1) %>% drop_na() %>% ggplot(aes(period, value, col = name)) + geom_line() + facet_wrap(~name, scales = "free", ncol = 3)+ labs(x = "Period", y = "Value") + theme(legend.position = "none")
+# simulation_list <- list(testsimulation_general, testsimulation_land)
+# sim_identifier_vector <- c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land")
+# vars_selection <- names(testsimulation_general)[c(4, 6, 18, 23)]
+# compare_simulations(list(testsimulation_general, testsimulation_land),
+#                     c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land"),
+#                     names(testsimulation_general)[c(4, 6, 19, 23)])
