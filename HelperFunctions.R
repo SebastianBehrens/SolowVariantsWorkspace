@@ -369,7 +369,6 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
   # simulation_list is list(sim1, sim2, sim3, ...)
   # sim_identifier_vector is c("oil", "land", "oilland")
   # vars_selection is a vector of the variables to plot.
-  # Important: vars_selection needs to have "period" and "sim-type" in it. those will not be added in this function
   
   # Verifying that inputs are 'correct' and can be worked with
   if(length(simulation_list) != length(sim_identifier_vector)){
@@ -377,7 +376,14 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
   }
   
   for(i in seq_along(simulation_list)){
-   simulation_list[[i]] <- simulation_list[[i]] %>% mutate(kind = sim_identifier_vector[[i]])
+   simulation_list[[i]] <- simulation_list[[i]] %>% mutate(sim_type = sim_identifier_vector[[i]])
+  }
+  
+  if("period" %in% vars_selection){
+    stop("You supplied the 'period' column into your variable selection. Remove it from the selection, please.")
+  }
+  if("sim_type" %in% vars_selection){
+    stop("You supplied the 'sim_type' column into your variable selection. Remove it from the selection, please.")
   }
   # generating cumuative intersections of all column names. 
   # only those that exist in all simulations can be plotted in a comparison plot of variables across all simulations.
@@ -389,7 +395,7 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
   # stacking all simulations with the shared column names
   sims_stacked <- simulation_list[[1]] %>% select(all_of(col_names_shared)) %>% mutate(sim_type = sim_identifier_vector[[1]])
   for(i in c(2:length(simulation_list))){
-    i <- 2
+    # i <- 2
     sims_stacked <- sims_stacked %>% bind_rows(
       simulation_list[[i]] %>% 
         select(all_of(col_names_shared)) %>% 
@@ -423,13 +429,13 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
   
   
   sims_stacked %>% 
-    select(all_of(vars_selection)) %>% 
+    select(all_of(c("period", "sim_type", vars_selection))) %>% 
     pivot_longer(-c("period", "sim_type"), names_to = "Variable") %>% 
     mutate(Variable = as.factor(Variable)) %>% 
     ggplot(aes(period, value, col = sim_type, group = sim_type)) + 
     geom_line(alpha = 0.75) + 
     facet_wrap(~Variable, scales = "free", ncol = 2) + 
-    labs(x = "Period", y = "Value")
+    labs(x = "Period", y = "Value", col = "Solow Variant")
 }
 
 # 0.99 testing ---------------------------------
@@ -449,12 +455,12 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
 # result$last_value
 # result$steadystate
 
-# simulation_list <- list(testsimulation_general, testsimulation_land)
-# sim_identifier_vector <- c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land")
-# vars_selection <- names(sims_stacked)[c(1, 24, 4, 6, 18, 23)]
-# compare_simulations(list(testsimulation_general, testsimulation_land),
-#                     c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land"),
-#                     names(sims_stacked)[c(1, 24, 4, 6, 19, 23)])
+simulation_list <- list(testsimulation_general, testsimulation_land)
+sim_identifier_vector <- c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land")
+vars_selection <- names(testsimulation_general)[c(4, 6, 18, 23)]
+compare_simulations(list(testsimulation_general, testsimulation_land),
+                    c("General Solow Model", "Extended Solow Model with Scarce Resources --- Land"),
+                    names(testsimulation_general)[c(4, 6, 19, 23)])
 ### 1.0 Basic Solow Growth Model #############################
 
 # Meta-Information All Variables =================================
