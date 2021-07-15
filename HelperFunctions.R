@@ -117,6 +117,7 @@ variable_encoder <- function(variables){
       aux2 == "National Wealth" ~ "V",
       aux2 == "National Wealth per Worker"~ "VpW",
       aux2 == "Net Foreign Assets" ~ "F",
+      aux2 == "Net Foreign Assets per Worker" ~ "FpW",
       aux2 == "National Savings" ~ "Sn",
       
       aux2 == "Energy Use" ~ "E",
@@ -210,7 +211,9 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "gHpEW"){sim_data[["gHpEW"]] <- log(sim_data[["HpEW"]]) - log(lag(sim_data[["HpEW"]]))}
     # Variants of Saving
     if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
+    # Variants of Wealth and Foreign Assets in SOE Version
     if(i == "VpW"){sim_data[["VpW"]] <- sim_data[["V"]] / sim_data[["L"]]}
+    if(i == "FpW"){sim_data[["FpW"]] <- sim_data[["F"]] / sim_data[["L"]]}
     # Variants of Consumption
     
     if(i == "C"){sim_data[["C"]] <- sim_data[["Y"]] * (1- parameter_data[["s"]])}
@@ -348,12 +351,12 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       )
     
     if(solow_variant == "BS") {
-      # Remark: The selections variable_encoder(meta_GS_variables[c(6, 7, 8, 9)]) can be adjusted to simply c("KpW", "YpW", ...) as done for the BS
+      # Remark: The selections variable_encoder(meta_GS_variables[c(6, 7, 8, 9)]) can be generally adjusted to simply c("KpW", "YpW", ...) as done for some
       aux_steadystate_variables <- c("KpW", "YpW", "CpW", "WR", "RR")
     }else if(solow_variant == "GS"){
       aux_steadystate_variables <- c("KpW", "YpW", "CpW", "WR", "RR", "KpEW", "YpEW")
     }else if(solow_variant == "ESSOE"){
-      aux_steadystate_variables <- variable_encoder(meta_ESSOE_variables[c(4, 5, 8, 12)]) # CpW missing.
+      aux_steadystate_variables <- c("KpW", "YpW", "WR", "VpW", "FpW")
     }else if(solow_variant == "ESHC"){
       aux_steadystate_variables <- c("KpEW", "HpEW", "YpEW", "YpW", "CpW") # WR and RR missing
     }#else if(solow_variant == "ESSRO"){
