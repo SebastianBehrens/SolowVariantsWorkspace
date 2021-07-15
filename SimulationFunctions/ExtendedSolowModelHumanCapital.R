@@ -55,7 +55,7 @@ SimulateExtendedSolowModelHumanCapital <- function(paragrid, np, startvals){
     source("ModelFunctions/ESHCModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
-    sim_table <- create_simulation_table(variable_encoder(meta_ESHCvariables), np)
+    sim_table <- create_simulation_table(variable_encoder(meta_ESHC_variables), np)
     # Fill Start Values for Period 0 ---------------------------------
     aux_index <- which(sim_table$period == 0)
     sim_table[[aux_index, "TFP"]] <- startvals$A
@@ -115,11 +115,14 @@ SimulateExtendedSolowModelHumanCapital <- function(paragrid, np, startvals){
 # testivl <- c(1/3, 1/3, 0.1, 0.1, 0.2, 0.05, 0.1)
 # testpfcl <- c(NA,NA,NA, NA, NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA, NA, NA)
-# np <- 100
+# np <- 200
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt
 # startvals <- list(L = 1, H = 1, K = 1, A = 1)
 # testsimulation <- SimulateExtendedSolowModelHumanCapital(testgridalt, np,startvals)
+# simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "ESHC")
 # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_ESHC_variables[6:10]), "fixed")
 # simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
