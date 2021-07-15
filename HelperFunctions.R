@@ -100,6 +100,8 @@ variable_encoder <- function(variables){
       
       aux2 == "Wage Rate" ~ "WR", 
       aux2 == "Rental Rate" ~ "RR",
+      aux2 == "Capital Rental Rate" ~ "RR",
+      aux2 == "Land Rental Rate" ~ "LR",
       
       aux2 == "Output" ~ "Y",
       aux2 == "Log of Output" ~ "logY",
@@ -125,8 +127,9 @@ variable_encoder <- function(variables){
       
       aux2 == "Consumption" ~ "C",
       aux2 == "Consumption per Worker" ~ "CpW",
-      aux2 == "Consumption per Effective Worker" ~ "CpEW"
+      aux2 == "Consumption per Effective Worker" ~ "CpEW",
       
+      aux2 == "Capital to Output Ratio" ~ "CtO"
       
       
       
@@ -220,6 +223,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "CpW"){sim_data[["CpW"]] <- sim_data[["C"]] / sim_data[["L"]]}
     if(i == "CpEW"){sim_data[["CpEW"]] <- sim_data[["C"]] / (technology * sim_data[["L"]])}
     
+    if(i == "CtO"){sim_data[["CtO"]] <- sim_data[["KpW"]]/sim_data[["YpW"]]}
+    
     
     # Variables uniquely calculated to different Solow Model Versions (e.g. WR, RR)
     # WR, RR for BS ---------------------------------
@@ -301,6 +306,40 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
       
       
       }
+    # WR, RR for ESSRL ---------------------------------
+    if(solowversion == "ESSRL") {
+      if (i == "WR") {
+        source("ModelFunctions/ESSRLModelFunctions.R")
+        sim_data[["WR"]] <- ESSRL_MF_WR(technology,
+                                        sim_data[["K"]],
+                                        sim_data[["L"]],
+                                        parameter_data[["X"]],
+                                        parameter_data[["alpha"]],
+                                        parameter_data[["beta"]],
+                                        parameter_data[["kappa"]])
+      }
+      # Rental Rate
+      if (i == "RR") {
+        sim_data[["RR"]] <- ESSRL_MF_RR(technology,
+                                        sim_data[["K"]],
+                                        sim_data[["L"]],
+                                        parameter_data[["X"]],
+                                        parameter_data[["alpha"]],
+                                        parameter_data[["kappa"]])
+      }
+      # Land Rental Rate
+      if (i == "LR") {
+        sim_data[["LR"]] <- ESSRL_MF_LR(technology,
+                                        sim_data[["K"]],
+                                        sim_data[["L"]],
+                                        parameter_data[["X"]],
+                                        parameter_data[["alpha"]],
+                                        parameter_data[["kappa"]])
+      }
+      
+      
+      
+    }
     # WR, RR for ESSRO ---------------------------------
     if(solowversion == "ESSRO") {
       if (i == "WR") {
@@ -343,6 +382,8 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
         r = last_row_parameter[["r"]],
         g = last_row_parameter[["g"]],
         alpha = last_row_parameter[["alpha"]],
+        beta = last_row_parameter[["beta"]],
+        kappa = last_row_parameter[["kappa"]],
         phi = last_row_parameter[["phi"]],
         YpW = last_row_simulation[["YpW"]],
         RR = last_row_simulation[["RR"]],
@@ -359,6 +400,8 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       aux_steadystate_variables <- c("KpW", "YpW", "WR", "VpW", "FpW")
     }else if(solow_variant == "ESHC"){
       aux_steadystate_variables <- c("KpEW", "HpEW", "YpEW", "YpW", "CpW") # WR and RR missing
+    }else if(solow_variant == "ESSRL"){
+      aux_steadystate_variables <- c("CtO") # WR and RR missing
     }#else if(solow_variant == "ESSRO"){
       # aux_steadystate_variables <- variable_encoder(meta_ESSRO_variables[c()])
     # }

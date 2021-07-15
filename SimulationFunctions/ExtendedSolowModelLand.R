@@ -15,7 +15,8 @@ meta_ESSRL_variables <-
         "Output per Effective Worker",
         
         "Wage Rate",
-        "Rental Rate",
+        "Capital Rental Rate",
+        "Land Rental Rate",
         
         "Log of Output",
         "Log of Output per Worker",
@@ -31,7 +32,8 @@ meta_ESSRL_variables <-
         
         "Growth Rate of Capital Stock",
         "Growth Rate of Capital Stock per Worker",
-        "Growth Rate of Capital Stock per Effective Worker"
+        "Growth Rate of Capital Stock per Effective Worker",
+        "Capital to Output Ratio"
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
@@ -42,6 +44,7 @@ SimulateExtendedSolowModelScarceResourceLand <- function(paragrid, np, startvals
     
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/ESSRLModelFunctions.R")
+    source("HelperFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESSRL_variables), np)
@@ -90,14 +93,17 @@ SimulateExtendedSolowModelScarceResourceLand <- function(paragrid, np, startvals
 }
 
 # Testing
-# testnamel <- c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
-# testivl <- c(0.33, 0.2, 0.2, 0.1, 0.02, 0.2, 0.05, 5)
-# testpfcl <- c(NA,NA,NA, NA, NA, NA, NA, NA)
-# testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA)
-# np <- 50
-# testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
-# paragrid <- testgridalt
-# startvals <- list(L = 1, K = 1, A = 1)
-# testsimulation <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
+testnamel <- c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
+testivl <- c(0.33, 0.2, 0.2, 0.1, 0.02, 0.2, 0.05, 5)
+testpfcl <- c(NA,NA,NA, NA, NA, NA, NA, NA)
+testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA)
+np <- 200
+testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
+paragrid <- testgridalt
+startvals <- list(L = 1, K = 1, A = 1)
+testsimulation <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
+simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+                                                              paragrid[nrow(paragrid), ],
+                                                              "ESSRL")
 # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRL_variables)[1:4], "free")

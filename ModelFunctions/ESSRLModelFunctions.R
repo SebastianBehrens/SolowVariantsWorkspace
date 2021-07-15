@@ -4,3 +4,12 @@ ESSRL_MF_Y <- function(A, K, L, X, alpha, beta){K^alpha * (A * L)^(beta) * X^(1-
 ESSRL_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
 ESSRL_MF_LN <- function(n, L){(1+n) * L}
 ESSRL_MF_AN <- function(g, A){(1+g) * A}
+
+ESSRL_MF_WR <- function(A, K, L, X, alpha, beta, kappa){beta * (K/(A*L))^alpha * (X/(A*L))^kappa * A}
+ESSRL_MF_RR <- function(A, K, L, X, alpha, kappa){alpha * (K/(A*L))^(alpha - 1) * (X/(A*L))^kappa}
+ESSRL_MF_LR <- function(A, K, L, X, alpha, kappa){kappa * (K/(A*L))^(alpha) * (X/(A*L))^(kappa - 1)}
+
+# from book (but also on slides)
+# ESSRL_SS_YpW <- function(zSS, ASS, X, L, alpha, beta, kappa){zSS^(alpha/(beta + kappa)) * ASS^(beta/(beta + kappa)) * (X/L)^(kappa/(beta + kappa))}
+# Capital to Output Ratio
+ESSRL_SS_CtO <- function(s, n, g, delta, beta, kappa){s/(((1 + n) * (1 + g))^(beta/(beta + kappa)) - (1- delta))}
