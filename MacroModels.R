@@ -59,9 +59,9 @@ theme_set(
 # Reading Files =================================
 
 source("HelperFunctions.R")
-source("BasicSolowModel.R")
-source("GeneralSolowModel.R")
-source("ExtendedSolowModelSOE.R")
+source("SimulationFunctions/BasicSolowModel.R")
+source("SimulationFunctions/GeneralSolowModel.R")
+source("SimulationFunctions/ExtendedSolowModelSOE.R")
 
 # Meta Information =================================
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
@@ -122,7 +122,7 @@ shinyApp(
                                          numericInput("BS_pc_tfp_newval", "New Value of TFP", 20)),
                                        hr(),
         # Alpha ---------------------------------
-                                       numericInput("BS_initparam_alpha", "Alpha", 0.3, step = 0.05),
+                                       numericInput("BS_initparam_alpha", "Alpha", 1/3, step = 0.05),
                                        checkboxInput("BS_changeinparam_alpha", "Change in Alpha?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_alpha == true", 
@@ -138,7 +138,7 @@ shinyApp(
                                          numericInput("BS_pc_delta_newval", "New Value of Delta", 0.5, step = 0.05)),
                                        hr(),
         # Savings Rate ---------------------------------
-                                       numericInput("BS_initparam_savings", "Savings Rate", 0.1, step = 0.05),
+                                       numericInput("BS_initparam_savings", "Savings Rate", 0.22, step = 0.05),
                                        checkboxInput("BS_changeinparam_savings", "Change in Savings Rate?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_savings == true", 
@@ -146,7 +146,7 @@ shinyApp(
                                          numericInput("BS_pc_savings_newval", "New Value of Savings Rate", 0.5, step = 0.05)),
                                        hr(),
         # Population Growth ---------------------------------
-                                       numericInput("BS_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
+                                       numericInput("BS_initparam_popgrowth", "Population Growth", 0.005, step = 0.005),
                                        checkboxInput("BS_changeinparam_popgrowth", "Change in Population Growth?"),
                                        conditionalPanel(
                                          condition = "input.BS_changeinparam_popgrowth == true", 
