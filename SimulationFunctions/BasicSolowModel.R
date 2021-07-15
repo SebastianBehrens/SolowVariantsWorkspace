@@ -3,13 +3,17 @@
 # Meta-Information All Variables =================================
 meta_BS_variables <-
     c(
+        "Output",
+        "Consumption",
         "Capital Stock",
         "Labor Stock",
-        "Output",
-        "Capital Stock per Worker",
         "Output per Worker",
+        "Consumption per Worker",
+        "Capital Stock per Worker",
         "Output per Effective Worker",
+        "Consumption per Effective Worker",
         "Capital Stock per Effective Worker",
+        
         "Wage Rate",
         "Rental Rate",
         
@@ -80,14 +84,20 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
 
 # # Testing
 # testnamel <- c("B", "alpha", "delta", "n", "s")
-# testivl <- c(1, 1/3,0.1, 0.04, 0.23)
+# testivl <- c(10, 1/3,0.1, 0.005, 0.22)
 # testpfcl <- c(NA,NA,NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA)
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt
-# np <- 50
+# np <- 200
 # startvals <- list(K = 1, L = 1)
 # testsimulation <- SimulateBasicSolowModel(testgridalt, np,startvals)
+# 
+# 
+# simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "BS")
+
 # # # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder("Capital Stock per Worker"), "free")
 
