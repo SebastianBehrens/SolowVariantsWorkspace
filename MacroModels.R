@@ -67,7 +67,7 @@ source("SimulationFunctions/ExtendedSolowModelSOE.R")
 meta_BS_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth") # ac for available changes (referring to changes in parameters)
 meta_GS_parameters <- c("g", "alpha", "delta", "savings rate", "population growth")
 meta_ESSOE_parameters <- c("TFP", "alpha", "delta", "savings rate", "population growth")
-
+meta_ESHK_parameters <- c("alpha", "phi", "n", "g", "sK", "sH", "delta")
 ### Shiny APP #############################
 shinyApp(
   # FrontEnd =================================
@@ -357,9 +357,9 @@ $$'),
                                        hr()
                                 )
                               )),
-    # Main Panel  ---------------------------------
+      # Main Panel  ---------------------------------
                mainPanel(
-      # Model Equations  ---------------------------------
+        # Model Equations  ---------------------------------
                  titlePanel("Model Equations"),
                  withMathJax(),
                  p('
@@ -374,14 +374,14 @@ S_t &= sY_t \\\\
 S_t &= V_{t+1} - V_t\\\\
 L_{t+1}&=(1+n)L_t \\\\
 \\end{aligned}$$'),
-      # Visualisation  ---------------------------------
+        # Visualisation  ---------------------------------
                  # textOutput("test"),
                  titlePanel("Simulation"),
                  plotOutput("ESSOE_Viz", height = "1000px"),
-      # Model Simulation Data ---------------------------------
+        # Model Simulation Data ---------------------------------
                  titlePanel("Simulation Data"),
                  dataTableOutput("ESSOE_Data"),
-      # Correctness Checker ---------------------------------
+        # Correctness Checker ---------------------------------
       titlePanel("How does the simulation compare to the theoretic steady state values?"),
       dataTableOutput("ESSOE_Correctness_Table"),
       "Remark!\n",
@@ -391,7 +391,9 @@ L_{t+1}&=(1+n)L_t \\\\
                )  
                )),
     # Extended Solow Model (Human Capital) ---------------------------------
-      tabPanel("Extended Solow Model (Human Capital)", fluid = TRUE),
+      tabPanel("Extended Solow Model (Human Capital)", fluid = TRUE,
+               # paste here
+               ),
     # Extended Solow Model (Scarce Resources) ---------------------------------
       tabPanel("Extended Solow Model (Scarce Resources)", fluid = TRUE),
     # Extended Solow Model (Productive Externalities) ---------------------------------
