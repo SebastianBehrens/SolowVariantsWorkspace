@@ -213,7 +213,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     if(i == "gHpW"){sim_data[["gHpW"]] <- log(sim_data[["HpW"]]) - log(lag(sim_data[["HpW"]]))}
     if(i == "gHpEW"){sim_data[["gHpEW"]] <- log(sim_data[["HpEW"]]) - log(lag(sim_data[["HpEW"]]))}
     # Variants of Saving
-    if(i == "Sn"){sim_data[["Sn"]] <- paragrid[["s"]] * sim_data[["Yn"]]}
+    if(i == "Sn"){sim_data[["Sn"]] <- parameter_data[["s"]] * sim_data[["Yn"]]}
     # Variants of Wealth and Foreign Assets in SOE Version
     if(i == "VpW"){sim_data[["VpW"]] <- sim_data[["V"]] / sim_data[["L"]]}
     if(i == "FpW"){sim_data[["FpW"]] <- sim_data[["F"]] / sim_data[["L"]]}
@@ -502,13 +502,13 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
 # variable_encoder(c("Rental Rate"))
 # add_var_computer(tibble(L = 3, Y = 9, YpW = NA), c(T, T, F), c(), "exo", "BS")
 
-last_row_simulation <- testsimulation[nrow(testsimulation), ]
-last_row_parameter <- paragrid[nrow(paragrid), ]
-solow_variant <- "BS"
-
-result <- simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
-                               paragrid[nrow(paragrid), ],
-                               "BS")
+# last_row_simulation <- testsimulation[nrow(testsimulation), ]
+# last_row_parameter <- paragrid[nrow(paragrid), ]
+# solow_variant <- "BS"
+# 
+# result <- simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
+#                                paragrid[nrow(paragrid), ],
+#                                "BS")
 
 # result$last_value
 # result$steadystate
