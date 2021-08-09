@@ -434,7 +434,7 @@ L_{t+1}&=(1+n)L_t \\\\
                             conditionalPanel(
                                 condition = "input.ESHC_changeinparam_phi == true", 
                                 numericInput("ESHC_pc_phi_period", "Period of Change in Phi", 10, min = 0, max = 50),
-                                numericInput("ESHC_pc_phi_newval", "New Value of Phi", 0.5, step = 0.05)),
+                                numericInput("ESHC_pc_phi_newval", "New Value of Phi", 0.4, step = 0.05)),
                             hr(),
         # Population Growth ---------------------------------
                             numericInput("ESHC_initparam_popgrowth", "Population Growth", 0.1, step = 0.05),
@@ -453,7 +453,7 @@ L_{t+1}&=(1+n)L_t \\\\
                                 numericInput("ESHC_pc_tfpgrowth_newval", "New Value of TFP Growth", 0.2, step = 0.05)),
                             hr(),
         # Delta ---------------------------------
-                            numericInput("ESHC_initparam_delta", "Delta", 0.02, step = 0.01),
+                            numericInput("ESHC_initparam_delta", "Delta", 0.1, step = 0.01),
                             checkboxInput("ESHC_changeinparam_delta", "Change in Delta?"),
                             conditionalPanel(
                                 condition = "input.ESHC_changeinparam_delta == true", 
@@ -475,7 +475,8 @@ L_{t+1}&=(1+n)L_t \\\\
                                 condition = "input.ESHC_changeinparam_sK == true", 
                                 numericInput("ESHC_pc_sK_period", "Period of Change in Savings Rate to Physical Capital", 10, min = 0, max = 50),
                                 numericInput("ESHC_pc_sK_newval", "New Value of Savings Rate to Physical Capital", 0.5, step = 0.05)),
-                            hr()
+                            hr(),
+        "The two savings rates should sum up to less than one. When saving everything, one has quite little in the now."
                      )
                  )),
     # Main Panel  ---------------------------------
@@ -759,6 +760,29 @@ A_{t+1}&=(1+g)A_t \\\\
           )
         })
       # Outputs ---------------------------------
-    
+        ESHC_vtv_select_encoded <- reactive({
+    variable_encoder(input$ESHC_vtv)
+})
+
+ESHC_aux_data <- reactive({
+    SimulateExtendedSolowModelHumanCapital(ESHC_parametergrid(), input$ESHC_nperiods_selected,
+                            list(K = input$ESHC_initval_K, L = input$ESHC_initval_K, A = input$ESHC_initval_A, H = input$ESHC_initval_H))
+})
+
+output$ESHC_Data <- renderDataTable({ESHC_aux_data() %>% mutate_all(round, digits = 3)})
+
+output$ESHC_Viz <- renderPlot({
+    VisualiseSimulation(ESHC_aux_data(), ESHC_vtv_select_encoded(), input$ESHC_scales_free_or_fixed)
+})
+
+ESHC_aux_correcttable <- reactive({
+    simulation_correctness_checker(ESHC_aux_data()[nrow(ESHC_aux_data()), ],
+                                   ESHC_parametergrid()[nrow(ESHC_parametergrid()), ],
+                                   "ESHC")
+})
+output$ESHC_Correctness_Table <- renderDataTable({
+    ESHC_aux_correcttable()
+})
+
   }
 )
