@@ -5,9 +5,9 @@ account: sebastianshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4125372
-bundleId: 4606520
+bundleId: 4905358
 url: https://sebastianshinyapps.shinyapps.io/SolowVariants/
-when: 1621244386.56749
+when: 1628544212.07737
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: LICENSE|MacroModelsMath.R|MacroModelsMath.Rmd|README.md
+ignoredFiles: AutomatingShinyAppPageCreation.R|CompareModels.R|ESHC_SolowApp_Edits.R|GoldenSavingsRule.R|LICENSE|MacroModelsMath.Rmd|README.md|ToDoList.md|AutomatingPageCreation/.DS_Store|AutomatingPageCreation/ESSRO/TemplatePartD.R|AutomatingPageCreation/Template/TemplatePartD.R
