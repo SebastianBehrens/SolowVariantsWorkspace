@@ -38,17 +38,17 @@ meta_ESSROL_variables <-
     )
 
 # 1.1 Simulate the Basic Solow Model =================================
-SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals){
+SimulateExtendedSolowModelScarceResourceOilAndLand <- function(paragrid, np, startvals){
     # Inputs ---------------------------------
     # paragrid for parameter grid;
     # np for number of periods;
     # vts for vars to simulat
     
     # Load Basic Model Functions ---------------------------------
-    source("ModelFunctions/ESSROModelFunctions.R")
+    source("ModelFunctions/ESSROLModelFunctions.R")
     
     # Initialize Simulation Table ---------------------------------
-    sim_table <- create_simulation_table(variable_encoder(meta_ESSRO_variables), np)
+    sim_table <- create_simulation_table(variable_encoder(meta_ESSROL_variables), np)
     # Fill Start Values for Period 0 ---------------------------------
     aux_index <- which(sim_table$period == 0)
     sim_table[[aux_index, "TFP"]] <- startvals$A
@@ -109,5 +109,5 @@ testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 paragrid <- testgridalt
 startvals <- list(A = 1, K = 1, L = 1, R = 1)
 testsimulation <- SimulateExtendedSolowModelScarceResourceLand(testgridalt, np,startvals)
-# View(testsimulation)
-VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRL_variables)[1:4], "free")
+# # View(testsimulation)
+# VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRL_variables)[1:4], "free")
