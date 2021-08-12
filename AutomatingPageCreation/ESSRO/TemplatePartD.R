@@ -1,3 +1,7 @@
+ESSRO_vtv_select_encoded <- reactive({
+  variable_encoder(input$ESSRO_vtv)
+})
+
 ESSRO_aux_data <- reactive({
     SimulateExtendedSolowModelScarceResourceOil(ESSRO_parametergrid(), input$ESSRO_nperiods_selected,
                                            list(K = input$ESSRO_initval_K, L = input$ESSRO_initval_K, A = input$ESSRO_initval_A, H = input$ESSRO_initval_H))
