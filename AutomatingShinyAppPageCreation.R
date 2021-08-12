@@ -164,6 +164,14 @@ augmentShinyApp(c("alpha", "beta", "n", "g", "sE", "s", "delta"),
                 "ESSRO", 
                 "SimulateExtendedSolowModelScarceResourceOil", 
                 c("A", "K", "L", "R"))
+augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X"), 
+                "ESSRL", 
+                "SimulateExtendedSolowModelScarceResourceLand", 
+                c("A", "K", "L"))
+augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"), 
+                "ESSROL", 
+                "SimulateExtendedSolowModelScarceResourceOilAndLand", 
+                c("A", "K", "L"))
 
 # End ---------------------------------
 # Return to overheading directory
