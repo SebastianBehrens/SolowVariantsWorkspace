@@ -55,7 +55,7 @@ SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals)
     sim_table[[aux_index, "L"]] <- startvals$L
     sim_table[[aux_index, "K"]] <- startvals$K
     sim_table[[aux_index, "R"]] <- startvals$R
-    sim_table[[aux_index, "E"]] <- ESSRO_MF_EN(paragrid[[aux_index, "sE"]], sim_table[[aux_index, "R"]])
+    sim_table[[aux_index, "E"]] <- ESSRO_MF_E(paragrid[[aux_index, "sE"]], sim_table[[aux_index, "R"]])
     sim_table[[aux_index, "Y"]] <- ESSRO_MF_Y(sim_table[[aux_index, "TFP"]],
                                               sim_table[[aux_index, "K"]],
                                               sim_table[[aux_index, "L"]],
@@ -66,6 +66,7 @@ SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals)
     # Computing Variables after Period 0 ---------------------------------
     for (i in 1:np){
         # i <- 1
+        sim_table[, c("period","TFP", "L", "K", "Y", "E", "R")]
         aux_index <- which(sim_table$period == i)
         sim_table[[aux_index, "TFP"]] <- ESSRO_MF_AN(paragrid[["g"]][[which(paragrid$period == i-1)]],
                                                 sim_table[["TFP"]][[which(sim_table$period == i-1)]])
@@ -75,13 +76,15 @@ SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals)
                                                 sim_table[["Y"]][[which(sim_table$period == i-1)]],
                                                 paragrid[["delta"]][[which(paragrid$period == i-1)]],
                                                 sim_table[["K"]][[which(sim_table$period == i-1)]])
-        sim_table[[aux_index, "R"]] <- ESSRO_MF_RN(sim_table[[aux_index -1, "E"]], sim_table[[aux_index - 1, "R"]])
         
+        sim_table[[aux_index, "R"]] <- ESSRO_MF_RN(sim_table[[aux_index -1, "E"]], sim_table[[aux_index - 1, "R"]])
         sim_table[[aux_index, "E"]] <- ESSRO_MF_E(paragrid[[aux_index, "sE"]], sim_table[[aux_index, "R"]])
-        sim_table[[aux_index, "Y"]] <- ESSRO_MF_Y(sim_table[["TFP"]][[which(sim_table$period == i)]], 
-                                               sim_table[["K"]][[which(sim_table$period == i)]],
-                                               sim_table[["L"]][[which(sim_table$period == i)]],
-                                               paragrid[["alpha"]][[which(paragrid$period == i)]])
+        sim_table[[aux_index, "Y"]] <- ESSRO_MF_Y(sim_table[[aux_index, "TFP"]],
+                                                  sim_table[[aux_index, "K"]],
+                                                  sim_table[[aux_index, "L"]],
+                                                  sim_table[[aux_index, "E"]],
+                                                  paragrid[[aux_index, "alpha"]],
+                                                  paragrid[[aux_index, "beta"]])
     }
     
     # Computing Additional Variables ---------------------------------
@@ -103,7 +106,7 @@ SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals)
 # paragrid <- testgridalt
 # startvals <- list(A = 1, K = 1, L = 1, R = 1)
 # testsimulation <- SimulateExtendedSolowModelScarceResourceOil(testgridalt, np,startvals)
-
+# View(testsimulation)
 # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder(meta_ESSRO_variables[6:10]), "free")
 # simulation_correctness_checker(testsimulation[nrow(testsimulation), ],
