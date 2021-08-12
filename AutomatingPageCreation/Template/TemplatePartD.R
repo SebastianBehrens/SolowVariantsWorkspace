@@ -1,3 +1,7 @@
+ESHC_vtv_select_encoded <- reactive({
+  variable_encoder(input$ESHC_vtv)
+})
+
 ESHC_aux_data <- reactive({
     SimulateExtendedSolowModelHumanCapital(ESHC_parametergrid(), input$ESHC_nperiods_selected,
                                            list(K = input$ESHC_initval_K, L = input$ESHC_initval_K, A = input$ESHC_initval_A, H = input$ESHC_initval_H))
