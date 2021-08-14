@@ -20,7 +20,7 @@
 # Create duplicate of templates as new directory for new creation 
 
 
-
+library(dplyr)
 # A ---------------------------------
 partAhelper_1 <- function(parameter){
     out <- case_when(
@@ -160,20 +160,20 @@ augmentShinyApp <- function(parameters, abbreviation, name_of_sim_function, star
     
 }
 # augmentShinyApp(c("g", "n", "sK"), "ESSMY", "my_custom_simulation_function", c("A", "K", "L"))
-augmentShinyApp(c("alpha", "beta", "n", "g", "sE", "s", "delta"), 
-                "ESSRO", 
-                "SimulateExtendedSolowModelScarceResourceOil", 
-                c("A", "K", "L", "R"))
-augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X"), 
-                "ESSRL", 
-                "SimulateExtendedSolowModelScarceResourceLand", 
-                c("A", "K", "L"))
-augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"), 
-                "ESSROL", 
-                "SimulateExtendedSolowModelScarceResourceOilAndLand", 
-                c("A", "K", "L"))
+# augmentShinyApp(c("alpha", "beta", "n", "g", "sE", "s", "delta"), 
+#                 "ESSRO", 
+#                 "SimulateExtendedSolowModelScarceResourceOil", 
+#                 c("A", "K", "L", "R"))
+# augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X"), 
+#                 "ESSRL", 
+#                 "SimulateExtendedSolowModelScarceResourceLand", 
+#                 c("A", "K", "L"))
+# augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"), 
+#                 "ESSROL", 
+#                 "SimulateExtendedSolowModelScarceResourceOilAndLand", 
+#                 c("A", "K", "L"))
 
 # End ---------------------------------
 # Return to overheading directory
-setwd("..")
+# setwd("..")
 
