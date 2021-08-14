@@ -1,23 +1,23 @@
-ESSRO_vtv_select_encoded <- reactive({
-  variable_encoder(input$ESSRO_vtv)
+ESHC_vtv_select_encoded <- reactive({
+  variable_encoder(input$ESHC_vtv)
 })
 
-ESSRO_aux_data <- reactive({
-    SimulateExtendedSolowModelScarceResourceOil(ESSRO_parametergrid(), input$ESSRO_nperiods_selected,
-                                           list(K = input$ESSRO_initval_K, L = input$ESSRO_initval_K, A = input$ESSRO_initval_A, H = input$ESSRO_initval_H))
+ESHC_aux_data <- reactive({
+    SimulateExtendedSolowModelHumanCapital(ESHC_parametergrid(), input$ESHC_nperiods_selected,
+                                           list(K = input$ESHC_initval_K, L = input$ESHC_initval_K, A = input$ESHC_initval_A, H = input$ESHC_initval_H))
 })
 
-output$ESSRO_Data <- renderDataTable({ESSRO_aux_data() %>% mutate_all(round, digits = 3)})
+output$ESHC_Data <- renderDataTable({ESHC_aux_data() %>% mutate_all(round, digits = 3)})
 
-output$ESSRO_Viz <- renderPlot({
-    VisualiseSimulation(ESSRO_aux_data(), ESSRO_vtv_select_encoded(), input$ESSRO_scales_free_or_fixed)
+output$ESHC_Viz <- renderPlot({
+    VisualiseSimulation(ESHC_aux_data(), ESHC_vtv_select_encoded(), input$ESHC_scales_free_or_fixed)
 })
 
-ESSRO_aux_correcttable <- reactive({
-    simulation_correctness_checker(ESSRO_aux_data()[nrow(ESSRO_aux_data()), ],
-                                   ESSRO_parametergrid()[nrow(ESSRO_parametergrid()), ],
-                                   "ESSRO")
+ESHC_aux_correcttable <- reactive({
+    simulation_correctness_checker(ESHC_aux_data()[nrow(ESHC_aux_data()), ],
+                                   ESHC_parametergrid()[nrow(ESHC_parametergrid()), ],
+                                   "ESHC")
 })
-output$ESSRO_Correctness_Table <- renderDataTable({
-    ESSRO_aux_correcttable()
+output$ESHC_Correctness_Table <- renderDataTable({
+    ESHC_aux_correcttable()
 })
