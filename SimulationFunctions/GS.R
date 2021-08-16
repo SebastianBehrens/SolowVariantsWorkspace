@@ -37,7 +37,6 @@ meta_GS_variables <-
         
         "Total Factor Productivity"
     )
-
 # 1.1 Simulate the Basic Solow Model =================================
 SimulateGeneralSolowModel <- function(paragrid, np, startvals){
     # Inputs ---------------------------------

@@ -1,4 +1,4 @@
-### 4.0 Extended Solow Growth Model with Scarce Resources — Land #############################
+### 6.0 Extended Solow Growth Model with Scarce Resources — Land #############################
 
 # Meta-Information All Variables =================================
 meta_ESSRL_variables <-

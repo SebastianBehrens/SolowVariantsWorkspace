@@ -1,4 +1,4 @@
-### 6.0 Extended Solow Growth Model with Scarce Resources — Land and Oil #############################
+### 7.0 Extended Solow Growth Model with Scarce Resources — Land and Oil #############################
 
 # Meta-Information All Variables =================================
 meta_ESSROL_variables <-
