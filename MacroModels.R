@@ -1,3 +1,5 @@
+#### Setup ####
+
 # Set Path
 setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 # getwd()
@@ -67,6 +69,7 @@ source("SimulationFunctions/ExtendedSolowModelSOE.R")
 source("SimulationFunctions/ExtendedSolowModelHumanCapital.R")
 source("SimulationFunctions/ExtendedSolowModelOil.R")
 source("SimulationFunctions/ExtendedSolowModelLand.R")
+source("CompareModels.R")
 
 
 # Meta Information =================================
@@ -795,10 +798,166 @@ shinyApp(
                                          ),
                                          "BS"
                                        ),
-                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == BS",
-                                                        # create code dynamically with the automating page creation code i wrote
+                                                        # Periods ---------------------------------
+                                                        numericInput("ComparingModels1_periods", "Periods", 200, step = 20),
+                                                        hr(),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'BS'",
+                                                        titlePanel("Parameter Values"),
+                                                        # ParameterCodeAutoFillLineIndexer
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_BS_parameterchange_valuebefore_TFP", "TFP", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_BS_parameterchange_indicator_TFP", "Change in TFP?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_BS_parameterchange_indicator_TFP == true", 
+                                                          numericInput("ComparingModels1_BS_parameterchange_period_TFP", "Period of Change in TFP", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_BS_parameterchange_valueafter_TFP", "New Value of TFP", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_BS_parameterchange_valuebefore_alpha", "Alpha", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_BS_parameterchange_indicator_alpha", "Change in Alpha?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_BS_parameterchange_indicator_alpha == true", 
+                                                          numericInput("ComparingModels1_BS_parameterchange_period_alpha", "Period of Change in Alpha", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_BS_parameterchange_valueafter_alpha", "New Value of Alpha", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_BS_parameterchange_valuebefore_delta", "Delta", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_BS_parameterchange_indicator_delta", "Change in Delta?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_BS_parameterchange_indicator_delta == true", 
+                                                          numericInput("ComparingModels1_BS_parameterchange_period_delta", "Period of Change in Delta", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_BS_parameterchange_valueafter_delta", "New Value of Delta", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_BS_parameterchange_valuebefore_popgrowth", "Population Growth", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_BS_parameterchange_indicator_popgrowth", "Change in Population Growth?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_BS_parameterchange_indicator_popgrowth == true", 
+                                                          numericInput("ComparingModels1_BS_parameterchange_period_popgrowth", "Period of Change in Population Growth", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_BS_parameterchange_valueafter_popgrowth", "New Value of Population Growth", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_BS_parameterchange_valuebefore_savings", "Savings Rate", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_BS_parameterchange_indicator_savings", "Change in Savings Rate?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_BS_parameterchange_indicator_savings == true", 
+                                                          numericInput("ComparingModels1_BS_parameterchange_period_savings", "Period of Change in Savings Rate", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_BS_parameterchange_valueafter_savings", "New Value of Savings Rate", 0.4, step = 0.05)),
+                                                        hr()
                                                         ),
-                                       conditionalPanel()
+                                       
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'GS'",
+                                                        # Parameters ---------------------------------
+                                                        titlePanel("Parameter Values"),
+                                                        # ParameterCodeAutoFillLineIndexer
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_GS_parameterchange_valuebefore_tfpgrowth", "TFP Growth", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_GS_parameterchange_indicator_tfpgrowth", "Change in TFP Growth?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_GS_parameterchange_indicator_tfpgrowth == true", 
+                                                          numericInput("ComparingModels1_GS_parameterchange_period_tfpgrowth", "Period of Change in TFP Growth", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_GS_parameterchange_valueafter_tfpgrowth", "New Value of TFP Growth", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_GS_parameterchange_valuebefore_alpha", "Alpha", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_GS_parameterchange_indicator_alpha", "Change in Alpha?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_GS_parameterchange_indicator_alpha == true", 
+                                                          numericInput("ComparingModels1_GS_parameterchange_period_alpha", "Period of Change in Alpha", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_GS_parameterchange_valueafter_alpha", "New Value of Alpha", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_GS_parameterchange_valuebefore_delta", "Delta", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_GS_parameterchange_indicator_delta", "Change in Delta?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_GS_parameterchange_indicator_delta == true", 
+                                                          numericInput("ComparingModels1_GS_parameterchange_period_delta", "Period of Change in Delta", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_GS_parameterchange_valueafter_delta", "New Value of Delta", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_GS_parameterchange_valuebefore_popgrowth", "Population Growth", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_GS_parameterchange_indicator_popgrowth", "Change in Population Growth?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_GS_parameterchange_indicator_popgrowth == true", 
+                                                          numericInput("ComparingModels1_GS_parameterchange_period_popgrowth", "Period of Change in Population Growth", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_GS_parameterchange_valueafter_popgrowth", "New Value of Population Growth", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_GS_parameterchange_valuebefore_savings", "Savings Rate", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_GS_parameterchange_indicator_savings", "Change in Savings Rate?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_GS_parameterchange_indicator_savings == true", 
+                                                          numericInput("ComparingModels1_GS_parameterchange_period_savings", "Period of Change in Savings Rate", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_GS_parameterchange_valueafter_savings", "New Value of Savings Rate", 0.4, step = 0.05)),
+                                                        hr()),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSOE'"),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESHC'",
+                                                        # Parameters ---------------------------------
+                                                        titlePanel("Parameter Values"),
+                                                        # ParameterCodeAutoFillLineIndexer
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_alpha", "Alpha", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_alpha", "Change in Alpha?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_alpha == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_alpha", "Period of Change in Alpha", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_alpha", "New Value of Alpha", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_phi", "Phi", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_phi", "Change in Phi?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_phi == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_phi", "Period of Change in Phi", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_phi", "New Value of Phi", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_popgrowth", "Population Growth", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_popgrowth", "Change in Population Growth?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_popgrowth == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_popgrowth", "Period of Change in Population Growth", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_popgrowth", "New Value of Population Growth", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_tfpgrowth", "TFP Growth", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_tfpgrowth", "Change in TFP Growth?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_tfpgrowth == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_tfpgrowth", "Period of Change in TFP Growth", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_tfpgrowth", "New Value of TFP Growth", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_sK", "Savings Rate to Physical Capital", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_sK", "Change in Savings Rate to Physical Capital?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_sK == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_sK", "Period of Change in Savings Rate to Physical Capital", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_sK", "New Value of Savings Rate to Physical Capital", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_sH", "Savings Rate to Human Capital", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_sH", "Change in Savings Rate to Human Capital?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_sH == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_sH", "Period of Change in Savings Rate to Human Capital", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_sH", "New Value of Savings Rate to Human Capital", 0.4, step = 0.05)),
+                                                        hr(),
+                                                        # sectiontitle ---------------------------------
+                                                        numericInput("ComparingModels1_ESHC_parameterchange_valuebefore_delta", "Delta", 0.3, step = 0.05),
+                                                        checkboxInput("ComparingModels1_ESHC_parameterchange_indicator_delta", "Change in Delta?"),
+                                                        conditionalPanel(
+                                                          condition = "input.ComparingModels1_ESHC_parameterchange_indicator_delta == true", 
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_period_delta", "Period of Change in Delta", 10, min = 0, max = 50),
+                                                          numericInput("ComparingModels1_ESHC_parameterchange_valueafter_delta", "New Value of Delta", 0.4, step = 0.05)),
+                                                        hr()),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSRO'",
+                                                        "under construction"),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSRL'",
+                                                        "under construction"),
+                                       conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSROL'",
+                                                        "under construction")
+                                       
                                        ),
                                 column(6,
                                        #select
@@ -815,12 +974,13 @@ shinyApp(
                                            "Solow Model with Scarce Resources (Oil and Land)" = "ESSROL"
                                          ),
                                          "GS"
-                                       )
+                                       ),
+                                       
                               )),
                ),
                  mainPanel(
                    # content
-                   textOutput("test")
+                   dataTableOutput("test")
                  )
 
       ))
@@ -1251,6 +1411,28 @@ output$ESSRL_Correctness_Table <- renderDataTable({
 })
 
     # Comparing Models
-      output$test <- renderText({paste(input$testComparingModels_VariantSelection1, input$ComparingModels_VariantSelection2)})
+
+      paragrid1 <- reactive({
+        create_parameter_grid_advanced(input$ComparingModels_VariantSelection1, 
+                                       input$ComparingModels1_periods,
+                                       "1", input)
+      })
+      paragrid2 <- reactive({
+        create_parameter_grid_advanced(input$ComparingModels_VariantSelection2, 
+                                       input$ComparingModels2_periods,
+                                       "2", input)
+      })
+      output$test <- renderDataTable(interim_test())
+      output$comparisonVisualisation <- reactive({
+        compareEconomies(input$ComparingModels_VariantSelection1, 
+                         input$ComparingModels_VariantSelection2, 
+                         "a", 
+                         paragrid1, 
+                         paragrid2,
+                         startvals1,
+                         startvals2,
+                         input$ComparingModels2_periods,
+                         input$ComparingModels2_periods)
+        })
   }
 )
