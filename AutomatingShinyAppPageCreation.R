@@ -24,6 +24,7 @@ library(dplyr)
 # A ---------------------------------
 partAhelper_1 <- function(parameter){
     out <- case_when(
+        parameter == "B"~ "TFP", 
         parameter == "alpha"~ "alpha", 
         parameter == "beta"~ "beta", 
         parameter == "kappa"~ "kappa", 
@@ -46,6 +47,7 @@ partAhelper_1 <- function(parameter){
 }
 partAhelper_2 <- function(parameter){
     out <- case_when(
+        parameter == "B"~ "TFP", 
         parameter == "alpha"~ "Alpha", 
         parameter == "beta"~ "Beta", 
         parameter == "kappa"~ "Kappa", 
@@ -172,8 +174,56 @@ augmentShinyApp <- function(parameters, abbreviation, name_of_sim_function, star
 #                 "ESSROL", 
 #                 "SimulateExtendedSolowModelScarceResourceOilAndLand", 
 #                 c("A", "K", "L"))
+# augmentShinyApp( c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"),
+#                 "ESSROL",
+#                 "SimulateExtendedSolowModelScarceResourceOilAndLand",
+#                 c("A", "K", "L"))
 
 # End ---------------------------------
 # Return to overheading directory
 # setwd("..")
 
+# Using the above code to generate all the parameter input interfaces when comparing models =================================
+
+
+createSingleParameterInterface <- function(parameternames, new_abbreviation){
+    # this function creates the sidebar 
+    code_template <- readLines("PartASnippet.R")
+    for(aux_parameter in rev(parameternames)){
+        aux_parameter_code <- code_template
+        
+        aux_parameter_code <- gsub(pattern = "ESHC", replace = new_abbreviation, x = aux_parameter_code)
+        aux_parameter_code <- gsub(pattern = "phi", replace = partAhelper_1(aux_parameter), x = aux_parameter_code)
+        aux_parameter_code <- gsub(pattern = "Phi", replace = partAhelper_2(aux_parameter), x = aux_parameter_code)
+        
+        line_number_to_write_to <- grep("ParameterCodeAutoFillLineIndexer", read_lines("TemplatePartA.R"))
+        writeLines(c(read_lines("TemplatePartA.R", n_max = line_number_to_write_to), aux_parameter_code, read_lines("TemplatePartA.R", skip = line_number_to_write_to)), con="TemplatePartA.R")
+        writeLines(gsub(pattern = "ESHC", replace = new_abbreviation, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+    }
+}
+
+createInitValInterface <- function(startingvariables, new_abbreviation, n_ModelComparison){
+    for(i in rev(startingvariables)){
+        aux_code <- paste('numericInput("', "ComparingModels", n_ModelComparison, "_", new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 5),', sep = "")
+        partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
+    }
+}
+
+createParameterInterface <- function(parameters, ModelCode, number){
+    setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/TabCreation")
+    system(paste0("mkdir ", "DynamicInterface", ModelCode))
+    system(paste0("cp -R DynamicInterfaceTemplate/. ", "DynamicInterface", ModelCode, "/"))
+    # Changing working directory to that newly created folder
+    setwd(paste0("DynamicInterface",ModelCode))
+    # parameters <- getRequiredParams(aux_ModelCode)
+    # ModelCode <- "BS"
+    
+    
+    createSingleParameterInterface(parameters, ModelCode)
+    createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
+    writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+    
+}
+# aux_ModelCode <- "BS"
+# createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 1)
+ # 
