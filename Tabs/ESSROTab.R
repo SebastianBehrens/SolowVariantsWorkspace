@@ -12,6 +12,9 @@ ESSROTab <-
                                              choices = meta_ESSRO_variables,
                                              selected = meta_ESSRO_variables[1:5]),
                           hr(),
+                          # Periods ---------------------------------
+                          numericInput("ESSRO_nperiods_selected", "Periods", 200, step = 20),
+                          hr(),
                           # Scale Selector ---------------------------------
                           selectInput("ESSRO_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
                           hr(),
@@ -83,9 +86,7 @@ ESSROTab <-
                             numericInput("ESSRO_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
                             numericInput("ESSRO_pc_delta_newval", "New Value of Delta", 0.4, step = 0.05)),
                           hr(),
-                          # Periods ---------------------------------
-                          numericInput("ESSRO_nperiods_selected", "Periods", 200, step = 20),
-                          hr())
+                          )
                  )),
     # Main Panel  ---------------------------------
     mainPanel(
@@ -112,6 +113,6 @@ ESSROTab <-
       # Correctness Checker ---------------------------------
       # titlePanel("How does the simulation compare to the theoretic steady state values?"),
       # dataTableOutput("ESSRO_Correctness_Table")
-      "To be added."
+      # "To be added."
     )
   ))
