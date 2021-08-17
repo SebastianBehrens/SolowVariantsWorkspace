@@ -4,7 +4,7 @@ GSTab <-
 tabPanel("General Solow Model", fluid = TRUE,
          sidebarLayout(
            # Sidebar Panel  ---------------------------------
-           sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
+           sidebarPanel(width = 3, style = "position:fixed;width:24%;overflow-y:scroll; max-height: 90%;padding-bottom:100px;",
                         fluidRow(
                           column(width = 6,
                                  # Variable Selector ---------------------------------

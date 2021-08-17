@@ -1,12 +1,15 @@
 ComparisonTab <-
   tabPanel("Comparing Models", fluid = TRUE,
            sidebarLayout(
-             sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
+             sidebarPanel(width = 3, style = "position:fixed;width:24%;overflow-y:scroll;max-height:90%;padding-bottom:100px;",
                           fluidRow(
+                              column(12,
+                                     
+                              titlePanel("Select Solow Variants")),
                             column(6,
                                    selectInput(
                                      "ComparingModels_VariantSelection1",
-                                     "Select a Solow Variant",
+                                     "",
                                      c(
                                        "Basic Solow Model" = "BS",
                                        "General Solow Model" = "GS",
@@ -30,7 +33,7 @@ ComparisonTab <-
                             column(6,
                                    selectInput(
                                        "ComparingModels_VariantSelection2",
-                                       "Select a Solow Variant",
+                                       "",
                                        c(
                                            "Basic Solow Model" = "BS",
                                            "General Solow Model" = "GS",
@@ -55,8 +58,10 @@ ComparisonTab <-
                                    titlePanel("Shared Variables"),
                                    checkboxGroupInput("ModelComparison_VariableSelection",
                                                       label = "",
-                                                      choices =c())
-                                   )),
+                                                      choices =c("Output"),
+                                                      selected = "Output")
+                                   ),
+                            hr(), hr(), hr()),
                           
              ),
              mainPanel(
