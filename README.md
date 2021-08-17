@@ -7,12 +7,12 @@ The create shiny app allows one to select which variables to visualise as well a
 # How to use the app:
 Two options are available.
 
-1. Access the published version on shinyapps.io
-   Click [here](https://sebastianshinyapps.shinyapps.io/SolowVariants/).
-2. Run the Shiny App locally on your machine.
-   i. Open the R-Project file `SolowVariantProject.Rproj`.
-   ii. In it open the file `MacroModels.R`.
-   iii. The Shiny App will be launched on your machine.
+- Access the published version on shinyapps.io
+  Click [here](https://sebastianshinyapps.shinyapps.io/SolowVariants/).
+- Run the Shiny App locally on your machine.
+  1. Open the R-Project file `SolowVariantProject.Rproj`.
+  2. In it open the file `MacroModels.R`.
+  3. The Shiny App will be launched on your machine.
 
 
 # Explanations on the Structure of the Project:
