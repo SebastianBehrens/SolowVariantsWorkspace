@@ -43,5 +43,5 @@ The shiny app uses the frontend code written in (and sourced from) the folders `
 
 # Reflection
 
-If you’re interested, check out my self-reflection [here]().
+If you’re interested, check out my self-reflection [here](https://github.com/SebastianBehrens/SolowVariants/blob/main/Project%20Reflection.md).
 
