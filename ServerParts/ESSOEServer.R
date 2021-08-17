@@ -49,7 +49,11 @@ ESSOE_aux_data <- reactive({
                                              list(L = input$ESSOE_initval_L, V = input$ESSOE_initval_V))
 })
 # Rendering the Simulation as a table ---------------------------------
-output$ESSOE_Data <- renderDataTable({ESSOE_aux_data() %>% mutate_all(round, digits = 3)})
+output$ESSOE_Data <- renderDataTable(ESSOE_aux_data() %>% mutate_all(round, digits = 3),
+                                     extensions = c("Scroller"),
+                                     options = list(
+                                       scrollX = TRUE
+                                     ))
 # Visualising the Simulation (the selected variables respectively) ---------------------------------
 output$ESSOE_Viz <- renderPlot({
   VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)
