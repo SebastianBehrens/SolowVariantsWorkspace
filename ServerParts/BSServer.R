@@ -34,6 +34,9 @@ BS_parametergrid <- reactive({
   
 })
 
+BS_parametergrid_debounced <- BS_parametergrid %>% debounce(500)
+
+
 BS_vtv_select_encoded <- reactive({
   variable_encoder(input$BS_vtv)
 })
@@ -43,10 +46,9 @@ BS_vtv_processed_sim <- reactive({
   aux_non_standard_detect <- aux %in% c("L", "K", "Y")
   aux[!aux_non_standard_detect]
 })
-# output$test <- renderText({output$plot_height})
 
 BS_aux_data <- reactive({
-  SimulateBasicSolowModel(BS_parametergrid(), input$BS_nperiods_selected,
+  SimulateBasicSolowModel(BS_parametergrid_debounced(), input$BS_nperiods_selected,
                           list(K = input$BS_initval_K, L = input$BS_initval_K))
 })
 

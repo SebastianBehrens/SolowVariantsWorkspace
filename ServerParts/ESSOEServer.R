@@ -32,6 +32,9 @@ ESSOE_parametergrid <- reactive({
   )
   
 })
+
+ESSOE_parametergrid_debounced <- ESSOE_parametergrid %>% debounce(500)
+
 # Encoding the selected Variables (for use in visualise function) ---------------------------------
 ESSOE_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSOE_vtv)
@@ -45,7 +48,7 @@ ESSOE_vtv_processed_sim <- reactive({
 # output$test <- renderText({output$plot_height})
 # Simulating the Economy ---------------------------------
 ESSOE_aux_data <- reactive({
-  SimulateExtendedSolowModelSmallOpenEconomy(ESSOE_parametergrid(), input$ESSOE_nperiods_selected,
+  SimulateExtendedSolowModelSmallOpenEconomy(ESSOE_parametergrid_debounced(), input$ESSOE_nperiods_selected,
                                              list(L = input$ESSOE_initval_L, V = input$ESSOE_initval_V))
 })
 # Rendering the Simulation as a table ---------------------------------

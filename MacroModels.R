@@ -50,11 +50,11 @@ library(plotly)
 library(shinythemes)
 library(DT)
 library(tidyverse)
-library(modelr)
+# library(modelr)
 library(ggplot2)
-library(stargazer)
+# library(stargazer)
 library(R.utils)
-library(reactlog)
+# library(reactlog)
 # reactlog_enable()
 
 
@@ -83,37 +83,6 @@ theme_set(
     )
 )
 
-# Essential Sourcing Function ---------------------------------
-getShinyPart <- function(kind, which, n_ModelComparison=0) {
-  # kind for "server" or "tab"
-  # which for the abbreviation of the respective part
-  # kind <- "S"
-  # which <- "BS"
-  # n_ModelComparison <- 1
-  if (kind %in% c("S", "T", "D")) {} else {
-    stop("The entered value for 'kind' in getShinyPart() is not defined.")
-  }
-  if(kind == "D" && n_ModelComparison == 0){stop("When using 'D' in getShinyPart() make sure to deliver an appropriate value to n_ModelComparison")}
-  source_part1 <- if(kind == "T"){"Tabs"}else if(kind == "S"){"ServerParts"}else if(kind == "D"){"DynamicInterfaces"}
-  source_part2 <- if(kind == "T"){"Tab.R"}else if(kind == "S"){"Server.R"}else if(kind == "D"){"DynamicInterface.R"}
-  path_to_source <- paste0(
-    source_part1, 
-    "/", 
-    ifelse(kind == "D", paste0("Group", n_ModelComparison, "/"), ""),
-    which, 
-    source_part2
-  )
-  
-  if(kind == "T"){
-    source(path_to_source)
-    return(get(paste0(which, "Tab")))
-  }else if(kind == "S"){
-    # source(path_to_source, local = TRUE)
-  }else if(kind == "D"){
-    source(path_to_source)
-    return(get(paste0(which, "DynamicInterface")))
-  }
-}
 # Sourcing Simulation Functions and Helper Functions ---------------------------------
 source("HelperFunctions.R")
 source("SimulationFunctions/BS.R")
@@ -124,6 +93,38 @@ source("SimulationFunctions/ESSRO.R")
 source("SimulationFunctions/ESSRL.R")
 source("CompareModels.R")
 
+# Essential Sourcing Function ---------------------------------
+source("ShinyAppSourcer.R")
+# getShinyPart <- function(kind, which, n_ModelComparison=0) {
+#   # kind for "server" or "tab"
+#   # which for the abbreviation of the respective part
+#   # kind <- "S"
+#   # which <- "BS"
+#   # n_ModelComparison <- 1
+#   if (kind %in% c("S", "T", "D")) {} else {
+#     stop("The entered value for 'kind' in getShinyPart() is not defined.")
+#   }
+#   if(kind == "D" && n_ModelComparison == 0){stop("When using 'D' in getShinyPart() make sure to deliver an appropriate value to n_ModelComparison")}
+#   source_part1 <- if(kind == "T"){"Tabs"}else if(kind == "S"){"ServerParts"}else if(kind == "D"){"DynamicInterfaces"}
+#   source_part2 <- if(kind == "T"){"Tab.R"}else if(kind == "S"){"Server.R"}else if(kind == "D"){"DynamicInterface.R"}
+#   path_to_source <- paste0(
+#     source_part1, 
+#     "/", 
+#     ifelse(kind == "D", paste0("Group", n_ModelComparison, "/"), ""),
+#     which, 
+#     source_part2
+#   )
+#   
+#   if(kind == "T"){
+#     source(path_to_source)
+#     return(get(paste0(which, "Tab")))
+#   }else if(kind == "S"){
+#     # source(path_to_source, local = TRUE)
+#   }else if(kind == "D"){
+#     source(path_to_source)
+#     return(get(paste0(which, "DynamicInterface")))
+#   }
+# }
 # Shiny App =================================
 shinyApp(
   ui = fluidPage(
@@ -141,7 +142,7 @@ shinyApp(
     #   )
     # ),
     theme = shinytheme("cerulean"),
-    titlePanel("Growth Models in Macroeconomic Theory"),
+    titlePanel("Solow Growth Models in Macroeconomic Theory"),
     # Loading Tabs ---------------------------------
     tabsetPanel(type = "pills",
                 # id = "inTabset",
@@ -163,7 +164,7 @@ shinyApp(
     source("ServerParts/ESSOEServer.R", local = TRUE)
     source("ServerParts/ESHCServer.R", local = TRUE)
     source("ServerParts/ESSROServer.R", local = TRUE)
-    source("ServerParts/ESSRLServer.R", local = TRUE)
+    # source("ServerParts/ESSRLServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published

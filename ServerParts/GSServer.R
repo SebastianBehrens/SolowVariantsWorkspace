@@ -34,6 +34,8 @@ GS_parametergrid <- reactive({
   
 })
 
+GS_parametergrid_debounced <- GS_parametergrid %>% debounce(500)
+
 GS_vtv_select_encoded <- reactive({
   variable_encoder(input$GS_vtv)
 })
@@ -43,10 +45,9 @@ GS_vtv_processed_sim <- reactive({
   aux_non_standard_detect <- aux %in% c("L", "K", "Y", "TFP")
   aux[!aux_non_standard_detect]
 })
-# output$test <- renderText({output$plot_height})
 
 GS_aux_data <- reactive({
-  SimulateGeneralSolowModel(GS_parametergrid(), input$GS_nperiods_selected,
+  SimulateGeneralSolowModel(GS_parametergrid_debounced(), input$GS_nperiods_selected,
                             list(K = input$GS_initval_K, L = input$GS_initval_K, A = input$GS_initval_A))
 })
 
