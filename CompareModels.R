@@ -86,7 +86,7 @@ create_parameter_grid_advanced <- function(ModelCode, np, n_ModelComparison, inp
     getRequiredParams(ModelCode),
     parameterchange_valuebefore,
     parameterchange_period,
-    paramterchange_valueafter,
+    parameterchange_valueafter,
     np
   )
 }
@@ -116,16 +116,20 @@ getRequiredStartingValues <- function(ModelCode){
   }
   return(out)
 }
+
 create_startvals_list <- function(ModelCode, n_ModelComparison, input){
   aux_list <- list()
   for(i in getRequiredStartingValues(ModelCode)){
     aux_var_as_string <- paste0("input$ComparingModels", n_ModelComparison, "_", ModelCode, "_initval_", i)
-    aux_list <- append(aux_list, get(aux_var_as_string))
-    
+    aux_list <- eval(parse(text = paste0("append(aux_list, list(", i, " = ", aux_var_as_string, "))"))) # mistake seems to be here
   }
   
   return(aux_list)
 }
+
+# test_list <- list(ComparingModels1_BS_initval_K = 2, ComparingModels1_BS_initval_L = 1)
+# test_out <- create_startvals_list("BS", 1, test_list)
+# test_out
 
 getRequiredParams <- function(ModelCode) {
   out <- if (ModelCode == "BS") {
@@ -158,7 +162,7 @@ sourceSimulationFile <- function(ModelCode){
                            ModelCode, ".R")
   source(path_to_source)
 }
-sourceSimulationFile("BS")
+# sourceSimulationFile("BS")
 
 getVariablesAvailableToBeVisualised <- function(ModelCode1,
                                                 ModelCode2){
