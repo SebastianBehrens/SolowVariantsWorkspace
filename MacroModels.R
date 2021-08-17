@@ -1,9 +1,9 @@
 ## Setup =================================
 # Clean Start ---------------------------------
-rm(list = ls())
+# rm(list = ls())
 
 # Set Path
-# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 # getwd()
 
 
@@ -136,10 +136,10 @@ shinyApp(
       getShinyPart("T", "GS"),
       getShinyPart("T", "ESSOE"),
       getShinyPart("T", "ESHC"),
-      getShinyPart("T", "ESSRO")
+      getShinyPart("T", "ESSRO"),
       # getShinyPart("T", "ESSRL"),
       # getShinyPart("T", "ESSROL"),
-      # getShinyPart("T", "Comparison")
+      getShinyPart("T", "Comparison")
     )
   ),
   server = function(input, output, session) {
@@ -150,10 +150,16 @@ shinyApp(
     source("ServerParts/ESHCServer.R", local = TRUE)
     source("ServerParts/ESSROServer.R", local = TRUE)
     source("ServerParts/ESSRLServer.R", local = TRUE)
-    # source("ServerParts/ComparisonServer.R", local = TRUE)
+    source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
     session$onSessionEnded(stopApp)
   }
 )
+
+
+##########################################3
+###   Mistake in CompareModels.R the startvals cannot be accessed in the advanced create_startvals_list function.
+### create_startvals_list does not read "input" but some atomic vector
+##########################################3
 
