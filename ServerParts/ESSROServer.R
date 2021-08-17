@@ -44,12 +44,15 @@ ESSRO_parametergrid <- reactive({
     input$ESSRO_nperiods_selected
   )
 })
+
+ESSRO_parametergrid_debounced <- ESSRO_parametergrid %>% debounce(500)
+
 output$debugging <- renderDataTable({ESSRO_parametergrid()})
 ESSRO_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSRO_vtv)
 })
 ESSRO_aux_data <- reactive({
-  SimulateExtendedSolowModelScarceResourceOil(ESSRO_parametergrid(), input$ESSRO_nperiods_selected,
+  SimulateExtendedSolowModelScarceResourceOil(ESSRO_parametergrid_debounced(), input$ESSRO_nperiods_selected,
                                               list(R = input$ESSRO_initval_R,
                                                    L = input$ESSRO_initval_L,
                                                    K = input$ESSRO_initval_K,

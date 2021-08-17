@@ -49,6 +49,8 @@ ComparingModels_Visualisation <- reactive({
     ComparingModels_StartVals1(), ComparingModels_StartVals2(), input$ComparingModels1_periods, input$ComparingModels2_periods
   )
 })
+ComparingModels_Visualisation_debounced <- ComparingModels_Visualisation %>% debounce(500)
+
 output$ComparisonVisualisation <- renderPlot({
-    ComparingModels_Visualisation()
+  ComparingModels_Visualisation_debounced()
 })

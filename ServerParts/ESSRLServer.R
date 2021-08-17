@@ -48,12 +48,15 @@ ESSRL_parametergrid <- reactive({
   )
   
 })
+
+ESSRL_parametergrid_debounced <- ESSRL_parametergrid %>% debounce(500)
+
 ESSRL_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSRL_vtv)
 })
 
 ESSRL_aux_data <- reactive({
-  SimulateExtendedSolowModelScarceResourceLand(ESSRL_parametergrid(), input$ESSRL_nperiods_selected,
+  SimulateExtendedSolowModelScarceResourceLand(ESSRL_parametergrid_debounced(), input$ESSRL_nperiods_selected,
                                                list(
                                                  #auxspot1
                                                  L = input$ESSRL_initval_L,
