@@ -3,7 +3,7 @@
 # rm(list = ls())
 
 # Set Path
-setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
+# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 # getwd()
 
 
@@ -55,7 +55,7 @@ library(ggplot2)
 library(stargazer)
 library(R.utils)
 library(reactlog)
-reactlog_enable()
+# reactlog_enable()
 
 
 
@@ -127,10 +127,24 @@ source("CompareModels.R")
 # Shiny App =================================
 shinyApp(
   ui = fluidPage(
+    # tags$head(
+    #   tags$style(
+    #     "#inTabset {
+    #     position: fixed;
+    #     width: 100%;
+    #     background-color: white;
+    #     top: 0;
+    #     }",
+    #     ".tab-content  {
+    #     margin-top: 80px;
+    #   }"
+    #   )
+    # ),
     theme = shinytheme("cerulean"),
     titlePanel("Growth Models in Macroeconomic Theory"),
     # Loading Tabs ---------------------------------
-    tabsetPanel(
+    tabsetPanel(type = "pills",
+                # id = "inTabset",
       getShinyPart("T", "StartPage"),
       getShinyPart("T", "BS"),
       getShinyPart("T", "GS"),
