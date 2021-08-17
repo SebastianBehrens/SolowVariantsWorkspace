@@ -19,55 +19,9 @@
 # 00 ---------------------------------
 # Create duplicate of templates as new directory for new creation 
 
-
+source("HelperFunctions.R")
 library(dplyr)
 # A ---------------------------------
-partAhelper_1 <- function(parameter){
-    out <- case_when(
-        parameter == "B"~ "TFP", 
-        parameter == "alpha"~ "alpha", 
-        parameter == "beta"~ "beta", 
-        parameter == "kappa"~ "kappa", 
-        parameter == "phi"~ "phi", 
-        parameter == "alpha"~ "alpha",
-        parameter == "s"~ "savings",
-        parameter == "sK"~ "sK",
-        parameter == "sH"~ "sH",
-        parameter == "n"~ "popgrowth",
-        parameter == "r"~ "realint",
-        parameter == "g"~ "tfpgrowth",
-        parameter == "sE"~ "energyconsumption",
-        parameter == "X"~ "land",
-        parameter == "delta"~ "delta",
-        TRUE ~ "NA")
-    if(out == "NA"){
-        warning(paste("Parameter translation for", parameter, "not yet created. Create it in partAhelper_1 to continue."))
-    }
-    return(out)
-}
-partAhelper_2 <- function(parameter){
-    out <- case_when(
-        parameter == "B"~ "TFP", 
-        parameter == "alpha"~ "Alpha", 
-        parameter == "beta"~ "Beta", 
-        parameter == "kappa"~ "Kappa", 
-        parameter == "phi"~ "Phi", 
-        parameter == "s"~ "Savings Rate",
-        parameter == "sK"~ "Savings Rate to Physical Capital",
-        parameter == "sH"~ "Savings Rate to Human Capital",
-        parameter == "n"~ "Population Growth",
-        parameter == "r"~ "Real Interest Rate",
-        parameter == "g"~ "TFP Growth",
-        parameter == "sE"~ "Energy Consupmtion",
-        parameter == "X"~ "Land",
-        parameter == "delta"~ "Delta",
-        TRUE ~ "NA")
-    if(out == "NA"){
-        warning(paste("Parameter translation for", parameter, "not yet created. Create it in partAhelper_2 to continue."))
-    }
-    return(out)
-}
-
 createpartA <- function(parameternames, new_abbreviation, startvars){
         # this function creates the sidebar 
     code_template <- readLines("PartASnippet.R")
