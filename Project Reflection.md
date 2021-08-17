@@ -16,4 +16,4 @@ Here’s what I learned (i.e. gained confidence) in:
   (I could not really use the same code dynamically in two different places (or at least didn’t know how to), instead, formulated a mechanism (i.e. cascading functions :) ) that would spare me the tedious work of adjusting small bits in my variable naming ‘convention’ and generate the code dynamically from given inputs.)
 - And after all: Solow Models :)
 
-Summarised into one: This project truly helped me to get more comfortable at dealing with increasing complexity in a complicated system.
+Reduced to one sentence: This project truly helped me to get more comfortable at dealing with increasing complexity in a complicated system.
