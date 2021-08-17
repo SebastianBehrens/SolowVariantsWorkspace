@@ -24,7 +24,7 @@ observe({
                    choices = getVariablesAvailableToBeVisualised(input$ComparingModels_VariantSelection1, input$ComparingModels_VariantSelection2),
                    selected = getVariablesAvailableToBeVisualised(input$ComparingModels_VariantSelection1,
                                                                   input$ComparingModels_VariantSelection2)[sample(
-                                                                    c(1:10),3)])
+                                                                    c(1:21),5)])
 })
 ModelComparison_VariableSelectionEncoded <- reactive({
   variable_encoder(input$ModelComparison_VariableSelection)
