@@ -202,35 +202,35 @@ createSingleParameterInterface <- function(parameternames, new_abbreviation){
     }
 }
 
-createInitValInterface <- function(startingvariables, new_abbreviation, n_ModelComparison){
-    for(i in rev(startingvariables)){
-        aux_code <- paste('numericInput("', "ComparingModels", n_ModelComparison, "_", new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 5),', sep = "")
-        partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
-    }
-}
-
-createParameterInterface <- function(parameters, ModelCode, number){
-    setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/TabCreation")
-    system(paste0("mkdir ", "DynamicInterface", ModelCode))
-    system(paste0("cp -R DynamicInterfaceTemplate/. ", "DynamicInterface", ModelCode, "/"))
-    # Changing working directory to that newly created folder
-    setwd(paste0("DynamicInterface",ModelCode))
-    # parameters <- getRequiredParams(aux_ModelCode)
-    # ModelCode <- "BS"
-    
-    
-    createSingleParameterInterface(parameters, ModelCode)
-    createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
-    writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
-    if(number == 2){
-        writeLines(gsub(pattern = "1", replace = "2", x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
-        
-    }
-    
-from_string <- "TemplatePartA.R"
-to_string <- paste0("../../DynamicInterfaces/Group", number, "/", ModelCode, "DynamicInterface.R")
-system(paste("mv ", from_string, to_string))
-    
-}
+# createInitValInterface <- function(startingvariables, new_abbreviation, n_ModelComparison){
+#     for(i in rev(startingvariables)){
+#         aux_code <- paste('numericInput("', "ComparingModels", n_ModelComparison, "_", new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 5),', sep = "")
+#         partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
+#     }
+# }
+# 
+# createParameterInterface <- function(parameters, ModelCode, number){
+#     setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/TabCreation")
+#     system(paste0("mkdir ", "DynamicInterface", ModelCode))
+#     system(paste0("cp -R DynamicInterfaceTemplate/. ", "DynamicInterface", ModelCode, "/"))
+#     # Changing working directory to that newly created folder
+#     setwd(paste0("DynamicInterface",ModelCode))
+#     # parameters <- getRequiredParams(aux_ModelCode)
+#     # ModelCode <- "BS"
+#     
+#     
+#     createSingleParameterInterface(parameters, ModelCode)
+#     createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
+#     writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+#     if(number == 2){
+#         writeLines(gsub(pattern = "1", replace = "2", x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+#         
+#     }
+#     
+# from_string <- "TemplatePartA.R"
+# to_string <- paste0("../../DynamicInterfaces/Group", number, "/", ModelCode, "DynamicInterface.R")
+# system(paste("mv ", from_string, to_string))
+#     
+# }
 # aux_ModelCode <- "ESHC"
 # createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 2)
