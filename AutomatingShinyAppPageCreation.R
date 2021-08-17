@@ -222,8 +222,15 @@ createParameterInterface <- function(parameters, ModelCode, number){
     createSingleParameterInterface(parameters, ModelCode)
     createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
     writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+    if(number == 2){
+        writeLines(gsub(pattern = "1", replace = "2", x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+        
+    }
+    
+from_string <- "TemplatePartA.R"
+to_string <- paste0("../../DynamicInterfaces/Group", number, "/", ModelCode, "DynamicInterface.R")
+system(paste("mv ", from_string, to_string))
     
 }
-# aux_ModelCode <- "BS"
-# createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 1)
- # 
+# aux_ModelCode <- "ESHC"
+# createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 2)
