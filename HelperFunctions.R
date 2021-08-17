@@ -496,6 +496,9 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
     labs(x = "Period", y = "Value", col = "Solow Variant")
 }
 
+#  ---------------------------------
+
+
 # 0.99 testing ---------------------------------
 # vtstest <- c("testvar", "ja", "nein")
 # create_simulation_table(vtstest, 20)
