@@ -50,11 +50,11 @@ library(plotly)
 library(shinythemes)
 library(DT)
 library(tidyverse)
-library(modelr)
+# library(modelr)
 library(ggplot2)
-library(stargazer)
+# library(stargazer)
 library(R.utils)
-library(reactlog)
+# library(reactlog)
 # reactlog_enable()
 
 
@@ -82,6 +82,16 @@ theme_set(
       # legend.box.background = element_rect(colour = "black")
     )
 )
+
+# Sourcing Simulation Functions and Helper Functions ---------------------------------
+source("HelperFunctions.R")
+source("SimulationFunctions/BS.R")
+source("SimulationFunctions/GS.R")
+source("SimulationFunctions/ESSOE.R")
+source("SimulationFunctions/ESHC.R")
+source("SimulationFunctions/ESSRO.R")
+source("SimulationFunctions/ESSRL.R")
+source("CompareModels.R")
 
 # Essential Sourcing Function ---------------------------------
 getShinyPart <- function(kind, which, n_ModelComparison=0) {
@@ -114,16 +124,6 @@ getShinyPart <- function(kind, which, n_ModelComparison=0) {
     return(get(paste0(which, "DynamicInterface")))
   }
 }
-# Sourcing Simulation Functions and Helper Functions ---------------------------------
-source("HelperFunctions.R")
-source("SimulationFunctions/BS.R")
-source("SimulationFunctions/GS.R")
-source("SimulationFunctions/ESSOE.R")
-source("SimulationFunctions/ESHC.R")
-source("SimulationFunctions/ESSRO.R")
-source("SimulationFunctions/ESSRL.R")
-source("CompareModels.R")
-
 # Shiny App =================================
 shinyApp(
   ui = fluidPage(
@@ -141,7 +141,7 @@ shinyApp(
     #   )
     # ),
     theme = shinytheme("cerulean"),
-    titlePanel("Growth Models in Macroeconomic Theory"),
+    titlePanel("Solow Growth Models in Macroeconomic Theory"),
     # Loading Tabs ---------------------------------
     tabsetPanel(type = "pills",
                 # id = "inTabset",
@@ -163,7 +163,7 @@ shinyApp(
     source("ServerParts/ESSOEServer.R", local = TRUE)
     source("ServerParts/ESHCServer.R", local = TRUE)
     source("ServerParts/ESSROServer.R", local = TRUE)
-    source("ServerParts/ESSRLServer.R", local = TRUE)
+    # source("ServerParts/ESSRLServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
