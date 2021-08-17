@@ -2,8 +2,8 @@ ESSOEDynamicInterface <- conditionalPanel(condition = "input.ComparingModels_Var
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
-numericInput("ComparingModels2_ESSOE_initval_L", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESSOE_initval_V", "Initial Value of _____________", 5),
+numericInput("ComparingModels2_ESSOE_initval_L", "Initial Value of Labor", 5),
+numericInput("ComparingModels2_ESSOE_initval_V", "Initial Value of National Wealth", 5),
                                        
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer

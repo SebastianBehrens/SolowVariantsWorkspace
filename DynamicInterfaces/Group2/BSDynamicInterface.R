@@ -2,7 +2,7 @@ BSDynamicInterface <- conditionalPanel(condition = "input.ComparingModels_Varian
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
-                                       numericInput("ComparingModels2_BS_initval_K", "Initial Value of Capitak", 5),
+                                       numericInput("ComparingModels2_BS_initval_K", "Initial Value of Capital", 5),
                                        numericInput("ComparingModels2_BS_initval_L", "Initial Value of Labor", 5),
                                        
                                        titlePanel("Parameter Values"),

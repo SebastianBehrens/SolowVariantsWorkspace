@@ -2,10 +2,10 @@ ESSRODynamicInterface <- conditionalPanel(condition = "input.ComparingModels_Var
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
-numericInput("ComparingModels2_ESSRO_initval_A", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESSRO_initval_K", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESSRO_initval_L", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESSRO_initval_R", "Initial Value of _____________", 5),
+numericInput("ComparingModels2_ESSRO_initval_A", "Initial Value of TFP", 5),
+numericInput("ComparingModels2_ESSRO_initval_K", "Initial Value of Capital", 5),
+numericInput("ComparingModels2_ESSRO_initval_L", "Initial Value of Labor", 5),
+numericInput("ComparingModels2_ESSRO_initval_R", "Initial Value of Oil Stock", 5),
                                        
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer

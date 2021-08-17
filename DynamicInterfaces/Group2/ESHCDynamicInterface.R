@@ -2,10 +2,10 @@ ESHCDynamicInterface <- conditionalPanel(condition = "input.ComparingModels_Vari
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
-numericInput("ComparingModels2_ESHC_initval_A", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESHC_initval_K", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESHC_initval_L", "Initial Value of _____________", 5),
-numericInput("ComparingModels2_ESHC_initval_H", "Initial Value of _____________", 5),
+numericInput("ComparingModels2_ESHC_initval_A", "Initial Value of TFP", 5),
+numericInput("ComparingModels2_ESHC_initval_K", "Initial Value of Physical Capital", 5),
+numericInput("ComparingModels2_ESHC_initval_L", "Initial Value of Labor", 5),
+numericInput("ComparingModels2_ESHC_initval_H", "Initial Value of Human Capital", 5),
                                        
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer
