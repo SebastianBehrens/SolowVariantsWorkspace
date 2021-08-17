@@ -75,8 +75,7 @@ BSTab <-
              titlePanel("Model Equations"),
              withMathJax(),
              p('
-               $$
-\\begin{aligned}
+               $$\\begin{aligned}
 Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\
 r_t &= \\alpha B \\left(\\frac{K_t}{L_t}\\right)^{\\alpha -1}\\\\
 w_t &= (1-\\alpha) \\left(\\frac{K_t}{L_t}\\right)^\\alpha \\\\

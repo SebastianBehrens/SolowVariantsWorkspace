@@ -1,4 +1,4 @@
-BSDynamicInterface <- conditionalPanel(condition = "input.ComparingModels2_VariantSelection2 == 'BS'",
+BSDynamicInterface <- conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'BS'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
@@ -46,6 +46,6 @@ BSDynamicInterface <- conditionalPanel(condition = "input.ComparingModels2_Varia
                                            condition = "input.ComparingModels2_BS_parameterchange_indicator_savings == true", 
                                            numericInput("ComparingModels2_BS_parameterchange_period_savings", "Period of Change in Savings Rate", 20, min = 0, max = 50),
                                            numericInput("ComparingModels2_BS_parameterchange_valueafter_savings", "New Value of Savings Rate", 0.4, step = 0.05)),
-                                       hr(),
+                                       hr()
                                        
 )
