@@ -5,10 +5,10 @@ account: sebastianshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4125372
-bundleId: 4932407
+bundleId: 4932541
 url: https://sebastianshinyapps.shinyapps.io/SolowVariants/
-when: 1629206885.45387
-lastSyncTime: 1629206885.45388
+when: 1629208821.82604
+lastSyncTime: 1629208821.82606
 asMultiple: FALSE
 asStatic: FALSE
-ignoredFiles: ESHC_SolowApp_Edits.R|GoldenSavingsRule.R|LICENSE|MacroModelsMath.Rmd|MacroModelsOLD.R|README.md|ShinyTestingPlayground.R|ToDoList.md|WorkingOutHowToCreateParameterGridsForVaryingInputs.R
+ignoredFiles: AutomatingShinyAppPageCreation.R|ESHC_SolowApp_Edits.R|GoldenSavingsRule.R|LICENSE|MacroModelsMath.Rmd|MacroModelsOLD.R|README.md|ShinyTestingPlayground.R|Testing/.DS_Store|Testing/outsourcingservertest.R|Testing/ShinyPlaygroundForComparingModels.R|ToDoList.md|WorkingOutHowToCreateParameterGridsForVaryingInputs.R|AutomatingPageCreation|TabCreation
