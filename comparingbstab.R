@@ -9,9 +9,9 @@ BSTab <-
           # Variable Selector ---------------------------------
           titlePanel("Variables"),
           checkboxGroupInput("BS_vtv",
-                             label = "",
-                             choices = meta_BS_variables,
-                             selected = meta_BS_variables[1:5]
+            label = "",
+            choices = meta_BS_variables,
+            selected = meta_BS_variables[1:5]
           ),
           hr(),
           # Scale Selector ---------------------------------
@@ -40,9 +40,9 @@ BSTab <-
             numericInput("BS_pc_TFP_newval", "New Value of TFP", 3, step = 1)
           ),
           hr(),
-          
-          
-          
+
+
+
           # sectiontitle ---------------------------------
           numericInput("BS_initparam_alpha", "Alpha", 2 / 5, step = 0.05),
           checkboxInput("BS_changeinparam_alpha", "Change in Alpha?"),
@@ -52,9 +52,9 @@ BSTab <-
             numericInput("BS_pc_alpha_newval", "New Value of Alpha", 3 / 5, step = 0.05)
           ),
           hr(),
-          
-          
-          
+
+
+
           # sectiontitle ---------------------------------
           numericInput("BS_initparam_delta", "Delta", 0.15, step = 0.05),
           checkboxInput("BS_changeinparam_delta", "Change in Delta?"),
@@ -64,9 +64,9 @@ BSTab <-
             numericInput("BS_pc_delta_newval", "New Value of Delta", 0.3, step = 0.05)
           ),
           hr(),
-          
-          
-          
+
+
+
           # sectiontitle ---------------------------------
           numericInput("BS_initparam_popgrowth", "Population Growth", 0.01, step = 0.01),
           checkboxInput("BS_changeinparam_popgrowth", "Change in Population Growth?"),
@@ -76,9 +76,9 @@ BSTab <-
             numericInput("BS_pc_popgrowth_newval", "New Value of Population Growth", 0.05, step = 0.01)
           ),
           hr(),
-          
-          
-          
+
+
+
           # sectiontitle ---------------------------------
           numericInput("BS_initparam_savings", "Savings Rate", 0.2, step = 0.05),
           checkboxInput("BS_changeinparam_savings", "Change in Savings Rate?"),
@@ -88,10 +88,6 @@ BSTab <-
             numericInput("BS_pc_savings_newval", "New Value of Savings Rate", 0.3, step = 0.05)
           ),
           hr()
-          
-          
-          
-          
         )
       )
     ),
