@@ -18,9 +18,11 @@
 
 # 00 ---------------------------------
 # Create duplicate of templates as new directory for new creation 
-
+# setwd("..")
+# getwd()
 source("HelperFunctions.R")
 library(dplyr)
+library(readr)
 library(styler)
 # A ---------------------------------
 createpartA <- function(parameternames, new_abbreviation, startvars){
@@ -108,7 +110,8 @@ createpartD <- function(new_abbreviation, new_name_of_simulation_function){
 createpartE <- function(startingvariables, new_abbreviation){
     counter <- 1
     for(i in rev(startingvariables)){
-        aux_code <- paste('numericInput("', new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 1),', sep = "")
+        aux_code <- paste('numericInput("', new_abbreviation, '_initval_', i, '", "Initial Value of auxfullname", 1),', sep = "")
+        aux_code <- gsub("auxfullname", pageCreationHelper_fullname_of_intival_variable_abbreviation(i), x = aux_code)
         if(counter == 1){
             aux_code <- gsub(pattern = "),", replace = ")", x = aux_code)
             counter <- counter + 1
@@ -138,11 +141,42 @@ createPage <- function(parameters, abbreviation, name_of_sim_function, startvars
     createpartD(abbreviation, name_of_sim_function)
     write(readLines("TemplatePartD.R"), file = "TemplatePartB.R", append = TRUE)
     file.rename("TemplatePartB.R", paste(abbreviation, "Server.R", sep = ""))
+    # move xxxTab.R file to correct location
+    from_string <- paste0(abbreviation, "Server.R")
+    to_string <- paste0("../../ServerParts/", abbreviation, "Server.R")
+    system(paste("mv ", from_string, to_string))
+    # move xxxServer.R file to correct location
+    from_string <- paste0(abbreviation, "Tab.R")
+    to_string <- paste0("../../Tabs/", abbreviation, "Tab.R")
+    system(paste("mv ", from_string, to_string))
+    # delete files other than xxxServer.R and xxxTab.R
+    aux <- list.files()
+    aux_indicator <- aux %in% c(paste0(abbreviation, "Server.R"),
+               paste0(abbreviation, "Tab.R"))
+    unlink(aux[!aux_indicator])
     
     
     
 }
+all_abbrevs <- c("BS", "GS", "ESHC", "ESSRO", "ESSRL", "ESSROL")
+
+all_abbrevs <- c("BS")
+for(i in all_abbrevs){
+    aux_params <- getRequiredParams(i)
+    aux_simfun <- getSimFunction(i)
+    aux_initvals <- getRequiredStartingValues(i)
+    createPage(aux_params,
+               i,
+               aux_simfun,
+               aux_initvals)
+}
 createPage(c("g", "n", "sK"), "ESSMY", "my_custom_simulation_function", c("A", "K", "L"))
+parameters <- c("g", "n", "sK")
+abbreviation <- "ESSMY"
+name_of_sim_function <- "my_custom_simulation_function"
+startvars <- c("A", "K", "L")
+
+value <- readline(prompt = "Enter something ")
 # createPage(c("alpha", "beta", "n", "g", "sE", "s", "delta"), 
 #                 "ESSRO", 
 #                 "SimulateExtendedSolowModelScarceResourceOil", 
@@ -155,10 +189,10 @@ createPage(c("g", "n", "sK"), "ESSMY", "my_custom_simulation_function", c("A", "
 #                 "ESSROL", 
 #                 "SimulateExtendedSolowModelScarceResourceOilAndLand", 
 #                 c("A", "K", "L"))
-createPage( c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"),
-                "ESSROL",
-                "SimulateExtendedSolowModelScarceResourceOilAndLand",
-                c("A", "K", "L"))
+# createPage( c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"),
+#                 "ESSROL",
+#                 "SimulateExtendedSolowModelScarceResourceOilAndLand",
+#                 c("A", "K", "L"))
 
 # End ---------------------------------
 # Return to overheading directory
@@ -234,6 +268,21 @@ pageCreationHelper_newval <- function(parameter){
     }
     return(out)
 }
+
+pageCreationHelper_fullname_of_intival_variable_abbreviation <- function(variable){
+    out <- case_when(
+        variable == "A" ~ "Total Factor Productivity",
+        variable == "K" ~ "Physical Capital",
+        variable == "L" ~ "Labor",
+        variable == "H" ~ "Human Capital",
+        variable == "R" ~ "Resource Stock (e.g. Oil)",
+         TRUE ~ "NA")
+    if(out == "NA"){
+        warning(paste("Parameter translation for", parameter, "not yet created. Create it in pageCreationHelper_fullname_of_intival_variable_abbreviation to continue."))
+    }
+    return(out)
+}
+
     
 createSingleParameterInterface <- function(parameternames, new_abbreviation){
     # this function creates the sidebar 

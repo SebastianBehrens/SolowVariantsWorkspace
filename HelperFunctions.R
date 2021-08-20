@@ -626,7 +626,7 @@ getRequiredStartingValues <- function(ModelCode){
   } else if (ModelCode == "ESSRO") {
     out <- c("A", "K", "L", "R")
   } else if (ModelCode == "ESSROL") {
-    out <- NaN
+    out <- c("A", "K", "L", "R")
   } else if (ModelCode == "ESHC") {
     out <- c("A", "K", "L", "H")
   } else {
