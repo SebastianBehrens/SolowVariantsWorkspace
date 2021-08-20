@@ -2,12 +2,28 @@
 
 ### 0 Preparations (helper functions) #############################
 # 0.1 individual parameter path  ---------------------------------
-create_path <- function(iv, pfc = NA, nv = NA, np){
+create_path <- function(iv, pfc, nv, np){
   ## will create a vector of parameter values for periods 0 through n.
   # iv for initial value;
   # pfc for period for change;
   # nv for new value;
   # np vor number of periods
+  
+  # catching nonsensical inputs
+  if(!is.na(pfc)){
+  # if the period of change occurs in later periods than a simulation is 
+  #                                 created for, then it does not matter.
+    if(pfc > np){
+      pfc <- NA
+    }
+    # catching negative periods of change
+    if(pfc < 0){
+      pfc <- abs(pfc)
+    }
+    
+  }
+  
+  
   if(!is.na(pfc)){
     part1 <- rep(iv, pfc)
     part2 <- rep(nv, np, np-pfc+1)
@@ -24,7 +40,7 @@ create_path <- function(iv, pfc = NA, nv = NA, np){
 create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
   # np <- 10
   aux <- tibble(period = c(0:np))
-  for(i in c(1:length(namel))){
+  for(i in seq_along(namel)){
     ## testing
     # i <- 1
     # aux_path <- create_path(1, 5, 3, np)
@@ -38,7 +54,7 @@ create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
 # testing of create_paramter_grid
 # testnamel <- c("B", "alpha", "delta", "n", "s")
 # testivl <- c(1,1/3,0.1, 0.04, 0.23)
-# testpfcl <- c(NA,NA,NA, NA, NA)
+# testpfcl <- c(NA,NA, NA, NA, NA)
 # testnvl <- c(NA, NA, NA, NA, NA)
 # testgrid <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, 50)
 
@@ -388,7 +404,11 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
         YpW = last_row_simulation[["YpW"]],
         RR = last_row_simulation[["RR"]],
         w = last_row_simulation[["WR"]],
-        A = last_row_simulation[["TFP"]]
+        A = last_row_simulation[["TFP"]],
+        KpW = last_row_simulation[["KpW"]],
+        L = last_row_simulation[["L"]],
+        X = last_row_parameter[["X"]],
+        R = last_row_simulation[["R"]]
       )
     
     if(solow_variant == "BS") {
@@ -401,10 +421,10 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
     }else if(solow_variant == "ESHC"){
       aux_steadystate_variables <- c("KpEW", "HpEW", "YpEW", "YpW", "CpW") # WR and RR missing
     }else if(solow_variant == "ESSRL"){
-      aux_steadystate_variables <- c("CtO") # WR and RR missing
-    }#else if(solow_variant == "ESSRO"){
-      # aux_steadystate_variables <- variable_encoder(meta_ESSRO_variables[c()])
-    # }
+      aux_steadystate_variables <- c("CtO", "YpW") # WR and RR missing
+    }else if(solow_variant == "ESSRO"){
+      aux_steadystate_variables <- c("YpW")
+     }
     
     for(i in aux_steadystate_variables){
       aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
@@ -614,7 +634,7 @@ getRequiredStartingValues <- function(ModelCode){
       out <- NaN
     )
   }
-  if (is.na(out)) {
+  if (is.na(out[[1]])) {
     warning("The entered shortcode for a model variant does not exist.")
   }
   return(out)
@@ -654,7 +674,7 @@ getRequiredParams <- function(ModelCode) {
       out <- NaN
     )
   }
-  if (is.na(out)) {
+  if (is.na(out[[1]])) {
     warning("The entered shortcode for a model variant does not exist.")
   }
   return(out)

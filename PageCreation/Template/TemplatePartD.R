@@ -1,3 +1,5 @@
+BS_parametergrid_debounced <- BS_parametergrid %>% debounce(500)
+
 ESHC_vtv_select_encoded <- reactive({
   variable_encoder(input$ESHC_vtv)
 })

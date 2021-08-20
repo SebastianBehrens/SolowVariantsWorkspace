@@ -77,9 +77,10 @@ SimulateExtendedSolowModelScarceResourceOilAndLand <- function(paragrid, np, sta
                                                 sim_table[["Y"]][[which(sim_table$period == i-1)]],
                                                 paragrid[["delta"]][[which(paragrid$period == i-1)]],
                                                 sim_table[["K"]][[which(sim_table$period == i-1)]])
-        sim_table[[aux_index, "R"]] <- ESSROL_MF_RN(sim_table[[aux_index -1, "E"]], sim_table[[aux_index - 1, "R"]])
         
+        sim_table[[aux_index, "R"]] <- ESSROL_MF_RN(sim_table[[aux_index -1, "E"]], sim_table[[aux_index - 1, "R"]])
         sim_table[[aux_index, "E"]] <- ESSROL_MF_E(paragrid[[aux_index, "sE"]], sim_table[[aux_index, "R"]])
+        
         sim_table[[aux_index, "Y"]] <- ESSROL_MF_Y(sim_table[[aux_index, "TFP"]],
                                                    sim_table[[aux_index, "K"]],
                                                    sim_table[[aux_index, "L"]],

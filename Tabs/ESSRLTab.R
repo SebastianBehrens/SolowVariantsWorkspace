@@ -18,9 +18,9 @@ ESSRLTab <-
                                    # Starting Values ---------------------------------
                                    titlePanel("Starting Values of Stocks"),
                                    # StartingValuesCodeAutoFillLineIndexer
-                                   numericInput("ESSRL_initval_A", "Initial Value of _____________", 5),
-                                   numericInput("ESSRL_initval_K", "Initial Value of _____________", 5),
-                                   numericInput("ESSRL_initval_L", "Initial Value of _____________", 5),
+                                   numericInput("ESSRL_initval_K", "Initial Value of Capital", 5),
+                                   numericInput("ESSRL_initval_A", "Initial Value of TFP", 5),
+                                   numericInput("ESSRL_initval_L", "Initial Value of Labor", 5),
                             ),
                             column(width = 6,
                                    # Parameters ---------------------------------
@@ -30,7 +30,7 @@ ESSRLTab <-
                                    hr(),
                                    # ParameterCodeAutoFillLineIndexer
                                    # sectiontitle ---------------------------------
-                                   numericInput("ESSRL_initparam_alpha", "Alpha", 0.3, step = 0.05),
+                                   numericInput("ESSRL_initparam_alpha", "Alpha", 2/5, step = 0.05),
                                    checkboxInput("ESSRL_changeinparam_alpha", "Change in Alpha?"),
                                    conditionalPanel(
                                      condition = "input.ESSRL_changeinparam_alpha == true",
@@ -41,24 +41,27 @@ ESSRLTab <-
                                    
                                    
                                    # sectiontitle ---------------------------------
-                                   numericInput("ESSRL_initparam_beta", "Beta", 0.3, step = 0.05),
+                                   numericInput("ESSRL_initparam_beta", "Beta", 2/5, step = 0.05),
                                    checkboxInput("ESSRL_changeinparam_beta", "Change in Beta?"),
                                    conditionalPanel(
                                      condition = "input.ESSRL_changeinparam_beta == true",
                                      numericInput("ESSRL_pc_beta_period", "Period of Change in Beta", 10, min = 0, max = 50),
                                      numericInput("ESSRL_pc_beta_newval", "New Value of Beta", 0.4, step = 0.05)),
+                                   # withMathJax("\alpha + \beta + \kappa \overset{!}{=} 1."),
+                                   # withMathJax("\text{With your input for } \alpha \text{ and } \beta \text{, } \kappa \text{ will be set accordingly.}"),
                                    hr(),
                                    
                                    
                                    
-                                   # sectiontitle ---------------------------------
-                                   numericInput("ESSRL_initparam_kappa", "Kappa", 0.3, step = 0.05),
-                                   checkboxInput("ESSRL_changeinparam_kappa", "Change in Kappa?"),
-                                   conditionalPanel(
-                                     condition = "input.ESSRL_changeinparam_kappa == true",
-                                     numericInput("ESSRL_pc_kappa_period", "Period of Change in Kappa", 10, min = 0, max = 50),
-                                     numericInput("ESSRL_pc_kappa_newval", "New Value of Kappa", 0.4, step = 0.05)),
-                                   hr(),
+                                   # # sectiontitle ---------------------------------
+                                   # numericInput("ESSRL_initparam_kappa", "Kappa", 1/5, step = 0.05),
+                                   # checkboxInput("ESSRL_changeinparam_kappa", "Change in Kappa?"),
+                                   # conditionalPanel(
+                                   #   condition = "input.ESSRL_changeinparam_kappa == true",
+                                   #   numericInput("ESSRL_pc_kappa_period", "Period of Change in Kappa", 10, min = 0, max = 50),
+                                   #   numericInput("ESSRL_pc_kappa_newval", "New Value of Kappa", 0.4, step = 0.05)),
+                                   # "Remember: alpha, beta and kappa need to sum to 1.",
+                                   # hr(),
                                    
                                    
                                    

@@ -21,22 +21,34 @@
 
 source("HelperFunctions.R")
 library(dplyr)
+library(styler)
 # A ---------------------------------
 createpartA <- function(parameternames, new_abbreviation, startvars){
         # this function creates the sidebar 
     code_template <- readLines("PartASnippet.R")
+    
+    counter <- 1
     for(aux_parameter in rev(parameternames)){
         aux_parameter_code <- code_template
         
         aux_parameter_code <- gsub(pattern = "ESHC", replace = new_abbreviation, x = aux_parameter_code)
         aux_parameter_code <- gsub(pattern = "phi", replace = partAhelper_1(aux_parameter), x = aux_parameter_code)
         aux_parameter_code <- gsub(pattern = "Phi", replace = partAhelper_2(aux_parameter), x = aux_parameter_code)
-        
+        aux_parameter_code <- gsub(pattern = "auxinitval", replace = pageCreationHelper_initval(aux_parameter), x = aux_parameter_code)
+        aux_parameter_code <- gsub(pattern = "auxstep", replace = pageCreationHelper_step(aux_parameter), x = aux_parameter_code)
+        aux_parameter_code <- gsub(pattern = "auxnewval", replace = pageCreationHelper_newval(aux_parameter), x = aux_parameter_code)
+        if(counter == 1){
+            # gsub("a", "b", "ababab")
+            aux_parameter_code[[8]] <- gsub(pattern = "),", replace = ")", x = aux_parameter_code[[8]])
+            counter <- counter + 1
+        }
     line_number_to_write_to <- grep("ParameterCodeAutoFillLineIndexer", read_lines("TemplatePartA.R"))
     writeLines(c(read_lines("TemplatePartA.R", n_max = line_number_to_write_to), aux_parameter_code, read_lines("TemplatePartA.R", skip = line_number_to_write_to)), con="TemplatePartA.R")
     writeLines(gsub(pattern = "ESHC", replace = new_abbreviation, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
     }
     createpartE(startvars, new_abbreviation)
+    
+    
 }
 # createpartA(c("g", "n"), "ESSRO")
 
@@ -67,9 +79,14 @@ partBhelper <- function(string_to_write, location_index_string, target_file_name
 # createpartB(c("g", "n"), "ESSRO")
 # C ---------------------------------
 createpartC <- function(starting_variables, new_abbreviation){
+    counter <- 1
     for(var in starting_variables){
         aux_code <- paste(var, " = input$ESSOE_initval_", var, ",", sep = "")
         aux_code <- gsub("ESSOE", new_abbreviation, x = aux_code)
+        if(counter == 1){
+            aux_code <- gsub(",", "", aux_code)
+            counter <- counter + 1
+        }
         partBhelper(aux_code, "auxspot1", "TemplatePartC.R")
     }
 }
@@ -80,58 +97,68 @@ createpartD <- function(new_abbreviation, new_name_of_simulation_function){
     text  <- readLines("TemplatePartD.R")
     text_modified  <- gsub(pattern = "ESHC", replace = new_abbreviation, x = text)
     text_modified  <- gsub(pattern = "SimulateExtendedSolowModelHumanCapital", replace = new_name_of_simulation_function, x = text_modified)
+    text_Modified <- gsub(pattern = "InitialValueListCodeAutoFillLineIndexer", replace = paste0(c(readLines("TemplatePartC.R"))), x = text_modified)
     writeLines(text_modified, con="TemplatePartD.R")
+    style_file("TemplatePartD.R", transformers = tidyverse_style(strict = TRUE))
 }
 
 
 # createpartD("ESSRO", "SimulateExtendedSolowModelScarceResourceOil")
 # E ---------------------------------
 createpartE <- function(startingvariables, new_abbreviation){
+    counter <- 1
     for(i in rev(startingvariables)){
-        aux_code <- paste('numericInput("', new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 5),', sep = "")
+        aux_code <- paste('numericInput("', new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 1),', sep = "")
+        if(counter == 1){
+            aux_code <- gsub(pattern = "),", replace = ")", x = aux_code)
+            counter <- counter + 1
+        }
         partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
     }
 }
 
 # Create it all ---------------------------------
-augmentShinyApp <- function(parameters, abbreviation, name_of_sim_function, startvars){
-    setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/AutomatingPageCreation")
+createPage <- function(parameters, abbreviation, name_of_sim_function, startvars){
+    # Create new folder and set as directory ---------------------------------
+    setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/PageCreation")
     system(paste("mkdir", abbreviation))
     system(paste("cp -R Template/. ", abbreviation, "/", sep = ""))
-    # Changing working directory to that newly created folder
     setwd(paste(abbreviation))
-    
+    # Execute all sub steps ---------------------------------
     createpartA(parameters, abbreviation, startvars)
+    
+    # finish the tab file
+    # style it properly
+    style_file("TemplatePartA.R", transformers = tidyverse_style(strict = TRUE))
+    # save under xxxTab.R
+    file.rename("TemplatePartA.R", paste(abbreviation, "Tab.R", sep = ""))
+    
     createpartB(parameters, abbreviation)
     createpartC(startvars, abbreviation)
     createpartD(abbreviation, name_of_sim_function)
-    for(i in c(LETTERS[1:4])){
-        aux_file <- readLines("TemplatePartX.R" %>% str_replace("X", i))
-        write(paste("##########"), file = "CollectionOfSnippets.R", append = T)
-        write(paste("          ", "Part:", i), file = "CollectionOfSnippets.R", append = T)
-        write(paste("##########"), file = "CollectionOfSnippets.R", append = T)
-        write(aux_file, file = "CollectionOfSnippets.R", append = T)
-    }
-    file.rename("CollectionOfSnippets.R", paste(abbreviation, "CollectionOfSnippets.R", sep = ""))
+    write(readLines("TemplatePartD.R"), file = "TemplatePartB.R", append = TRUE)
+    file.rename("TemplatePartB.R", paste(abbreviation, "Server.R", sep = ""))
+    
+    
     
 }
-# augmentShinyApp(c("g", "n", "sK"), "ESSMY", "my_custom_simulation_function", c("A", "K", "L"))
-# augmentShinyApp(c("alpha", "beta", "n", "g", "sE", "s", "delta"), 
+createPage(c("g", "n", "sK"), "ESSMY", "my_custom_simulation_function", c("A", "K", "L"))
+# createPage(c("alpha", "beta", "n", "g", "sE", "s", "delta"), 
 #                 "ESSRO", 
 #                 "SimulateExtendedSolowModelScarceResourceOil", 
 #                 c("A", "K", "L", "R"))
-# augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X"), 
+# createPage(c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X"), 
 #                 "ESSRL", 
 #                 "SimulateExtendedSolowModelScarceResourceLand", 
 #                 c("A", "K", "L"))
-# augmentShinyApp(c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"), 
+# createPage(c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"), 
 #                 "ESSROL", 
 #                 "SimulateExtendedSolowModelScarceResourceOilAndLand", 
 #                 c("A", "K", "L"))
-# augmentShinyApp( c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"),
-#                 "ESSROL",
-#                 "SimulateExtendedSolowModelScarceResourceOilAndLand",
-#                 c("A", "K", "L"))
+createPage( c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X"),
+                "ESSROL",
+                "SimulateExtendedSolowModelScarceResourceOilAndLand",
+                c("A", "K", "L"))
 
 # End ---------------------------------
 # Return to overheading directory
@@ -139,7 +166,75 @@ augmentShinyApp <- function(parameters, abbreviation, name_of_sim_function, star
 
 # Using the above code to generate all the parameter input interfaces when comparing models =================================
 
+pageCreationHelper_initval <- function(parameter){
+    out <- case_when(
+        parameter == "B"~ "1", 
+        parameter == "alpha"~ "2/5", 
+        parameter == "beta"~ "2/5", 
+        parameter == "kappa"~ "2/5", 
+        parameter == "phi"~ "2/5", 
+        parameter == "s"~ "0.2",
+        parameter == "sK"~ "0.1",
+        parameter == "sH"~ "0.1",
+        parameter == "n"~ "0.01",
+        parameter == "r"~ "0.03",
+        parameter == "g"~ "0.02",
+        parameter == "sE"~ "0.05",
+        parameter == "X"~ "1",
+        parameter == "delta"~ "0.15",
+        TRUE ~ "NA")
+    if(out == "NA"){
+        warning(paste("Parameter translation for", parameter, "not yet created. Create it in pageCreationHelper_initval to continue."))
+    }
+    return(out)
+}
 
+pageCreationHelper_step <- function(parameter){
+    out <- case_when(
+        parameter == "B"~ "1", 
+        parameter == "alpha"~ "0.05", 
+        parameter == "beta"~ "0.05", 
+        parameter == "kappa"~ "0.05", 
+        parameter == "phi"~ "0.05", 
+        parameter == "s"~ "0.05",
+        parameter == "sK"~ "0.05",
+        parameter == "sH"~ "0.05",
+        parameter == "n"~ "0.01",
+        parameter == "r"~ "0.01",
+        parameter == "g"~ "0.01",
+        parameter == "sE"~ "0.05",
+        parameter == "X"~ "1",
+        parameter == "delta"~ "0.05",
+        TRUE ~ "NA")
+    if(out == "NA"){
+        warning(paste("Parameter translation for", parameter, "not yet created. Create it in pageCreationHelper_initval to continue."))
+    }
+    return(out)
+}
+
+pageCreationHelper_newval <- function(parameter){
+    out <- case_when(
+        parameter == "B"~ "3", 
+        parameter == "alpha"~ "3/5", 
+        parameter == "beta"~ "3/5", 
+        parameter == "kappa"~ "3/5", 
+        parameter == "phi"~ "3/5", 
+        parameter == "s"~ "0.3",
+        parameter == "sK"~ "0.2",
+        parameter == "sH"~ "0.2",
+        parameter == "n"~ "0.05",
+        parameter == "r"~ "0.05",
+        parameter == "g"~ "0.05",
+        parameter == "sE"~ "0.1",
+        parameter == "X"~ "3",
+        parameter == "delta"~ "0.3",
+        TRUE ~ "NA")
+    if(out == "NA"){
+        warning(paste("Parameter translation for", parameter, "not yet created. Create it in pageCreationHelper_initval to continue."))
+    }
+    return(out)
+}
+    
 createSingleParameterInterface <- function(parameternames, new_abbreviation){
     # this function creates the sidebar 
     code_template <- readLines("PartASnippet.R")
@@ -156,35 +251,35 @@ createSingleParameterInterface <- function(parameternames, new_abbreviation){
     }
 }
 
-# createInitValInterface <- function(startingvariables, new_abbreviation, n_ModelComparison){
-#     for(i in rev(startingvariables)){
-#         aux_code <- paste('numericInput("', "ComparingModels", n_ModelComparison, "_", new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 5),', sep = "")
-#         partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
-#     }
-# }
+createInitValInterface <- function(startingvariables, new_abbreviation, n_ModelComparison){
+    for(i in rev(startingvariables)){
+        aux_code <- paste('numericInput("', "ComparingModels", n_ModelComparison, "_", new_abbreviation, '_initval_', i, '", "Initial Value of _____________", 1),', sep = "")
+        partBhelper(aux_code, "StartingValuesCodeAutoFillLineIndexer", "TemplatePartA.R")
+    }
+}
 # 
-# createParameterInterface <- function(parameters, ModelCode, number){
-#     setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/TabCreation")
-#     system(paste0("mkdir ", "DynamicInterface", ModelCode))
-#     system(paste0("cp -R DynamicInterfaceTemplate/. ", "DynamicInterface", ModelCode, "/"))
-#     # Changing working directory to that newly created folder
-#     setwd(paste0("DynamicInterface",ModelCode))
-#     # parameters <- getRequiredParams(aux_ModelCode)
-#     # ModelCode <- "BS"
-#     
-#     
-#     createSingleParameterInterface(parameters, ModelCode)
-#     createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
-#     writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
-#     if(number == 2){
-#         writeLines(gsub(pattern = "1", replace = "2", x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
-#         
-#     }
-#     
-# from_string <- "TemplatePartA.R"
-# to_string <- paste0("../../DynamicInterfaces/Group", number, "/", ModelCode, "DynamicInterface.R")
-# system(paste("mv ", from_string, to_string))
-#     
-# }
+createParameterInterface <- function(parameters, ModelCode, number){
+    setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants/TabCreation")
+    # system(paste0("mkdir ", "DynamicInterface", ModelCode))
+    # system(paste0("cp -R DynamicInterfaceTemplate/. ", "DynamicInterface", ModelCode, "/"))
+    # Changing working directory to that newly created folder
+    setwd(paste0("DynamicInterface",ModelCode))
+    # parameters <- getRequiredParams(aux_ModelCode)
+    # ModelCode <- "BS"
+
+
+    createSingleParameterInterface(parameters, ModelCode)
+    createInitValInterface(getRequiredStartingValues(ModelCode), ModelCode, number)
+    writeLines(gsub(pattern = "BS", replace = ModelCode, x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+    if(number == 2){
+        writeLines(gsub(pattern = "1", replace = "2", x = read_lines("TemplatePartA.R")), "TemplatePartA.R")
+
+    }
+
+from_string <- "TemplatePartA.R"
+to_string <- paste0("../../DynamicInterfaces/Group", number, "/", ModelCode, "DynamicInterface.R")
+system(paste("mv ", from_string, to_string))
+
+}
 # aux_ModelCode <- "ESHC"
 # createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 2)

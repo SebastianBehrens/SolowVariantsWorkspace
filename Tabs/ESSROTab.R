@@ -35,7 +35,7 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_alpha", "Change in Alpha?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_alpha == true",
-                            numericInput("ESSRO_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_alpha_period", "Period of Change in Alpha", 10, min = 0),
                             numericInput("ESSRO_pc_alpha_newval", "New Value of Alpha", 0.4, step = 0.05)),
                           hr(),
                           # sectiontitle ---------------------------------
@@ -43,15 +43,16 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_beta", "Change in Beta?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_beta == true",
-                            numericInput("ESSRO_pc_beta_period", "Period of Change in Beta", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_beta_period", "Period of Change in Beta", 10, min = 0),
                             numericInput("ESSRO_pc_beta_newval", "New Value of Beta", 0.4, step = 0.05)),
+                          withMathJax("$$\\varepsilon = 1- \\alpha - \\beta$$"),
                           hr(),
                           # sectiontitle ---------------------------------
-                          numericInput("ESSRO_initparam_popgrowth", "Population Growth", 0.05, step = 0.05),
+                          numericInput("ESSRO_initparam_popgrowth", "Population Growth", 0.01, step = 0.01),
                           checkboxInput("ESSRO_changeinparam_popgrowth", "Change in Population Growth?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_popgrowth == true",
-                            numericInput("ESSRO_pc_popgrowth_period", "Period of Change in Population Growth", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_popgrowth_period", "Period of Change in Population Growth", 10, min = 0),
                             numericInput("ESSRO_pc_popgrowth_newval", "New Value of Population Growth", 0.4, step = 0.05)),
                           hr(),
                           # sectiontitle ---------------------------------
@@ -59,7 +60,7 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_tfpgrowth", "Change in TFP Growth?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_tfpgrowth == true",
-                            numericInput("ESSRO_pc_tfpgrowth_period", "Period of Change in TFP Growth", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_tfpgrowth_period", "Period of Change in TFP Growth", 10, min = 0),
                             numericInput("ESSRO_pc_tfpgrowth_newval", "New Value of TFP Growth", 0.4, step = 0.01)),
                           hr(),
                           # sectiontitle ---------------------------------
@@ -67,7 +68,7 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_energyconsumption", "Change in Energy Consupmtion?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_energyconsumption == true",
-                            numericInput("ESSRO_pc_energyconsumption_period", "Period of Change in Energy Consupmtion", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_energyconsumption_period", "Period of Change in Energy Consupmtion", 10, min = 0),
                             numericInput("ESSRO_pc_energyconsumption_newval", "New Value of Energy Consupmtion", 0.4, step = 0.05)),
                           hr(),
                           # sectiontitle ---------------------------------
@@ -75,7 +76,7 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_savings", "Change in Savings Rate?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_savings == true",
-                            numericInput("ESSRO_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0),
                             numericInput("ESSRO_pc_savings_newval", "New Value of Savings Rate", 0.4, step = 0.05)),
                           hr(),
                           # sectiontitle ---------------------------------
@@ -83,7 +84,7 @@ ESSROTab <-
                           checkboxInput("ESSRO_changeinparam_delta", "Change in Delta?"),
                           conditionalPanel(
                             condition = "input.ESSRO_changeinparam_delta == true",
-                            numericInput("ESSRO_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
+                            numericInput("ESSRO_pc_delta_period", "Period of Change in Delta", 10, min = 0),
                             numericInput("ESSRO_pc_delta_newval", "New Value of Delta", 0.4, step = 0.05)),
                           hr(),
                           )
@@ -111,8 +112,8 @@ ESSROTab <-
       titlePanel("Simulation Data"),
       dataTableOutput("ESSRO_Data"),
       # Correctness Checker ---------------------------------
-      # titlePanel("How does the simulation compare to the theoretic steady state values?"),
-      # dataTableOutput("ESSRO_Correctness_Table")
+      titlePanel("How does the simulation compare to the theoretic steady state values?"),
+      dataTableOutput("ESSRO_Correctness_Table")
       # "To be added."
     )
   ))

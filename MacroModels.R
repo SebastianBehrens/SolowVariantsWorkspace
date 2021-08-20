@@ -91,6 +91,7 @@ source("SimulationFunctions/ESSOE.R")
 source("SimulationFunctions/ESHC.R")
 source("SimulationFunctions/ESSRO.R")
 source("SimulationFunctions/ESSRL.R")
+source("SimulationFunctions/ESSROL.R")
 source("CompareModels.R")
 
 # Essential Sourcing Function ---------------------------------
@@ -165,16 +166,11 @@ shinyApp(
     source("ServerParts/ESHCServer.R", local = TRUE)
     source("ServerParts/ESSROServer.R", local = TRUE)
     # source("ServerParts/ESSRLServer.R", local = TRUE)
+    # source("ServerParts/ESSROLServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
     session$onSessionEnded(stopApp)
   }
 )
-
-
-##########################################3
-###   Mistake in CompareModels.R the startvals cannot be accessed in the advanced create_startvals_list function.
-### create_startvals_list does not read "input" but some atomic vector
-##########################################3
 

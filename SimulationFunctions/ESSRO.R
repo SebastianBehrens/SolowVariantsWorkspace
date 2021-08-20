@@ -97,10 +97,10 @@ SimulateExtendedSolowModelScarceResourceOil <- function(paragrid, np, startvals)
 }
 
 # # Testing
-# testnamel <- c("alpha", "beta", "n", "g", "sE", "s", "delta")
-# testivl <- c(1/3, 1/3, 0.05, 0.02, 0.005, 0.2, 0.1)
-# testpfcl <- c(NA,NA,NA, NA, NA, NA, NA)
-# testnvl <- c(NA, NA, NA, NA, NA, NA, NA)
+# testnamel <- c("alpha", "beta", kappa, "n", "g", "sE", "s", "delta")
+# testivl <- c(1/3, 1/3, 1/3, 0.05, 0.02, 0.005, 0.2, 0.1)
+# testpfcl <- c(NA,NA, NA,NA, NA, NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA)
 # np <- 100
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid <- testgridalt

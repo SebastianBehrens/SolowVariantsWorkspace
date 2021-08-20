@@ -1,5 +1,4 @@
-ESHCTab <- 
-    tabPanel("panetitle", fluid = TRUE, sidebarLayout(
+tabPanel("panetitle", fluid = TRUE, sidebarLayout(
     # Sidebar Panel  ---------------------------------
     sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
                  fluidRow(

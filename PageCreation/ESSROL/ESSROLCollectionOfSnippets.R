@@ -1,0 +1,248 @@
+##########
+           Part: A
+##########
+tabPanel("panetitle", fluid = TRUE, sidebarLayout(
+    # Sidebar Panel  ---------------------------------
+    sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
+                 fluidRow(
+                     column(width = 6,
+                            # Variable Selector ---------------------------------
+                            titlePanel("Variables"),
+                            checkboxGroupInput("ESSROL_vtv", 
+                                               label = "",
+                                               choices = meta_ESSROL_variables, 
+                                               selected = meta_ESSROL_variables[1:5]),
+                            hr(),
+                            # Scale Selector ---------------------------------
+                            selectInput("ESSROL_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
+                            hr(),
+                            # Starting Values ---------------------------------
+                            titlePanel("Starting Values of Stocks"),
+                            # StartingValuesCodeAutoFillLineIndexer
+numericInput("ESSROL_initval_A", "Initial Value of _____________", 5),
+numericInput("ESSROL_initval_K", "Initial Value of _____________", 5),
+numericInput("ESSROL_initval_L", "Initial Value of _____________", 5),
+                     ),
+                     column(width = 6,
+                            # Parameters ---------------------------------
+                            titlePanel("Parameter Values"),
+                            # Periods ---------------------------------
+                            numericInput("ESSROL_nperiods_selected", "Periods", 200, step = 20),
+                            hr(),
+                            # ParameterCodeAutoFillLineIndexer
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_alpha", "Alpha", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_alpha", "Change in Alpha?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_alpha == true", 
+    numericInput("ESSROL_pc_alpha_period", "Period of Change in Alpha", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_alpha_newval", "New Value of Alpha", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_beta", "Beta", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_beta", "Change in Beta?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_beta == true", 
+    numericInput("ESSROL_pc_beta_period", "Period of Change in Beta", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_beta_newval", "New Value of Beta", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_kappa", "Kappa", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_kappa", "Change in Kappa?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_kappa == true", 
+    numericInput("ESSROL_pc_kappa_period", "Period of Change in Kappa", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_kappa_newval", "New Value of Kappa", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_delta", "Delta", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_delta", "Change in Delta?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_delta == true", 
+    numericInput("ESSROL_pc_delta_period", "Period of Change in Delta", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_delta_newval", "New Value of Delta", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_popgrowth", "Population Growth", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_popgrowth", "Change in Population Growth?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_popgrowth == true", 
+    numericInput("ESSROL_pc_popgrowth_period", "Period of Change in Population Growth", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_popgrowth_newval", "New Value of Population Growth", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_savings", "Savings Rate", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_savings", "Change in Savings Rate?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_savings == true", 
+    numericInput("ESSROL_pc_savings_period", "Period of Change in Savings Rate", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_savings_newval", "New Value of Savings Rate", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_energyconsumption", "Energy Consupmtion", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_energyconsumption", "Change in Energy Consupmtion?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_energyconsumption == true", 
+    numericInput("ESSROL_pc_energyconsumption_period", "Period of Change in Energy Consupmtion", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_energyconsumption_newval", "New Value of Energy Consupmtion", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_tfpgrowth", "TFP Growth", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_tfpgrowth", "Change in TFP Growth?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_tfpgrowth == true", 
+    numericInput("ESSROL_pc_tfpgrowth_period", "Period of Change in TFP Growth", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_tfpgrowth_newval", "New Value of TFP Growth", 0.4, step = 0.05)),
+hr(),
+
+
+
+# sectiontitle ---------------------------------
+numericInput("ESSROL_initparam_land", "Land", 0.3, step = 0.05),
+checkboxInput("ESSROL_changeinparam_land", "Change in Land?"),
+conditionalPanel(
+    condition = "input.ESSROL_changeinparam_land == true", 
+    numericInput("ESSROL_pc_land_period", "Period of Change in Land", 10, min = 0, max = 50),
+    numericInput("ESSROL_pc_land_newval", "New Value of Land", 0.4, step = 0.05)),
+hr(),
+
+
+
+                            
+                            # removecomma
+                     )
+                 )),
+    # Main Panel  ---------------------------------
+    mainPanel(
+        # Model Equations  ---------------------------------
+        titlePanel("Model Equations"),
+        withMathJax(),
+# insert math here        
+        p('insertmathhere'),
+        # Visualisation  ---------------------------------
+        # textOutput("test"),
+        titlePanel("Simulation"),
+        plotOutput("ESSROL_Viz", height = "1000px"),
+        # Model Simulation Data ---------------------------------
+        titlePanel("Simulation Data"),
+        dataTableOutput("ESSROL_Data"),
+        # Correctness Checker ---------------------------------
+        titlePanel("How does the simulation compare to the theoretic steady state values?"),
+        dataTableOutput("ESSROL_Correctness_Table")
+    )  
+)),
+##########
+           Part: B
+##########
+ESSROL_parametergrid <- reactive({
+  # Names of Parameters ---------------------------------
+  ESSROL_parameternames <- # replace on own — vector of parameters belong here (as supplied to the createpartb function)
+  # Periods of Changes ---------------------------------
+  ESSROL_parameterchange_period <- c(
+    # auxspot1 (first spot to fill in the code for dynamically created code)
+if(input$ESSROL_changeinparam_alpha) input$ESSROL_pc_alpha_period else NA, 
+if(input$ESSROL_changeinparam_beta) input$ESSROL_pc_beta_period else NA, 
+if(input$ESSROL_changeinparam_kappa) input$ESSROL_pc_kappa_period else NA, 
+if(input$ESSROL_changeinparam_delta) input$ESSROL_pc_delta_period else NA, 
+if(input$ESSROL_changeinparam_popgrowth) input$ESSROL_pc_popgrowth_period else NA, 
+if(input$ESSROL_changeinparam_savings) input$ESSROL_pc_savings_period else NA, 
+if(input$ESSROL_changeinparam_energyconsumption) input$ESSROL_pc_energyconsumption_period else NA, 
+if(input$ESSROL_changeinparam_tfpgrowth) input$ESSROL_pc_tfpgrowth_period else NA, 
+if(input$ESSROL_changeinparam_land) input$ESSROL_pc_land_period else NA, 
+    # removecomma
+    )
+  # Starting Values of Parameters ---------------------------------
+  ESSROL_parameterchange_valuebefore <- c(
+    # auxspot2
+input$ESSROL_initparam_alpha,
+input$ESSROL_initparam_beta,
+input$ESSROL_initparam_kappa,
+input$ESSROL_initparam_delta,
+input$ESSROL_initparam_popgrowth,
+input$ESSROL_initparam_savings,
+input$ESSROL_initparam_energyconsumption,
+input$ESSROL_initparam_tfpgrowth,
+input$ESSROL_initparam_land,
+    # removecomma
+  )
+  # Values of Parameters after Change ---------------------------------
+  ESSROL_parameterchange_valueafter <- c(
+    # auxspot3
+if(input$ESSROL_changeinparam_alpha) input$ESSROL_pc_alpha_newval else NA,
+if(input$ESSROL_changeinparam_beta) input$ESSROL_pc_beta_newval else NA,
+if(input$ESSROL_changeinparam_kappa) input$ESSROL_pc_kappa_newval else NA,
+if(input$ESSROL_changeinparam_delta) input$ESSROL_pc_delta_newval else NA,
+if(input$ESSROL_changeinparam_popgrowth) input$ESSROL_pc_popgrowth_newval else NA,
+if(input$ESSROL_changeinparam_savings) input$ESSROL_pc_savings_newval else NA,
+if(input$ESSROL_changeinparam_energyconsumption) input$ESSROL_pc_energyconsumption_newval else NA,
+if(input$ESSROL_changeinparam_tfpgrowth) input$ESSROL_pc_tfpgrowth_newval else NA,
+if(input$ESSROL_changeinparam_land) input$ESSROL_pc_land_newval else NA,
+    # removecomma
+    )
+  # Creating the Grid ---------------------------------
+  create_parameter_grid(
+    ESSROL_parameternames,
+    ESSROL_parameterchange_valuebefore,
+    ESSROL_parameterchange_period,
+    ESSROL_parameterchange_valueafter,
+    input$ESSROL_nperiods_selected
+  )
+  
+})
+##########
+           Part: C
+##########
+list(
+  #auxspot1
+L = input$ESSROL_initval_L,
+K = input$ESSROL_initval_K,
+A = input$ESSROL_initval_A,
+  # removecomma
+)
+##########
+           Part: D
+##########
+ESSROL_vtv_select_encoded <- reactive({
+  variable_encoder(input$ESSROL_vtv)
+})
+
+ESSROL_aux_data <- reactive({
+    SimulateExtendedSolowModelScarceResourceOilAndLand(ESSROL_parametergrid(), input$ESSROL_nperiods_selected,
+                                           list(K = input$ESSROL_initval_K, L = input$ESSROL_initval_K, A = input$ESSROL_initval_A, H = input$ESSROL_initval_H))
+})
+
+output$ESSROL_Data <- renderDataTable({ESSROL_aux_data() %>% mutate_all(round, digits = 3)})
+
+output$ESSROL_Viz <- renderPlot({
+    VisualiseSimulation(ESSROL_aux_data(), ESSROL_vtv_select_encoded(), input$ESSROL_scales_free_or_fixed)
+})
+
+ESSROL_aux_correcttable <- reactive({
+    simulation_correctness_checker(ESSROL_aux_data()[nrow(ESSROL_aux_data()), ],
+                                   ESSROL_parametergrid()[nrow(ESSROL_parametergrid()), ],
+                                   "ESSROL")
+})
+output$ESSROL_Correctness_Table <- renderDataTable({
+    ESSROL_aux_correcttable()
+})
