@@ -72,9 +72,10 @@ theme_set(
       panel.grid.major.y = element_line(linetype = 2),
       plot.title = element_text(hjust = 0.5),
       text = element_text(family = "serif"),
-      legend.justification = c("right", "top"),
+      # legend.justification = c("right", "top"),
+      legend.position = "top",
       # legend.position = c(1, 1),
-      legend.position = c(.98, .98),
+      # legend.position = c(.98, .98),
       legend.background = element_rect(fill = NA, color = "black"),
       panel.border = element_rect(fill = NA, size = 1.25),
       strip.text = element_text(size = 12)

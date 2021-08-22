@@ -6,7 +6,7 @@ ESHC_vtv_select_encoded <- reactive({
 
 ESHC_aux_data <- reactive({
     SimulateExtendedSolowModelHumanCapital(ESHC_parametergrid_debounced(), input$ESHC_nperiods_selected,
-                                           list(K = input$ESHC_initval_K, L = input$ESHC_initval_K, A = input$ESHC_initval_A, H = input$ESHC_initval_H))
+                                           InitialValueListCodeAutoFillLineIndexer)
 })
 
 output$ESHC_Data <- renderDataTable({ESHC_aux_data() %>% mutate_all(round, digits = 3)})

@@ -437,6 +437,8 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       last_value == steadystate ~ "Equal",
       TRUE ~ "Different"
     ))
+    aux <- aux %>% rename("Theoretic Value" = steadystate,
+                          "Simulated Value" = last_value)
     return(aux)
 
 }
@@ -679,7 +681,31 @@ getRequiredParams <- function(ModelCode) {
   }
   return(out)
 }
-
+getRequiredParams_as_string <- function(ModelCode) {
+    out <- if (ModelCode == "BS") {
+        out <- 'c("B", "alpha", "delta", "n", "s")'
+    } else if (ModelCode == "GS") {
+        out <- 'c("g", "alpha", "delta", "n", "s")'
+    } else if (ModelCode == "ESSOE") {
+        out <- 'c("B", "alpha", "n", "s", "r")'
+    } else if (ModelCode == "ESSRL") {
+        out <- 'c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")'
+    } else if (ModelCode == "ESSRO") {
+        out <- 'c("alpha", "beta", "n", "g", "sE", "s", "delta")'
+    } else if (ModelCode == "ESSROL") {
+        out <- 'c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X")'
+    } else if (ModelCode == "ESHC") {
+        out <- 'c("alpha", "phi", "n", "g", "sK", "sH", "delta")'
+    } else {
+        (
+            out <- NaN
+        )
+    }
+    if (is.na(out[[1]])) {
+        warning("The entered shortcode for a model variant does not exist.")
+    }
+    return(out)
+}
 sourceSimulationFile <- function(ModelCode){
   path_to_source <- paste0("SimulationFunctions/",
                            ModelCode, ".R")

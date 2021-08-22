@@ -1,6 +1,6 @@
 BS_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  BS_parameternames <- # replace on own — vector of parameters belong here (as supplied to the createpartb function)
+  BS_parameternames <- c("B", "alpha", "delta", "n", "s")
   # Periods of Changes ---------------------------------
   BS_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -8,7 +8,7 @@ if(input$BS_changeinparam_TFP) input$BS_pc_TFP_period else NA,
 if(input$BS_changeinparam_alpha) input$BS_pc_alpha_period else NA, 
 if(input$BS_changeinparam_delta) input$BS_pc_delta_period else NA, 
 if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_period else NA, 
-if(input$BS_changeinparam_savings) input$BS_pc_savings_period else NA, 
+if(input$BS_changeinparam_savings) input$BS_pc_savings_period else NA 
     # removecomma
     )
   # Starting Values of Parameters ---------------------------------
@@ -18,7 +18,7 @@ input$BS_initparam_TFP,
 input$BS_initparam_alpha,
 input$BS_initparam_delta,
 input$BS_initparam_popgrowth,
-input$BS_initparam_savings,
+input$BS_initparam_savings
     # removecomma
   )
   # Values of Parameters after Change ---------------------------------
@@ -28,7 +28,7 @@ if(input$BS_changeinparam_TFP) input$BS_pc_TFP_newval else NA,
 if(input$BS_changeinparam_alpha) input$BS_pc_alpha_newval else NA,
 if(input$BS_changeinparam_delta) input$BS_pc_delta_newval else NA,
 if(input$BS_changeinparam_popgrowth) input$BS_pc_popgrowth_newval else NA,
-if(input$BS_changeinparam_savings) input$BS_pc_savings_newval else NA,
+if(input$BS_changeinparam_savings) input$BS_pc_savings_newval else NA
     # removecomma
     )
   # Creating the Grid ---------------------------------

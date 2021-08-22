@@ -3,12 +3,14 @@
 
 ComparingModels_Paragrid1 <- reactive({
   create_parameter_grid_advanced(input$ComparingModels_VariantSelection1,
-                                 input$ComparingModels1_periods,
+                                 200,
+                                 # input$ComparingModels1_periods,
                                  1, input)
 })
 ComparingModels_Paragrid2 <- reactive({
   create_parameter_grid_advanced(input$ComparingModels_VariantSelection2,
-                                 input$ComparingModels1_periods,
+                                 200,
+                                 # input$ComparingModels1_periods,
                                  2, input)
 })
 
@@ -46,11 +48,11 @@ ComparingModels_Visualisation <- reactive({
     ModelComparison_VariableSelectionEncoded(),
     ComparingModels_Paragrid1(),
     ComparingModels_Paragrid2(),
-    ComparingModels_StartVals1(), ComparingModels_StartVals2(), input$ComparingModels1_periods, input$ComparingModels2_periods
+    ComparingModels_StartVals1(), ComparingModels_StartVals2(), 200, 200
   )
 })
-ComparingModels_Visualisation_debounced <- ComparingModels_Visualisation %>% debounce(500)
+# ComparingModels_Visualisation_debounced <- ComparingModels_Visualisation %>% debounce(500)
 
 output$ComparisonVisualisation <- renderPlot({
-  ComparingModels_Visualisation_debounced()
+  ComparingModels_Visualisation()
 })

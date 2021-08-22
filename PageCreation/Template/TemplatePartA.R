@@ -1,7 +1,7 @@
 ESHCTab <- 
     tabPanel("panetitle", fluid = TRUE, sidebarLayout(
     # Sidebar Panel  ---------------------------------
-    sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height: 90%;",
+    sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height:90%;padding-bottom:100px;",
                  fluidRow(
                      column(width = 6,
                             # Variable Selector ---------------------------------
@@ -13,20 +13,20 @@ ESHCTab <-
                             hr(),
                             # Scale Selector ---------------------------------
                             selectInput("ESHC_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
-                            hr(),
-                            # Starting Values ---------------------------------
-                            titlePanel("Starting Values of Stocks"),
-                            # StartingValuesCodeAutoFillLineIndexer
+                            hr()
                      ),
                      column(width = 6,
                             # Periods ---------------------------------
                             numericInput("ESHC_nperiods_selected", "Periods", 200, step = 20),
                             hr(),
+                            # Starting Values ---------------------------------
+                            titlePanel("Starting Values of Stocks"),
+                            # StartingValuesCodeAutoFillLineIndexer
+                            
                             # Parameters ---------------------------------
                             titlePanel("Parameter Values"),
                             # ParameterCodeAutoFillLineIndexer
                             
-                            # removecomma
                      )
                  )),
     # Main Panel  ---------------------------------
@@ -34,8 +34,7 @@ ESHCTab <-
         # Model Equations  ---------------------------------
         titlePanel("Model Equations"),
         withMathJax(),
-# insert math here        
-        p('insertmathhere'),
+# insert math here
         # Visualisation  ---------------------------------
         # textOutput("test"),
         titlePanel("Simulation"),

@@ -21,9 +21,9 @@ ComparisonTab <-
                                      ),
                                      "BS"
                                    ),
-                                   # Periods ---------------------------------
-                                   numericInput("ComparingModels1_periods", "Periods", 200, step = 20),
-                                   hr(),
+                                   # # Periods ---------------------------------
+                                   # numericInput("ComparingModels1_periods", "Periods", 200, step = 20),
+                                   # hr(),
                                    getShinyPart("D", "BS", 1),
                                    getShinyPart("D", "GS", 1),
                                    getShinyPart("D", "ESSOE", 1),
@@ -45,9 +45,9 @@ ComparisonTab <-
                                        ),
                                        "GS"
                                    ),
-                                   # Periods ---------------------------------
-                                   numericInput("ComparingModels2_periods", "Periods", 200, step = 20),
-                                   hr(),
+                                   # # Periods ---------------------------------
+                                   # numericInput("ComparingModels2_periods", "Periods", 200, step = 20),
+                                   # hr(),
                                    getShinyPart("D", "BS", 2),
                                    getShinyPart("D", "GS", 2),
                                    getShinyPart("D", "ESSOE", 2),
