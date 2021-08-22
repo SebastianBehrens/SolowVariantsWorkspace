@@ -23,7 +23,7 @@ compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelect
     geom_line() +
     facet_wrap(~Variable, scales = "free", ncol = 2) +
     labs(x = "Period", y = "Value")
-
+  
   return(visualisation)
 }
 
