@@ -20,7 +20,7 @@ The 'second layer' is/are the simulation functions created in solow-variant-sepa
 
 In every simulation function (one to each solow variant) one starts by defining the endogeneous variables within a model and all variations thereof (logs, growth rates, per worker version, per efficient worker,...). 
 
-Every simulation function does the following steps:
+Every simulation function follows the following steps:
 
 1. Fill a table (so-called simulation table — `sim_table` — which is the main table for the simulation of all variables) with $n+1$ rows (period $0$ and $n$ periods) with `NA`s
 2. Fill in start values to the simulation
