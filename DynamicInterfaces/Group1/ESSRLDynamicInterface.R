@@ -26,14 +26,6 @@ conditionalPanel(
     numericInput("ComparingModels1_ESSRL_parameterchange_valueafter_beta", "New Value of Beta", 3/5, step = 0.05)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_kappa", "Kappa", 2/5, step = 0.05),
-checkboxInput("ComparingModels1_ESSRL_parameterchange_indicator_kappa", "Change in Kappa?"),
-conditionalPanel(
-    condition = "input.ComparingModels1_ESSRL_parameterchange_indicator_kappa == true", 
-    numericInput("ComparingModels1_ESSRL_parameterchange_period_kappa", "Period of Change in Kappa", 50, min = 0),
-    numericInput("ComparingModels1_ESSRL_parameterchange_valueafter_kappa", "New Value of Kappa", 3/5, step = 0.05)),
-hr(),
-# sectiontitle ---------------------------------
 numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_delta", "Delta", 0.15, step = 0.05),
 checkboxInput("ComparingModels1_ESSRL_parameterchange_indicator_delta", "Change in Delta?"),
 conditionalPanel(
