@@ -1,12 +1,11 @@
 ESSRL_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESSRL_parameternames <- c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
+  ESSRL_parameternames <- c("alpha", "beta", "delta", "n", "s", "g", "X")
   # Periods of Changes ---------------------------------
   ESSRL_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
 if(input$ESSRL_changeinparam_alpha) input$ESSRL_pc_alpha_period else NA, 
 if(input$ESSRL_changeinparam_beta) input$ESSRL_pc_beta_period else NA, 
-if(input$ESSRL_changeinparam_kappa) input$ESSRL_pc_kappa_period else NA, 
 if(input$ESSRL_changeinparam_delta) input$ESSRL_pc_delta_period else NA, 
 if(input$ESSRL_changeinparam_popgrowth) input$ESSRL_pc_popgrowth_period else NA, 
 if(input$ESSRL_changeinparam_savings) input$ESSRL_pc_savings_period else NA, 
@@ -18,7 +17,6 @@ if(input$ESSRL_changeinparam_land) input$ESSRL_pc_land_period else NA
     # auxspot2
 input$ESSRL_initparam_alpha,
 input$ESSRL_initparam_beta,
-input$ESSRL_initparam_kappa,
 input$ESSRL_initparam_delta,
 input$ESSRL_initparam_popgrowth,
 input$ESSRL_initparam_savings,
@@ -30,7 +28,6 @@ input$ESSRL_initparam_land
     # auxspot3
 if(input$ESSRL_changeinparam_alpha) input$ESSRL_pc_alpha_newval else NA,
 if(input$ESSRL_changeinparam_beta) input$ESSRL_pc_beta_newval else NA,
-if(input$ESSRL_changeinparam_kappa) input$ESSRL_pc_kappa_newval else NA,
 if(input$ESSRL_changeinparam_delta) input$ESSRL_pc_delta_newval else NA,
 if(input$ESSRL_changeinparam_popgrowth) input$ESSRL_pc_popgrowth_newval else NA,
 if(input$ESSRL_changeinparam_savings) input$ESSRL_pc_savings_newval else NA,
@@ -44,10 +41,9 @@ if(input$ESSRL_changeinparam_land) input$ESSRL_pc_land_newval else NA
     ESSRL_parameterchange_period,
     ESSRL_parameterchange_valueafter,
     input$ESSRL_nperiods_selected
-  )
-  
+  ) 
 })
-ESSRL_parametergrid_debounced <- ESSRL_parametergrid %>% debounce(1000)
+ESSRL_parametergrid_debounced <- ESSRL_parametergrid %>% debounce(500)
 
 ESSRL_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSRL_vtv)
@@ -55,14 +51,18 @@ ESSRL_vtv_select_encoded <- reactive({
 
 ESSRL_aux_data <- reactive({
   SimulateExtendedSolowModelScarceResourceLand(
-    ESSRL_parametergrid(), input$ESSRL_nperiods_selected,
+    ESSRL_parametergrid_debounced(), input$ESSRL_nperiods_selected,
     list(L = input$ESSRL_initval_L, K = input$ESSRL_initval_K, A = input$ESSRL_initval_A)
   )
 })
 
-output$ESSRL_Data <- renderDataTable({
-  ESSRL_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESSRL_Data <- renderDataTable(
+  ESSRL_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESSRL_Viz <- renderPlot({
   VisualiseSimulation(ESSRL_aux_data(), ESSRL_vtv_select_encoded(), input$ESSRL_scales_free_or_fixed)

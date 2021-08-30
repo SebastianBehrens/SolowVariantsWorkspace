@@ -150,7 +150,7 @@ ESSROLTab <-
       # insert math here
       '$$
 \\begin{aligned}
-Y_t &= K_t^\\alpha  * (A_t * L_t)^{(1- \\beta)} * X^\\kappa * E_t^\\varepsilon : \\alpha + \\beta + \\varepsilon + \\kappa= 1 \\\\
+Y_t &= K_t^\\alpha  * (A_t * L_t)^{(1- \\beta)} * X^\\kappa * E_t^\\varepsilon : \\alpha + \\beta  + \\kappa + \\varepsilon = 1 \\\\
 E_t &= s_ER_t\\\\
 R_t &= R_{t-1} - E_{t-1}\\\\
 K_{t+1} &= s_KY_t + (1-\\delta)K_{t} \\\\

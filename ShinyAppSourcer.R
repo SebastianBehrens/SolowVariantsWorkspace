@@ -1,9 +1,9 @@
 getShinyPart <- function(kind, which, n_ModelComparison=0) {
     # kind for "server" or "tab"
     # which for the abbreviation of the respective part
-    # kind <- "S"
-    # which <- "BS"
-    # n_ModelComparison <- 1
+    
+    # stitches path to source file together and then returns the shiny frontend ui code. (for comparison tab (kind "D") all 'parts' returned but only the conditionally triggered one actually appearing.)
+
     if (kind %in% c("S", "T", "D")) {} else {
         stop("The entered value for 'kind' in getShinyPart() is not defined.")
     }
@@ -28,3 +28,9 @@ getShinyPart <- function(kind, which, n_ModelComparison=0) {
         return(get(paste0(which, "DynamicInterface")))
     }
 }
+
+# getShinyPart("D", "GS", 1)
+
+# kind <- "D"
+# which <- "GS"
+# n_ModelComparison <- 1

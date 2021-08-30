@@ -58,18 +58,6 @@ ESSRLTab <-
 
 
           # sectiontitle ---------------------------------
-          numericInput("ESSRL_initparam_kappa", "Kappa", 2 / 5, step = 0.05),
-          checkboxInput("ESSRL_changeinparam_kappa", "Change in Kappa?"),
-          conditionalPanel(
-            condition = "input.ESSRL_changeinparam_kappa == true",
-            numericInput("ESSRL_pc_kappa_period", "Period of Change in Kappa", 50, min = 0),
-            numericInput("ESSRL_pc_kappa_newval", "New Value of Kappa", 3 / 5, step = 0.05)
-          ),
-          hr(),
-
-
-
-          # sectiontitle ---------------------------------
           numericInput("ESSRL_initparam_delta", "Delta", 0.15, step = 0.05),
           checkboxInput("ESSRL_changeinparam_delta", "Change in Delta?"),
           conditionalPanel(
@@ -134,7 +122,6 @@ ESSRLTab <-
       # Model Equations  ---------------------------------
       titlePanel("Model Equations"),
       withMathJax(),
-      # insert math here
       '$$
 \\begin{aligned}
 Y_t &= K_t^\\alpha  * (A_t * L_t)^{(1- \\beta)} * X_t^\\kappa: \\alpha + \\beta + \\kappa = 1 \\\\
