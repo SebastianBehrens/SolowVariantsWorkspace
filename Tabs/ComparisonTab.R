@@ -14,21 +14,23 @@ ComparisonTab <-
                                        "Basic Solow Model" = "BS",
                                        "General Solow Model" = "GS",
                                        "Extended Solow Model for a Small Open Economy" = "ESSOE",
-                                       "Solow Model with Human Capital" = "ESHC",
-                                       # "Solow Model with Scarce Resources (Land)" = "ESSRL",
-                                       "Solow Model with Scarce Resources (Oil)" = "ESSRO"
-                                       # "Solow Model with Scarce Resources (Oil and Land)" = "ESSROL"
+                                       "Extended Solow Model with Human Capital" = "ESHC",
+                                       "Extended Solow Model with Scarce Resources (Oil)" = "ESSRO",
+                                       "Solow Model with Scarce Resources (Land)" = "ESSRL",
+                                       "Solow Model with Scarce Resources (Oil and Land)" = "ESSROL"
                                      ),
                                      "BS"
                                    ),
-                                   # # Periods ---------------------------------
-                                   # numericInput("ComparingModels1_periods", "Periods", 200, step = 20),
-                                   # hr(),
+                                   # Periods ---------------------------------
+                                   numericInput("ComparingModels1_periods", "Periods", 200, step = 20),
+                                   hr(),
                                    getShinyPart("D", "BS", 1),
                                    getShinyPart("D", "GS", 1),
                                    getShinyPart("D", "ESSOE", 1),
                                    getShinyPart("D", "ESHC", 1),
-                                   getShinyPart("D", "ESSRO", 1)
+                                   getShinyPart("D", "ESSRO", 1),
+                                   getShinyPart("D", "ESSRL", 1),
+                                   getShinyPart("D", "ESSROL", 1)
                             ),
                             column(6,
                                    selectInput(
@@ -39,20 +41,22 @@ ComparisonTab <-
                                            "General Solow Model" = "GS",
                                            "Extended Solow Model for a Small Open Economy" = "ESSOE",
                                            "Solow Model with Human Capital" = "ESHC",
-                                           # "Solow Model with Scarce Resources (Land)" = "ESSRL",
-                                           "Solow Model with Scarce Resources (Oil)" = "ESSRO"
-                                           # "Solow Model with Scarce Resources (Oil and Land)" = "ESSROL"
+                                           "Solow Model with Scarce Resources (Oil)" = "ESSRO",
+                                           "Solow Model with Scarce Resources (Land)" = "ESSRL",
+                                           "Solow Model with Scarce Resoures (Oil and Land)" = "ESSROL"
                                        ),
                                        "GS"
                                    ),
-                                   # # Periods ---------------------------------
-                                   # numericInput("ComparingModels2_periods", "Periods", 200, step = 20),
-                                   # hr(),
+                                   # Periods ---------------------------------
+                                   numericInput("ComparingModels2_periods", "Periods", 200, step = 20),
+                                   hr(),
                                    getShinyPart("D", "BS", 2),
                                    getShinyPart("D", "GS", 2),
                                    getShinyPart("D", "ESSOE", 2),
                                    getShinyPart("D", "ESHC", 2),
-                                   getShinyPart("D", "ESSRO", 2)
+                                   getShinyPart("D", "ESSRO", 2),
+                                   getShinyPart("D", "ESSRL", 2),
+                                   getShinyPart("D", "ESSROL", 2)
                                    ),
                             column(12, 
                                    titlePanel("Shared Variables"),
