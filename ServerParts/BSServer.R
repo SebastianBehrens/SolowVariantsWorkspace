@@ -51,9 +51,12 @@ BS_aux_data <- reactive({
   )
 })
 
-output$BS_Data <- renderDataTable({
-  BS_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$BS_Data <- renderDataTable(
+  BS_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  ))
 
 output$BS_Viz <- renderPlot({
   VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$BS_scales_free_or_fixed)
