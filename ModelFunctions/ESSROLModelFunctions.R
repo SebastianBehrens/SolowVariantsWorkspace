@@ -7,16 +7,12 @@ ESSROL_MF_E <- function(sE, R){sE * R}
 ESSROL_MF_AN <- function(g, A){(1+g) * A}
 # ESSRO_MF_RR <- function(){}
 # ESSRO_MF_WR <- function(){}
-# 
-# GS_SS_KpW <- function(s, n, g, delta, alpha, A){A * (s/(n + g + delta + n*g))^(1/(1-alpha))}
-# GS_SS_YpW <- function(s, n, g, delta, alpha, A){A * (s/(n + g + delta + n*g))^(alpha/(1-alpha))}
-# 
-# GS_SS_KpEW <- function(s, n, g, delta, alpha){(s/(n + g + delta + n*g))^(1/(1-alpha))}
-# GS_SS_YpEW <- function(s, n, g, delta, alpha, A){(s/(n + g + delta + n*g))^(alpha/(1-alpha))}
-# GS_SS_CpW <- function(YpW, s){(1-s)*YpW}
-# GS_SS_RR <- function(alpha, s, n, g, delta){alpha * (s/(n + g + delta + n * g))^(-1)}
-# GS_SS_WR <- function(alpha, s, n, g, delta, A){A * (1- alpha) * (s/(n + g + delta + n * g))^(alpha/(1-alpha))}
 
+ESSROL_SS_gY <- function(alpha, beta, kappa, n, g, sE){
+    (beta/(beta + kappa + (1- alpha - beta - kappa)))* g - 
+        ((kappa + (1- alpha - beta- kappa))/(beta + kappa + (1- alpha - beta - kappa))) * n - 
+        ((1- alpha - beta- kappa)/(beta + kappa  + (1- alpha - beta - kappa))) * sE
+}
 
 # Remark regarding dynamics of E and R
 # R_0 => E_1 = s_ER_0 => R_1=R_0 - E_1 => E_2=sER_1 => ...
