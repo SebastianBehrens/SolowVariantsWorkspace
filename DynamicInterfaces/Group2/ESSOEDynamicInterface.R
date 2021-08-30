@@ -1,5 +1,5 @@
 ESSOEDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSOE'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'ESSOE'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer

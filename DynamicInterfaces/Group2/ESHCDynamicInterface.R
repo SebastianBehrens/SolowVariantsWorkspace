@@ -1,5 +1,5 @@
 ESHCDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESHC'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'ESHC'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer

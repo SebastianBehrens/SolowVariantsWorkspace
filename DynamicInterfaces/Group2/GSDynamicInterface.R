@@ -1,5 +1,5 @@
 GSDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'GS'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'GS'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer

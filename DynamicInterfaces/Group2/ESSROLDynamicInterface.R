@@ -1,5 +1,5 @@
 ESSROLDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSROL'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'ESSROL'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer

@@ -1,5 +1,5 @@
 BSDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'BS'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'BS'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
