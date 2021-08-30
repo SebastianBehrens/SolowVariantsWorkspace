@@ -154,8 +154,8 @@ shinyApp(
       getShinyPart("T", "ESSOE"),
       getShinyPart("T", "ESHC"),
       getShinyPart("T", "ESSRO"),
-      # getShinyPart("T", "ESSRL"),
-      # getShinyPart("T", "ESSROL"),
+      getShinyPart("T", "ESSRL"),
+      getShinyPart("T", "ESSROL"),
       getShinyPart("T", "Comparison")
     )
   ),
@@ -166,8 +166,8 @@ shinyApp(
     source("ServerParts/ESSOEServer.R", local = TRUE)
     source("ServerParts/ESHCServer.R", local = TRUE)
     source("ServerParts/ESSROServer.R", local = TRUE)
-    # source("ServerParts/ESSRLServer.R", local = TRUE)
-    # source("ServerParts/ESSROLServer.R", local = TRUE)
+    source("ServerParts/ESSRLServer.R", local = TRUE)
+    source("ServerParts/ESSROLServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
