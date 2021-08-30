@@ -11,8 +11,10 @@ compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelect
   simulation1 <- doCall(getSimFunction(ModelCode1), args = list(paragrid = ParameterGrid1, np = NumberPeriods1, startvals = StartValues1))
   simulation2 <- doCall(getSimFunction(ModelCode2), args = list(paragrid = ParameterGrid2, np = NumberPeriods2, startvals = StartValues2))
   
-  combined <- simulation1 %>% mutate(Variant = ModelCode1) %>% 
-    bind_rows(simulation2 %>% mutate(Variant = ModelCode2))
+  sameModelCode <- ModelCode1 == ModelCode2
+  combined <- simulation1 %>% mutate(Variant = ifelse(sameModelCode, paste0(ModelCode1, "1"), ModelCode1)) %>% 
+    bind_rows(simulation2 %>% mutate(Variant = ifelse(sameModelCode, paste0(ModelCode1, "2"), ModelCode2))
+              )
   
   visualisation <- combined %>% 
     mutate(Variant = factor(Variant)) %>%
@@ -20,7 +22,7 @@ compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelect
     pivot_longer(-c("period", "Variant"), names_to = "Variable") %>%
     mutate(Variable = as.factor(Variable)) %>%
     ggplot(aes(period, value, col = Variant, group = Variant)) +
-    geom_line() +
+    geom_line(alpha = 0.75) +
     facet_wrap(~Variable, scales = "free", ncol = 2) +
     labs(x = "Period", y = "Value")
   
@@ -38,19 +40,21 @@ compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelect
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid1 <- testgridalt
 # startvals1 <- list(K = 1, L = 1, A = 1)
-# # ESSRL
-# testnamel <-c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
+# # ESSROL
+# testnamel <-c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X")
 # testivl <- c(0.33, 0.2, 0.2, 0.1, 0.02, 0.2, 0.05, 0.05, 5)
-# testpfcl <- c(NA,NA,NA, NA, NA, NA, NA, NA)
-# testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA)
+# testpfcl <- c(NA,NA,NA, NA, NA, NA, NA, NA, NA)
+# testnvl <- c(NA, NA, NA, NA, NA, NA, NA, NA, NA)
 # np <- 100
 # testgridalt <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, np)
 # paragrid2 <- testgridalt
-# startvals2 <- list(L = 1, K = 1, A = 1)
-# 
-# compareEconomies("GS", "ESSRL", var_selection, paragrid1, paragrid2, startvals1, startvals2, 50, 100)
+# startvals2 <- list(L = 1, K = 1, A = 1, R = 1)
+# var_selection <- getVariablesAvailableToBeVisualised("GS", "ESSROL") %>% sample(5) %>% variable_encoder()
+# # SimulateExtendedSolowModelScarceResourceOilAndLand(paragrid2, np, startvals2)
+# # 
+# compareEconomies("GS", "ESSROL", var_selection, paragrid1, paragrid2, startvals1, startvals2, 50, 100)
 # ModelCode1 <- "GS"
-# ModelCode2 <- "ESSRL"
+# ModelCode2 <- "ESSROL"
 # VariablesToVisualise <- "a"
 # ParameterGrid1 <- paragrid1
 # ParameterGrid2 <- paragrid2
@@ -58,5 +62,4 @@ compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelect
 # StartValues2 <- startvals2
 # NumberPeriods1 <- 50
 # NumberPeriods2 <- 100
-# 
-# var_selection <- names(combined)[c(4, 6, 12, 9,   24, 26)]
+# VariableVisualisationSelection <- var_selection
