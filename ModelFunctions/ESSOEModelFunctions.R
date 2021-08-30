@@ -1,4 +1,4 @@
-# Extended Solow Model (Small Open Economy) Functions ---------------------------------
+# Model Functions of Extended Solow Growth Model for the Small and Open Economy ---------------------------------
 ESSOE_MF_LN <- function(n, L){(1+n) * L}
 ESSOE_MF_RR <- function(B, K, L, alpha){alpha * B * (K/(L))^(alpha - 1)}
 ESSOE_MF_WR <- function(B, K, L, alpha){B* (1-alpha) * (K/(L))^alpha}

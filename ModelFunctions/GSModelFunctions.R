@@ -1,4 +1,4 @@
-# General Solow Model Functions ---------------------------------
+# Model Functions of General Solow Growth Model ---------------------------------
 GS_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
 GS_MF_LN <- function(n, L){(1+n) * L}
 GS_MF_AN <- function(g, A){(1+g) * A}

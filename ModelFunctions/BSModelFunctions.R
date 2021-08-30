@@ -1,4 +1,4 @@
-# Basic Model Functions ---------------------------------
+# Model Functions of Basic Solow Model ---------------------------------
 BS_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
 BS_MF_LN <- function(n, L){(1+n) * L}
 BS_MF_RR <- function(B, K, L, alpha){alpha * B * (K/L)^(alpha - 1)}

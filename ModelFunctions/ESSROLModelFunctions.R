@@ -1,4 +1,4 @@
-# Extended Solow Model with Scarce Resource Oil and Land  ---------------------------------
+# Model Functions of Extended Solow Growth Model with the Scarce Resources Oil and Land ---------------------------------
 ESSROL_MF_Y <- function(A, K, L, E, X, alpha, beta, kappa){K^alpha * (A*L)^(beta) * X^kappa * E^(1-alpha-beta-kappa)}
 ESSROL_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
 ESSROL_MF_LN <- function(n, L){(1+n) * L}

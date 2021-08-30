@@ -1,5 +1,4 @@
-# Extended Solow with Human Capital Model Functions ---------------------------------
-
+# Model Functions of Extended Solow Growth Model with Human Capital ---------------------------------
 ESHC_MF_KN <- function(sK, Y, delta, K){sK * Y + (1-delta)*K}
 ESHC_MF_HN <- function(sH, Y, delta, H){sH * Y + (1-delta)*H}
 ESHC_MF_LN <- function(n, L){(1+n) * L}

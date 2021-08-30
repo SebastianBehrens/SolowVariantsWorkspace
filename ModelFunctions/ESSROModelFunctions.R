@@ -1,4 +1,4 @@
-# General Solow Model Functions ---------------------------------
+# Model Functions of Extended Solow Growth Model with the Scarce Resource Oil ---------------------------------
 ESSRO_MF_Y <- function(A, K, L, E, alpha, beta){K^alpha * (A*L)^(beta) * E^(1- alpha - beta)}
 ESSRO_MF_KN <- function(s, Y, delta, K){s * Y + (1-delta)*K}
 ESSRO_MF_LN <- function(n, L){(1+n) * L}
