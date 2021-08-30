@@ -63,9 +63,13 @@ ESSROL_aux_data <- reactive({
   )
 })
 
-output$ESSROL_Data <- renderDataTable({
-  ESSROL_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESSROL_Data <- renderDataTable(
+  ESSROL_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESSROL_Viz <- renderPlot({
   VisualiseSimulation(ESSROL_aux_data(), ESSROL_vtv_select_encoded(), input$ESSROL_scales_free_or_fixed)
