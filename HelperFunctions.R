@@ -193,6 +193,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     technology <- sim_data[["TFP"]]
   }else if(technology_variant == "exo"){
     technology <- parameter_data[["B"]]
+  }else if(technology_variant == "special"){
+    technology <- sim_data[["K"]]^(parameter_data[["phi"]])
   }else{
     stop("Technology location unclear")
   }
@@ -281,8 +283,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     }
     # WR, RR for ESSOE ---------------------------------
     if(solowversion == "ESSOE") {
-      if (i == "WR") {
         source("ModelFunctions/ESSOEModelFunctions.R")
+      if (i == "WR") {
         sim_data[["WR"]] <- ESSOE_MF_WR(technology,
                                      sim_data[["K"]],
                                      sim_data[["L"]],
@@ -299,8 +301,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     } 
       # WR, RR for ESHC ---------------------------------
       if(solowversion == "ESHC") {
-        if (i == "WR") {
           source("ModelFunctions/ESHCModelFunctions.R")
+        if (i == "WR") {
           sim_data[["WR"]] <- ESHC_MF_WR(technology,
                                          sim_data[["H"]],
                                          sim_data[["K"]],
@@ -318,21 +320,24 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
                                          parameter_data[["alpha"]],
                                          parameter_data[["phi"]])
         }
+        
+        
+        
       
       
       
       }
     # WR, RR for ESSRL ---------------------------------
     if(solowversion == "ESSRL") {
-      if (i == "WR") {
         source("ModelFunctions/ESSRLModelFunctions.R")
+      if (i == "WR") {
         sim_data[["WR"]] <- ESSRL_MF_WR(technology,
                                         sim_data[["K"]],
                                         sim_data[["L"]],
                                         parameter_data[["X"]],
                                         parameter_data[["alpha"]],
-                                        parameter_data[["beta"]],
-                                        parameter_data[["kappa"]])
+                                        parameter_data[["beta"]]
+                                        )
       }
       # Rental Rate
       if (i == "RR") {
@@ -341,7 +346,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
                                         sim_data[["L"]],
                                         parameter_data[["X"]],
                                         parameter_data[["alpha"]],
-                                        parameter_data[["kappa"]])
+                                        parameter_data[["beta"]])
       }
       # Land Rental Rate
       if (i == "LR") {
@@ -350,7 +355,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
                                         sim_data[["L"]],
                                         parameter_data[["X"]],
                                         parameter_data[["alpha"]],
-                                        parameter_data[["kappa"]])
+                                        parameter_data[["beta"]])
       }
       
       
@@ -358,8 +363,8 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
     }
     # WR, RR for ESSRO ---------------------------------
     if(solowversion == "ESSRO") {
-      if (i == "WR") {
         source("ModelFunctions/ESSROModelFunctions.R")
+      if (i == "WR") {
         # The _WR and _RR functions don't exist yet, I will need to compute them by hand first. They are not given in the book.
         # sim_data[["WR"]] <- ESSRO_MF_WR()
         
@@ -368,6 +373,36 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
       if (i == "RR") {
         # sim_data[["RR"]] <- ESSRO_MF_RR()
       }
+      
+      
+      
+    }
+    
+    # WR, RR and TFP for ESEG ---------------------------------
+    if(solowversion == "ESEG") {
+        source("ModelFunctions/ESEGModelFunctions.R")
+      if(i == "TFP"){
+        sim_data[["TFP"]] <- sim_data[["K"]]^parameter_data[["phi"]]
+      }
+      if (i == "WR") {
+        # sim_data[["WR"]] <- ESEG_MF_WR(technology,
+        #                                sim_data[["H"]],
+        #                                sim_data[["K"]],
+        #                                sim_data[["L"]],
+        #                                parameter_data[["alpha"]],
+        #                                parameter_data[["phi"]])
+        # 
+      }
+      # Rental Rate
+      if (i == "RR") {
+        # sim_data[["RR"]] <- ESEG_MF_RR(technology,
+        #                                sim_data[["H"]],
+        #                                sim_data[["K"]],
+        #                                sim_data[["L"]],
+        #                                parameter_data[["alpha"]],
+        #                                parameter_data[["phi"]])
+      }
+      
       
       
       
@@ -393,13 +428,14 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
         s = last_row_parameter[["s"]],
         sK = last_row_parameter[["sK"]],
         sH = last_row_parameter[["sH"]],
+        sE = last_row_parameter[["sE"]],
         n = last_row_parameter[["n"]],
         B = last_row_parameter[["B"]],
         r = last_row_parameter[["r"]],
         g = last_row_parameter[["g"]],
         alpha = last_row_parameter[["alpha"]],
         beta = last_row_parameter[["beta"]],
-        kappa = last_row_parameter[["kappa"]],
+        kappa = last_row_parameter[["kappa"]], 
         phi = last_row_parameter[["phi"]],
         YpW = last_row_simulation[["YpW"]],
         RR = last_row_simulation[["RR"]],
@@ -424,7 +460,15 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       aux_steadystate_variables <- c("CtO", "YpW") # WR and RR missing
     }else if(solow_variant == "ESSRO"){
       aux_steadystate_variables <- c("YpW")
-     }
+    }else if(solow_variant == "ESSROL"){
+      aux_steadystate_variables <- c("gY")
+    }else if(solow_variant == "ESEG"){
+      if(last_row_parameter[["phi"]] < 0.95){
+      aux_steadystate_variables <- c("KpEW", "gYpW")
+      }else if(last_row_parameter[["phi"]] %>% between(0.95, 1)){
+      aux_steadystate_variables <- c("gYpW")
+      }
+    }
     
     for(i in aux_steadystate_variables){
       aux_function_name <- paste(solow_variant, "_SS_", i, sep = "")
@@ -438,7 +482,8 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
       TRUE ~ "Different"
     ))
     aux <- aux %>% rename("Theoretic Value" = steadystate,
-                          "Simulated Value" = last_value)
+                          "Simulated Value" = last_value,
+                          "Variable" = variable)
     return(aux)
 
 }
@@ -664,7 +709,7 @@ getRequiredParams <- function(ModelCode) {
   } else if (ModelCode == "ESSOE") {
     out <- c("B", "alpha", "n", "s", "r")
   } else if (ModelCode == "ESSRL") {
-    out <- c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")
+    out <- c("alpha", "beta", "delta", "n", "s", "g", "X")
   } else if (ModelCode == "ESSRO") {
     out <- c("alpha", "beta", "n", "g", "sE", "s", "delta")
   } else if (ModelCode == "ESSROL") {
@@ -689,7 +734,7 @@ getRequiredParams_as_string <- function(ModelCode) {
     } else if (ModelCode == "ESSOE") {
         out <- 'c("B", "alpha", "n", "s", "r")'
     } else if (ModelCode == "ESSRL") {
-        out <- 'c("alpha", "beta", "kappa", "delta", "n", "s", "g", "X")'
+        out <- 'c("alpha", "beta", "delta", "n", "s", "g", "X")'
     } else if (ModelCode == "ESSRO") {
         out <- 'c("alpha", "beta", "n", "g", "sE", "s", "delta")'
     } else if (ModelCode == "ESSROL") {
