@@ -1,5 +1,5 @@
 ESSRLDynamicInterface <- 
-    conditionalPanel(condition = "input.ComparingModels_VariantSelection1 == 'ESSRL'",
+    conditionalPanel(condition = "input.ComparingModels_VariantSelection2 == 'ESSRL'",
                                        # Starting Values ---------------------------------
                                        titlePanel("Starting Values of Stocks"),
                                        # StartingValuesCodeAutoFillLineIndexer
@@ -24,14 +24,6 @@ conditionalPanel(
     condition = "input.ComparingModels2_ESSRL_parameterchange_indicator_beta == true", 
     numericInput("ComparingModels2_ESSRL_parameterchange_period_beta", "Period of Change in Beta", 50, min = 0),
     numericInput("ComparingModels2_ESSRL_parameterchange_valueafter_beta", "New Value of Beta", 3/5, step = 0.05)),
-hr(),
-# sectiontitle ---------------------------------
-numericInput("ComparingModels2_ESSRL_parameterchange_valuebefore_kappa", "Kappa", 2/5, step = 0.05),
-checkboxInput("ComparingModels2_ESSRL_parameterchange_indicator_kappa", "Change in Kappa?"),
-conditionalPanel(
-    condition = "input.ComparingModels2_ESSRL_parameterchange_indicator_kappa == true", 
-    numericInput("ComparingModels2_ESSRL_parameterchange_period_kappa", "Period of Change in Kappa", 50, min = 0),
-    numericInput("ComparingModels2_ESSRL_parameterchange_valueafter_kappa", "New Value of Kappa", 3/5, step = 0.05)),
 hr(),
 # sectiontitle ---------------------------------
 numericInput("ComparingModels2_ESSRL_parameterchange_valuebefore_delta", "Delta", 0.15, step = 0.05),
