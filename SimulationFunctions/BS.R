@@ -100,4 +100,3 @@ SimulateBasicSolowModel <- function(paragrid, np, startvals){
 
 # # # # View(testsimulation)
 # VisualiseSimulation(testsimulation, variable_encoder("Capital Stock per Worker"), "free")
-
