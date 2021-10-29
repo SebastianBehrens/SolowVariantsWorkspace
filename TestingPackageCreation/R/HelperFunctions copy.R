@@ -1,8 +1,8 @@
-
-
-### 0 Preparations (helper functions) #############################
-# 0.1 individual parameter path  ---------------------------------
+# This file sets up several helper functions that will be used throughout the Solow model simulation functions.
+# 0.1 individual parameter path =================================
 create_path <- function(iv, pfc, nv, np){
+
+  # Roxygen Header ---------------------------------
   #' @title Creates the a single parameter vector.
   #' @description Creates vector with \code{np+1} entries of \code{iv}
   #' (or optionally \code{nv} from period \code{pfc} onwards).
@@ -16,11 +16,13 @@ create_path <- function(iv, pfc, nv, np){
   #' @param np total number of periods
   #' additional line to parameter np
   #' @examples
-  #' create_path(1, NA, NA, 5) \text{creates} c(1, 1, 1, 1, 1, 1)
-  #' create_path(3, 5, 4, 10) \text{creates} c(3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4)
+  #' create_path(1, NA, NA, 5)
+  #' create_path(3, 5, 4, 10)
   #' @export
 
-  # catching nonsensical inputs
+  # Function ---------------------------------
+
+  # first: catching nonsensical inputs
   if(!is.na(pfc)){
   # if the period of change occurs in later periods than a simulation is
   #                                 created for, then it does not matter.
@@ -33,8 +35,7 @@ create_path <- function(iv, pfc, nv, np){
     }
 
   }
-
-
+  # second: filling in vector (so-called parameter path)
   if(!is.na(pfc)){
     part1 <- rep(iv, pfc)
     part2 <- rep(nv, np, np-pfc+1)
@@ -44,11 +45,30 @@ create_path <- function(iv, pfc, nv, np){
   }
   return(c(part1, part2))
 }
+
 # testing
 # create_path(2, 3, 4, 7)
 
-# 0.2 grid of individual parameter paths ---------------------------------
-create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
+
+# 0.2 grid of individual parameter paths =================================
+create_parameter_grid <- function(names, ivs, pfcs, nvs, np){
+
+  # Roxygen Header ---------------------------------
+  #' @title Create a set of parameter pathes (grid).
+  #' @description Creates dataframe with \code{np+1} rows and \code{length(namel)} columns.
+  #' @details The word "grid" refers to multiple parameter pathes.
+  #' The term will be referenced throughout the simulation functions
+  #' as every model is defined via exogenously given parameters that will
+  #' be supplied and referenced as a 'parameter-grid' in the simulation functions.
+  #' \strong{Warning}: Make sure you use the correct names in \code{names} for the respective parameters. Use \code{getRequiredParams(ModelCode)} to get them. The model abbreviations for \code{ModelCode} (used consistently throughout the package) can be found in the vignette.
+  #' @param names A vector with the names of the model-specific set of exogenously defined parameters. Refer to the vignette for the used names to the parameters.
+  #' @examples
+  #' create_parameter_grid(getRequiredParams("BS"), c(<missing>), c(NA, NA, NA, NA, NA), c(NA, NA, NA, NA, NA), 10))
+  #' create_path(3, 5, 4, 10)
+  #' @export
+
+  # Function ---------------------------------
+
   # np <- 10
   aux <- tibble(period = c(0:np))
   for(i in seq_along(namel)){
