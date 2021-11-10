@@ -1,6 +1,5 @@
 # This file sets up several helper functions that will be used throughout the Solow model simulation functions.
 
-
 # 0.1 individual parameter path =================================
 create_path <- function(iv, pfc, nv, np){
 
@@ -75,13 +74,13 @@ create_parameter_grid <- function(namel, ivs, pfcs, nvs, np){
   #'                        c(NA, NA, NA, NA, NA), 
   #'                        c(NA, NA, NA, NA, NA), 
   #'                        10)
-  #'                        )
+  #'                        
   #' @export
 
   # Function ---------------------------------
   aux <- tibble(period = c(0:np))
   for(i in seq_along(namel)){
-    aux_path <- create_path(ivl[[i]], pfcl[[i]], nvl[[i]], np)
+    aux_path <- create_path(ivs[[i]], pfcs[[i]], nvs[[i]], np)
     aux[[namel[[i]] ]] <- aux_path
   }
   return(aux)
@@ -104,12 +103,11 @@ create_simulation_table <- function(vts, np) {
   #' @details This function will be used in the simulation functions to set up the grid that will then be in the said simulation function.
   #' @param vts Vector with the abbreviation for variables that should be simulated. (vts for 'variables to simulate') The exhaustive list with all variables that can be simulated is given in the beginning of the respective simulation function.
   #' @examples
-  #' create_simulation_table(meta_BS_variables, 10)
+  #' create_simulation_table(variable_encoder(meta_BS_variables), 10)
   #' @export
 
   # Function ---------------------------------
 
-  # vts for variables to simulate
   aux <- tibble(period = c(0:np))
   for (i in c(1:length(vts))) {
     aux_sequence <- rep(NA, np + 1)
@@ -218,10 +216,6 @@ VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
   #' @param simulation_data The output tibble of any simulation function.
   #' @param variables The variables to visualise in *abbreviated* form.
   #' @param scale_identifier string to indicate freely floating scales ("free") or fixed sales ("fixed")
-  #' @examples
-  #' VisualiseSimulation(SimulateBasicSolowModel(...),
-  #'                      c("K", "L"),
-  #'                      "free")
   #' @export
 
   # Function ---------------------------------
@@ -248,7 +242,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   #' @param parameter_data The output from \code{create_parameter_grid(...)}. 
   #' @param technology_variant A string indicating the exogenous (\code{technology_variant = "exo"}) or endogenous (\code{technology_variant = "endo"}) nature of technology in the respective model. A special case (\code{technology_variant = "special"}) is the technology form of endogenous technology growth (model code "ESEG").
   #' @param solowversion The model code for the model, such as "BS" or "ESSOE". (The same variables such as WR or RR are computed differently depending on the model.)
-  #' @examples \text{See} SimulateBasicSolowModel() \text{for an example.}
+  #' @note \text{See} SimulateBasicSolowModel() \text{for an example.}
   #' @export
 
   # Function --------------------------------- 
@@ -491,7 +485,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
 }
 
 # 0.8 compute steady state values and check correctness of simulations =================================
-simulation_correctness_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
+steadystate_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
 
   # Roxygen Header ---------------------------------
   #' @title Check correctness by comparing simulated (endo.) variables to their steady state values
@@ -580,11 +574,15 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 compare_simulations <- function(simulation_list, sim_identifier_vector, vars_selection){
 
   # Roxygen Header ---------------------------------
-  #' @title
-  #' @description
+  #' @title (Superseeded!) Visualise Common Variables of Different Solow Models
+  #' @description Visualise the evolution of common variables of multiple (2 or more) Solow variants in the same graph.
   #' @details 
-  #' @param 
+  #' @param simulation_list List with tibbles. The tibbles need to be the results of the simulationfunctions, e.g. \code{SimulateBasicSolowModel()}.
+  #' @param sim_identifier_vector Vector with the model codes. (The first element of \code{sim_identifier_vector} should correspond to the first element of \code{simulation_list}.)
+  #' @param vars_selection Vector with the abbreviated variable names to visualise. (This vector can of course only contain variable abbreviations that are shared by all the simulation in \code{simulation_list}.)
+  #' @note This function takes completed simulation tibbles as input (in form of parts of the list \code{simulation_list}). That is different to the function \code{compare}
   #' @examples
+  #' \dontrun{compare_simulations( list(SimulateBasicSolowModel(), SimulateGeneralSolowModel()), c("BS", "GS"), c("Y", "K", "L", "WR", "RR"))}
   #' @export
 
   # Function ---------------------------------
@@ -660,8 +658,14 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
     labs(x = "Period", y = "Value", col = "Solow Variant")
 }
 
+
+############################ These functions are undocumented => only necessary for shiny app. 
+
 #  ---------------------------------
 partAhelper_1 <- function(parameter){
+
+
+  # Function ---------------------------------
   # originally from dynamically creating the code for tabs of new solow model variants
   out <- case_when(
     parameter == "B"~ "TFP", 
