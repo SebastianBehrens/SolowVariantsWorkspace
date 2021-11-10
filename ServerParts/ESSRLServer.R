@@ -70,8 +70,8 @@ output$ESSRL_Viz <- renderPlot({
 
 ESSRL_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    ESSRL_aux_data()[nrow(ESSRL_aux_data()), ],
-    ESSRL_parametergrid()[nrow(ESSRL_parametergrid()), ],
+    ESSRL_aux_data(),
+    ESSRL_parametergrid(),
     "ESSRL"
   )
 })

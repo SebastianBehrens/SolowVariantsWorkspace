@@ -71,8 +71,8 @@ output$ESHC_Viz <- renderPlot({
 
 ESHC_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    ESHC_aux_data()[nrow(ESHC_aux_data()), ],
-    ESHC_parametergrid()[nrow(ESHC_parametergrid()), ],
+    ESHC_aux_data(),
+    ESHC_parametergrid(),
     "ESHC"
   )
 })

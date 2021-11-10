@@ -37,13 +37,19 @@ meta_ESSROL_variables <-
         "Total Factor Productivity"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelScarceResourceOilAndLand <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    # vts for vars to simulat
-    
+
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESSROL Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model with the scarce resources of oil *and* land.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
+
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/ESSROLModelFunctions.R")
     

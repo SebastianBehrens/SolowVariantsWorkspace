@@ -41,11 +41,17 @@ meta_ESSOE_variables <-
         
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelSmallOpenEconomy <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESSOE Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model for the small open economy.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
     
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/ESSOEModelFunctions.R")

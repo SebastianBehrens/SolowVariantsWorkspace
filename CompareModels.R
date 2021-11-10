@@ -6,6 +6,7 @@ source("HelperFunctions.R")
 compareEconomies <- function(ModelCode1, ModelCode2, VariableVisualisationSelection, 
                              ParameterGrid1, ParameterGrid2, 
                              StartValues1, StartValues2, NumberPeriods1, NumberPeriods2) {
+  
   sourceSimulationFile(ModelCode1)
   sourceSimulationFile(ModelCode2)
   simulation1 <- doCall(getSimFunction(ModelCode1), args = list(paragrid = ParameterGrid1, np = NumberPeriods1, startvals = StartValues1))

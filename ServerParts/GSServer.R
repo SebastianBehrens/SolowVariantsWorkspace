@@ -65,8 +65,8 @@ output$GS_Viz <- renderPlot({
 
 GS_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    GS_aux_data()[nrow(GS_aux_data()), ],
-    GS_parametergrid()[nrow(GS_parametergrid()), ],
+    GS_aux_data(),
+    GS_parametergrid(),
     "GS"
   )
 })

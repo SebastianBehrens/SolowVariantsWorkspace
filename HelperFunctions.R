@@ -1,15 +1,29 @@
+# This file sets up several helper functions that will be used throughout the Solow model simulation functions.
 
-
-### 0 Preparations (helper functions) #############################
-# 0.1 individual parameter path  ---------------------------------
+# 0.1 individual parameter path =================================
 create_path <- function(iv, pfc, nv, np){
-  ## will create a vector of parameter values for periods 0 through n.
-  # iv for initial value;
-  # pfc for period for change;
-  # nv for new value;
-  # np vor number of periods
-  
-  # catching nonsensical inputs
+
+  # Roxygen Header ---------------------------------
+  #' @title Creates the a single parameter vector.
+  #' @description Creates vector with \code{np+1} entries of \code{iv}
+  #' (or optionally \code{nv} from period \code{pfc} onwards).
+  #' @details the "parameter path" refers to the series of
+  #' parameter values along all np+1 periods
+  #' @param iv initial value of parameter;
+  #' @param pfc period of change
+  #' (\code{pfc = NA} is a special entry! see examples.)
+  #' @param nv new value of parameter (starting in period of change)
+  #' (\code{nv = NA} is a special entry! see examples.)
+  #' @param np total number of periods
+  #' additional line to parameter np
+  #' @examples
+  #' create_path(1, NA, NA, 5)
+  #' create_path(3, 5, 4, 10)
+  #' @export
+
+  # Function ---------------------------------
+
+  # first: catching nonsensical inputs
   if(!is.na(pfc)){
   # if the period of change occurs in later periods than a simulation is 
   #                                 created for, then it does not matter.
@@ -23,7 +37,7 @@ create_path <- function(iv, pfc, nv, np){
     
   }
   
-  
+  # second: filling in vector (so-called parameter path)  
   if(!is.na(pfc)){
     part1 <- rep(iv, pfc)
     part2 <- rep(nv, np, np-pfc+1)
@@ -36,16 +50,37 @@ create_path <- function(iv, pfc, nv, np){
 # testing
 # create_path(2, 3, 4, 7)
 
-# 0.2 grid of individual parameter paths ---------------------------------
-create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
-  # np <- 10
+# 0.2 grid of individual parameter paths =================================
+create_parameter_grid <- function(namel, ivs, pfcs, nvs, np){
+
+  # Roxygen Header ---------------------------------
+  #' @title Create a set of parameter pathes (grid).
+  #' @description Creates dataframe with \code{np+1} rows and 
+  #' \code{length(namel)} columns.
+  #' @details The word "grid" refers to multiple parameter pathes.
+  #' The term will be referenced throughout the simulation functions
+  #' as every model is defined via exogenously given parameters that will
+  #' be supplied and referenced as a 'parameter-grid' in the simulation functions.
+  #' **Warning**: Make sure you use the correct names in \code{names} for the respective parameters. Use \code{getRequiredParams(ModelCode)} to get them. The model abbreviations for \code{ModelCode} (used consistently throughout the package) can be found in the vignette.
+  #' **Warning**: The inputs will be used to create the paramter pathes. For each paramter, the same index will be used across all input vectors. That means that the first entry to \code{ivs} will be the initial value to the parameter that is the first entry in the \code{namel} vector. Same applies the rest of the inputs to this function. 
+  #' @param names A vector with the names of the model-specific set of exogenously defined parameters. Refer to the vignette for the used names to the parameters.
+  #' @param ivs Vector with intial values of the parameters.
+  #' @param pfcs Vector with periods of paramter changes.
+  #' @param nvs Vector with new paramter values from the respective period of paramter change onwards.
+  #' @param np Integer indicating the number of periods for which the paramter-grid will be set up.
+  #' @examples
+  #' create_parameter_grid(getRequiredParams("BS"), 
+  #'                        c(1, 1/3, 0.1, 0.02, 0.15), 
+  #'                        c(NA, NA, NA, NA, NA), 
+  #'                        c(NA, NA, NA, NA, NA), 
+  #'                        10)
+  #'                        
+  #' @export
+
+  # Function ---------------------------------
   aux <- tibble(period = c(0:np))
   for(i in seq_along(namel)){
-    ## testing
-    # i <- 1
-    # aux_path <- create_path(1, 5, 3, np)
-    # namel <- c("testvar")
-    aux_path <- create_path(ivl[[i]], pfcl[[i]], nvl[[i]], np)
+    aux_path <- create_path(ivs[[i]], pfcs[[i]], nvs[[i]], np)
     aux[[namel[[i]] ]] <- aux_path
   }
   return(aux)
@@ -59,9 +94,20 @@ create_parameter_grid <- function(namel, ivl, pfcl, nvl, np){
 # testgrid <- create_parameter_grid(testnamel, testivl, testpfcl, testnvl, 50)
 
 
-# 0.3 grid of paths of model variables ---------------------------------
+# 0.3 grid of paths of model variables =================================
 create_simulation_table <- function(vts, np) {
-  # vts for variables to simulate
+
+  # Roxygen Header ---------------------------------
+  #' @title Creates for the simulated endo. variables
+  #' @description Creates an empty tibble with \code{np}+1 rows and a column for each entry in \code{vts}. See the documentation for the argument \code{vts} below.
+  #' @details This function will be used in the simulation functions to set up the grid that will then be in the said simulation function.
+  #' @param vts Vector with the abbreviation for variables that should be simulated. (vts for 'variables to simulate') The exhaustive list with all variables that can be simulated is given in the beginning of the respective simulation function.
+  #' @examples
+  #' create_simulation_table(variable_encoder(meta_BS_variables), 10)
+  #' @export
+
+  # Function ---------------------------------
+
   aux <- tibble(period = c(0:np))
   for (i in c(1:length(vts))) {
     aux_sequence <- rep(NA, np + 1)
@@ -70,18 +116,21 @@ create_simulation_table <- function(vts, np) {
   return(aux)
 }
 
-# 0.4 (not used) start values filler ---------------------------------
-# fill_start_values <- function(var, value, dataset){
-#   index <- which(dataset$period == 0)
-#   dataset[[index, var]] <- value
-#   return(dataset)
-# }
-# fill_start_values("testvar", 5, sim_table)
 
-
-# 0.5 encoding variables ---------------------------------
+# 0.5 encoding variables =================================
 variable_encoder <- function(variables){
-  # variables <- c("Output per Effective Worker")
+
+  # Roxygen Header ---------------------------------
+  #' @title Switch between variable abbreviations and full variables names
+  #' @description Encode variables, that is, to encode the full variable variable name as defined at the top of simulation files and encode them into their respective abbreviation.
+  #' @param variables Vector of length greater or equal to one containing the full variable name(s).
+  #' @examples 
+  #' variable_encoder("Total Factor Productivity")
+  #' variable_encoder(meta_BS_variables)
+  #' @export
+
+  # Function ---------------------------------
+
   n_vars <- length(variables)
   aux <- as.double(rep(NA, n_vars))
   for(i in 1:n_vars){
@@ -157,8 +206,19 @@ variable_encoder <- function(variables){
 }
 
 
-# 0.6 visualise a simulation ---------------------------------
+# 0.6 visualise a simulation =================================
 VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
+
+  # Roxygen Header ---------------------------------
+  #' @title Visualise selected variables of a simulation
+  #' @description
+  #' @details 
+  #' @param simulation_data The output tibble of any simulation function.
+  #' @param variables The variables to visualise in *abbreviated* form.
+  #' @param scale_identifier string to indicate freely floating scales ("free") or fixed sales ("fixed")
+  #' @export
+
+  # Function ---------------------------------
   variables <- c("period", variables)
   simulation_data %>% select(all_of(variables)) %>% 
     pivot_longer(-period, names_to = "Variable") %>% 
@@ -171,15 +231,23 @@ VisualiseSimulation <- function(simulation_data, variables, scale_identifier){
 }
 
 
-# 0.7 computing additional variables ---------------------------------
+# 0.7 computing additional variables =================================
 add_var_computer <- function(sim_data, add_vars, parameter_data, technology_variant, solowversion){
-  # sim_data for the simulation table created in every Solow Model Simulation Function (SimulateBasicSolowModel, SimulateGeneralSolowModel, SimulateExtendedSolowModelSmallOpenEconomy)
-  # add_vars for the vector indicating whether a variable needs to be computer or not (it will not need to be computer in the ensuing function if it is endogeneous to the model)
-  # parameter_data for the parameter grid
-  # technology variant for the version where TFP is indicated as endogeneous by A or exogeneous by B 
-  # solowversion for a string indicating the solow model version ("BS", "GS", "ESSOE", "ES....")
- 
-  ## Testing 
+
+  # Roxygen Header ---------------------------------
+  #' @title Compute the non-primary variables
+  #' @description This function computes additional secondary variables that are not computed in a models respective simulation functions. The simulation functions only compute the primary variables of a model such as L, K and Y in the Basic Solow Growth Model (BS).
+  #' @param sim_data The tibble that is being filled in the simulation function.
+  #' @param add_vars Vector with the encoded variables that are secondary and need to be computed to make the simulation table complete.
+  #' @param parameter_data The output from \code{create_parameter_grid(...)}. 
+  #' @param technology_variant A string indicating the exogenous (\code{technology_variant = "exo"}) or endogenous (\code{technology_variant = "endo"}) nature of technology in the respective model. A special case (\code{technology_variant = "special"}) is the technology form of endogenous technology growth (model code "ESEG").
+  #' @param solowversion The model code for the model, such as "BS" or "ESSOE". (The same variables such as WR or RR are computed differently depending on the model.)
+  #' @note \text{See} SimulateBasicSolowModel() \text{for an example.}
+  #' @export
+
+  # Function --------------------------------- 
+
+  ## Testing (these variables will need to be computed in memory as a result of a step-by-step execution of the code in a simulation function until the point where this function is called.)
   # sim_data <- sim_table
   # add_vars <- remaining_vars_to_compute_bool
   # parameter_data <- paragrid
@@ -187,7 +255,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   # solowversion <- "ESSOE"
   
   
-  # accomodating for different forms of technology:
+  # first: filling in the variable technology depending on the \code{technology_variant} to make the same code useable for different forms of technology:
   # A (endogeneous variable) and B (parameter) in the different Solow Models
   if(technology_variant == "endo"){
     technology <- sim_data[["TFP"]]
@@ -198,6 +266,7 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   }else{
     stop("Technology location unclear")
   }
+  # second: computing and filling in the secondary endogenous variables
   for(i in names(sim_data)[!add_vars]){
     # Variants of Output
     if(i == "YpW"){sim_data[["YpW"]] <- sim_data[["Y"]]/sim_data[["L"]]}
@@ -415,8 +484,20 @@ add_var_computer <- function(sim_data, add_vars, parameter_data, technology_vari
   return(sim_data)
 }
 
-# 0.8 compute steady state values and check correctness of simulations ---------------------------------
-simulation_correctness_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
+# 0.8 compute steady state values and check correctness of simulations =================================
+steadystate_checker <- function(last_row_simulation, last_row_parameter, solow_variant){
+
+  # Roxygen Header ---------------------------------
+  #' @title Check correctness by comparing simulated (endo.) variables to their steady state values
+  #' @description Compare variables in the final period of the simulation to their respective steady state value (given the exo. paramters).
+  #' @details This function presumes that the number of periods simulated were such that the final values are near steady state. If the steady state path is disrupted by a parameter change in the second to last period, this function will yield misleading results.
+  #' @param last_row_simulation Vector of the values of both primary and secondary variables in the last period of the simulation.
+  #' @param last_row_parameter Vector of the values of the exo. paramter (from the paramter grid).
+  #' @param solow_variant String indicating the model, such as "BS" or "ESHC". 
+  #' @export
+
+  # Function ---------------------------------
+
   # last_row for the last row of the simulation table (sim_table %>% tail(1))
   # solow_variant for the different solow variants
     aux <- tibble(variable = toString(NA), last_value = as.double(NA), steadystate = as.double(NA))
@@ -489,8 +570,22 @@ simulation_correctness_checker <- function(last_row_simulation, last_row_paramet
 }
 
 
-# 0.9 compare different simulations ---------------------------------
+# 0.9 compare different simulations =================================
 compare_simulations <- function(simulation_list, sim_identifier_vector, vars_selection){
+
+  # Roxygen Header ---------------------------------
+  #' @title (Superseeded!) Visualise Common Variables of Different Solow Models
+  #' @description Visualise the evolution of common variables of multiple (2 or more) Solow variants in the same graph.
+  #' @details 
+  #' @param simulation_list List with tibbles. The tibbles need to be the results of the simulationfunctions, e.g. \code{SimulateBasicSolowModel()}.
+  #' @param sim_identifier_vector Vector with the model codes. (The first element of \code{sim_identifier_vector} should correspond to the first element of \code{simulation_list}.)
+  #' @param vars_selection Vector with the abbreviated variable names to visualise. (This vector can of course only contain variable abbreviations that are shared by all the simulation in \code{simulation_list}.)
+  #' @note This function takes completed simulation tibbles as input (in form of parts of the list \code{simulation_list}). That is different to the function \code{compare}
+  #' @examples
+  #' \dontrun{compare_simulations( list(SimulateBasicSolowModel(), SimulateGeneralSolowModel()), c("BS", "GS"), c("Y", "K", "L", "WR", "RR"))}
+  #' @export
+
+  # Function ---------------------------------
   # simulation_list is list(sim1, sim2, sim3, ...)
   # sim_identifier_vector is c("oil", "land", "oilland")
   # vars_selection is a vector of the variables to plot.
@@ -563,8 +658,14 @@ compare_simulations <- function(simulation_list, sim_identifier_vector, vars_sel
     labs(x = "Period", y = "Value", col = "Solow Variant")
 }
 
+
+############################ These functions are undocumented => only necessary for shiny app. 
+
 #  ---------------------------------
 partAhelper_1 <- function(parameter){
+
+
+  # Function ---------------------------------
   # originally from dynamically creating the code for tabs of new solow model variants
   out <- case_when(
     parameter == "B"~ "TFP", 
@@ -612,7 +713,7 @@ partAhelper_2 <- function(parameter){
   return(out)
 }
 
-# helper functions for comparing models ---------------------------------
+# helper functions for comparing models =================================
 getSimFunction <- function(ModelCode) {
   out <- case_when(
     ModelCode == "BS" ~ "SimulateBasicSolowModel",
@@ -769,7 +870,7 @@ getVariablesAvailableToBeVisualised <- function(ModelCode1,
   return(shared_variables)
 }
 
-# 0.99 testing ---------------------------------
+# 0.99 testing =================================
 # vtstest <- c("testvar", "ja", "nein")
 # create_simulation_table(vtstest, 20)
 # variable_encoder(c("Rental Rate"))

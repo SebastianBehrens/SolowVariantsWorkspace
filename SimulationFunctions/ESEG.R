@@ -35,16 +35,18 @@ meta_ESEG_variables <-
         "Growth Rate of Capital Stock per Effective Worker"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelEndogenousGrowth <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    # vts for vars to simulat
-    
-    # Load Basic Model Functions ---------------------------------
-    source("ModelFunctions/ESEGModelFunctions.R")
-    
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESEG Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model with endogenous technological growth.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
+
     # Initialize Simulation Table ---------------------------------
     sim_table <- create_simulation_table(variable_encoder(meta_ESEG_variables), np)
     

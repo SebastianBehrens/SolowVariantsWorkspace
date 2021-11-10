@@ -45,8 +45,18 @@ meta_ESHC_variables <-
         "Growth Rate of Human Capital Stock per Effective Worker"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelHumanCapital <- function(paragrid, np, startvals){
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESHC Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model with human capital.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
+
     # Inputs ---------------------------------
     # paragrid for parameter grid;
     # np for number of periods;

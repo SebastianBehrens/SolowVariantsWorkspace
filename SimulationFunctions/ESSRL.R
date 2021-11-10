@@ -36,12 +36,18 @@ meta_ESSRL_variables <-
         "Capital to Output Ratio"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelScarceResourceLand <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESSRL Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model with the scarce resource of land.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
+
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/ESSRLModelFunctions.R")
     source("HelperFunctions.R")

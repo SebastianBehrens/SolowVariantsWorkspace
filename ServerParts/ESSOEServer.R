@@ -65,8 +65,8 @@ output$ESSOE_Viz <- renderPlot({
 
 ESSOE_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    ESSOE_aux_data()[nrow(ESSOE_aux_data()), ],
-    ESSOE_parametergrid()[nrow(ESSOE_parametergrid()), ],
+    ESSOE_aux_data(),
+    ESSOE_parametergrid(),
     "ESSOE"
   )
 })

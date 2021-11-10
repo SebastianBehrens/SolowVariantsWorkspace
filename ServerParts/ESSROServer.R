@@ -71,8 +71,8 @@ output$ESSRO_Viz <- renderPlot({
 
 ESSRO_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    ESSRO_aux_data()[nrow(ESSRO_aux_data()), ],
-    ESSRO_parametergrid()[nrow(ESSRO_parametergrid()), ],
+    ESSRO_aux_data(),
+    ESSRO_parametergrid(),
     "ESSRO"
   )
 })
