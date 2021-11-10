@@ -34,12 +34,20 @@ meta_BS_variables <-
         "Growth Rate of Capital Stock per Effective Worker"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateBasicSolowModel <- function(paragrid, np, startvals){
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the Basic Solow Growth Model
+  #' @description Simulates all (both primary and secondary) endogenous variables to the basic Solow growth model.
+  #' @param paragrid Parameter grid from \code{create_parameter_grid()}.
+  #' @param np Number of periods.
+  #' @param startvals List with starting values for the variables A, K, L, H, #' R, V. **Remark**: Use \code{getRequiredStartingValues(ModelCode)} to see which variables need to have a starting value in the respective Solow model.
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
     # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    # vts for vars to simulat
     
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/BSModelFunctions.R")

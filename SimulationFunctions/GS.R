@@ -37,13 +37,19 @@ meta_GS_variables <-
         
         "Total Factor Productivity"
     )
-# 1.1 Simulate the Basic Solow Model =================================
+
 SimulateGeneralSolowModel <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    # vts for vars to simulat
-    
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the General Solow Growth Model
+  #' @description Simulates all (both primary and secondary) endogenous variables to the general Solow growth model.
+  #' @inheritParams SimulateBasicSolowModel
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @export
+
+  # Function ---------------------------------
+      
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/GSModelFunctions.R")
     

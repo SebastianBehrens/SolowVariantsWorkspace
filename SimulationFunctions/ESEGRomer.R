@@ -35,12 +35,17 @@ meta_ESEGRomer_variables <-
         "Growth Rate of Capital Stock per Effective Worker"
     )
 
-# 1.1 Simulate the Basic Solow Model =================================
 SimulateExtendedSolowModelEndogenousGrowthRomer <- function(paragrid, np, startvals){
-    # Inputs ---------------------------------
-    # paragrid for parameter grid;
-    # np for number of periods;
-    # vts for vars to simulat
+
+  # Roxygen Header ---------------------------------
+  #' @title Simulates the ESEGR Solow variant
+  #' @description Simulates all (both primary and secondary) endogenous variables to the extended Solow growth model with endogenous technological growth as in the version put forward by Romer.
+  #' @note The structural equations to this model can be found in the vignette to this package:
+  #' \code{vignette("SolowVariants")}
+  #' @inheritParams SimulateBasicSolowModel
+  #' @export
+
+  # Function ---------------------------------
     
     # Load Basic Model Functions ---------------------------------
     source("ModelFunctions/ESEGRomerModelFunctions.R")
