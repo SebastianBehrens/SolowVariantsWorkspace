@@ -64,8 +64,8 @@ output$BS_Viz <- renderPlot({
 
 BS_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    BS_aux_data()[nrow(BS_aux_data()), ],
-    BS_parametergrid()[nrow(BS_parametergrid()), ],
+    BS_aux_data(),
+    BS_parametergrid(),
     "BS"
   )
 })

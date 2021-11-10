@@ -77,8 +77,8 @@ output$ESSROL_Viz <- renderPlot({
 
 ESSROL_aux_correcttable <- reactive({
   simulation_correctness_checker(
-    ESSROL_aux_data()[nrow(ESSROL_aux_data()), ],
-    ESSROL_parametergrid()[nrow(ESSROL_parametergrid()), ],
+    ESSROL_aux_data(),
+    ESSROL_parametergrid(),
     "ESSROL"
   )
 })
