@@ -1,6 +1,6 @@
 ESSRL_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESSRL_parameternames <- c("alpha", "beta", "delta", "n", "s", "g", "X")
+  ESSRL_parameternames <- getRequiredParams("ESSRL")
   # Periods of Changes ---------------------------------
   ESSRL_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -41,7 +41,8 @@ if(input$ESSRL_changeinparam_land) input$ESSRL_pc_land_newval else NA
     ESSRL_parameterchange_period,
     ESSRL_parameterchange_valueafter,
     input$ESSRL_nperiods_selected
-  ) 
+  )
+  
 })
 ESSRL_parametergrid_debounced <- ESSRL_parametergrid %>% debounce(500)
 
@@ -56,20 +57,16 @@ ESSRL_aux_data <- reactive({
   )
 })
 
-output$ESSRL_Data <- renderDataTable(
-  ESSRL_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  )
-)
+output$ESSRL_Data <- renderDataTable({
+  ESSRL_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$ESSRL_Viz <- renderPlot({
   VisualiseSimulation(ESSRL_aux_data(), ESSRL_vtv_select_encoded(), input$ESSRL_scales_free_or_fixed)
 })
 
 ESSRL_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     ESSRL_aux_data(),
     ESSRL_parametergrid(),
     "ESSRL"

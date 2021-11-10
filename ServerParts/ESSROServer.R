@@ -1,6 +1,6 @@
 ESSRO_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESSRO_parameternames <- c("alpha", "beta", "n", "g", "sE", "s", "delta")
+  ESSRO_parameternames <- getRequiredParams("ESSRO")
   # Periods of Changes ---------------------------------
   ESSRO_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -44,7 +44,7 @@ if(input$ESSRO_changeinparam_delta) input$ESSRO_pc_delta_newval else NA
   )
   
 })
-ESSRO_parametergrid_debounced <- ESSRO_parametergrid %>% debounce(1000)
+ESSRO_parametergrid_debounced <- ESSRO_parametergrid %>% debounce(500)
 
 ESSRO_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSRO_vtv)
@@ -52,25 +52,21 @@ ESSRO_vtv_select_encoded <- reactive({
 
 ESSRO_aux_data <- reactive({
   SimulateExtendedSolowModelScarceResourceOil(
-    ESSRO_parametergrid(), input$ESSRO_nperiods_selected,
+    ESSRO_parametergrid_debounced(), input$ESSRO_nperiods_selected,
     list(R = input$ESSRO_initval_R, L = input$ESSRO_initval_L, K = input$ESSRO_initval_K, A = input$ESSRO_initval_A)
   )
 })
 
-output$ESSRO_Data <- renderDataTable(
-  ESSRO_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  )
-)
+output$ESSRO_Data <- renderDataTable({
+  ESSRO_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$ESSRO_Viz <- renderPlot({
   VisualiseSimulation(ESSRO_aux_data(), ESSRO_vtv_select_encoded(), input$ESSRO_scales_free_or_fixed)
 })
 
 ESSRO_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     ESSRO_aux_data(),
     ESSRO_parametergrid(),
     "ESSRO"

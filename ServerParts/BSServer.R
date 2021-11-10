@@ -1,6 +1,6 @@
 BS_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  BS_parameternames <- c("B", "alpha", "delta", "n", "s")
+  BS_parameternames <- getRequiredParams("BS")
   # Periods of Changes ---------------------------------
   BS_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -38,7 +38,7 @@ if(input$BS_changeinparam_savings) input$BS_pc_savings_newval else NA
   )
   
 })
-BS_parametergrid_debounced <- BS_parametergrid %>% debounce(1000)
+BS_parametergrid_debounced <- BS_parametergrid %>% debounce(500)
 
 BS_vtv_select_encoded <- reactive({
   variable_encoder(input$BS_vtv)
@@ -46,24 +46,21 @@ BS_vtv_select_encoded <- reactive({
 
 BS_aux_data <- reactive({
   SimulateBasicSolowModel(
-    BS_parametergrid(), input$BS_nperiods_selected,
+    BS_parametergrid_debounced(), input$BS_nperiods_selected,
     list(L = input$BS_initval_L, K = input$BS_initval_K)
   )
 })
 
-output$BS_Data <- renderDataTable(
-  BS_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  ))
+output$BS_Data <- renderDataTable({
+  BS_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$BS_Viz <- renderPlot({
   VisualiseSimulation(BS_aux_data(), BS_vtv_select_encoded(), input$BS_scales_free_or_fixed)
 })
 
 BS_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     BS_aux_data(),
     BS_parametergrid(),
     "BS"

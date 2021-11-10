@@ -1,6 +1,6 @@
 ESSOE_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESSOE_parameternames <- c("B", "alpha", "n", "s", "r")
+  ESSOE_parameternames <- getRequiredParams("ESSOE")
   # Periods of Changes ---------------------------------
   ESSOE_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -38,7 +38,7 @@ if(input$ESSOE_changeinparam_realint) input$ESSOE_pc_realint_newval else NA
   )
   
 })
-ESSOE_parametergrid_debounced <- ESSOE_parametergrid %>% debounce(1000)
+ESSOE_parametergrid_debounced <- ESSOE_parametergrid %>% debounce(500)
 
 ESSOE_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSOE_vtv)
@@ -46,25 +46,21 @@ ESSOE_vtv_select_encoded <- reactive({
 
 ESSOE_aux_data <- reactive({
   SimulateExtendedSolowModelSmallOpenEconomy(
-    ESSOE_parametergrid(), input$ESSOE_nperiods_selected,
+    ESSOE_parametergrid_debounced(), input$ESSOE_nperiods_selected,
     list(V = input$ESSOE_initval_V, L = input$ESSOE_initval_L)
   )
 })
 
-output$ESSOE_Data <- renderDataTable(
-  ESSOE_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  )
-)
+output$ESSOE_Data <- renderDataTable({
+  ESSOE_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$ESSOE_Viz <- renderPlot({
   VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)
 })
 
 ESSOE_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     ESSOE_aux_data(),
     ESSOE_parametergrid(),
     "ESSOE"
