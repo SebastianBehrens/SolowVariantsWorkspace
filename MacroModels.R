@@ -6,7 +6,9 @@
 # setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
 # getwd()
 
-
+####################################
+# Remark: simulation_correctness checker underwent a change in setup! Change the function calls to incorporate the SolowVariant package as published on github.
+####################################
 
 
 
