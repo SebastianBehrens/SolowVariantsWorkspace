@@ -68,6 +68,7 @@ set_default_theme()
 
 # Sourcing Simulation Functions and Helper Functions ---------------------------------
 source("CompareModels.R")
+source("AdditionalHelperFunctions.R")
 
 # Essential Sourcing Function ---------------------------------
 source("ShinyAppSourcer.R")
