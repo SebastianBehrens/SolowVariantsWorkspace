@@ -3,7 +3,7 @@
 # rm(list = ls())
 
 # Set Path
-setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariantsWorkspace")
+# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariantsWorkspace")
 # getwd()
 
 ####################################
@@ -45,8 +45,9 @@ setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariantsWorkspace")
 # #
 
 
+devtools::install_github("SebastianBehrens/SolowVariants", force = T, build_vignettes = T)
 library(SolowVariants)
-library(tidyverse)
+# library(tidyverse)
 library(shiny)
 library(hexbin)
 library(plotly)
@@ -105,7 +106,7 @@ shinyApp(
       getShinyPart("T", "ESEG"),
       getShinyPart("T", "ESEGRomer"),
       getShinyPart("T", "ESEGCozziOne"),
-      # getShinyPart("T", "ESEGCozziTwo"),
+      getShinyPart("T", "ESEGCozziTwo"),
       getShinyPart("T", "Comparison")
     )
   ),
@@ -121,7 +122,7 @@ shinyApp(
     source("ServerParts/ESEGServer.R", local = TRUE)
     source("ServerParts/ESEGRomerServer.R", local = TRUE)
     source("ServerParts/ESEGCozziOneServer.R", local = TRUE)
-    # source("ServerParts/ESEGCozziTwoServer.R", local = TRUE)
+    source("ServerParts/ESEGCozziTwoServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published

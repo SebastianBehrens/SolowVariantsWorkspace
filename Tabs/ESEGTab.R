@@ -41,12 +41,12 @@ hr(),
 
 
 # sectiontitle ---------------------------------
-numericInput("ESEG_initparam_phi", "Phi", 1/6, step = 0.05),
+numericInput("ESEG_initparam_phi", "Phi", 0.5, step = 0.05),
 checkboxInput("ESEG_changeinparam_phi", "Change in Phi?"),
 conditionalPanel(
     condition = "input.ESEG_changeinparam_phi == true", 
     numericInput("ESEG_pc_phi_period", "Period of Change in Phi", 50, min = 0),
-    numericInput("ESEG_pc_phi_newval", "New Value of Phi", 3/5, step = 0.05)),
+    numericInput("ESEG_pc_phi_newval", "New Value of Phi", 0.7, step = 0.05)),
 hr(),
 
 

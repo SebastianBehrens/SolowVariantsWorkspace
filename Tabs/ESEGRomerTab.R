@@ -42,34 +42,34 @@ hr(),
 
 
 # sectiontitle ---------------------------------
-numericInput("ESEGRomer_initparam_phi", "Phi", 1/6, step = 0.05),
+numericInput("ESEGRomer_initparam_phi", "Phi", 0.5, step = 0.05),
 checkboxInput("ESEGRomer_changeinparam_phi", "Change in Phi?"),
 conditionalPanel(
     condition = "input.ESEGRomer_changeinparam_phi == true", 
     numericInput("ESEGRomer_pc_phi_period", "Period of Change in Phi", 50, min = 0),
-    numericInput("ESEGRomer_pc_phi_newval", "New Value of Phi", 3/5, step = 0.05)),
+    numericInput("ESEGRomer_pc_phi_newval", "New Value of Phi", 0.7, step = 0.05)),
 hr(),
 
 
 
 # sectiontitle ---------------------------------
-numericInput("ESEGRomer_initparam_lambda", "lambda", 1, step = 0.05),
+numericInput("ESEGRomer_initparam_lambda", "lambda", 0.9, step = 0.05),
 checkboxInput("ESEGRomer_changeinparam_lambda", "Change in lambda?"),
 conditionalPanel(
     condition = "input.ESEGRomer_changeinparam_lambda == true", 
     numericInput("ESEGRomer_pc_lambda_period", "Period of Change in lambda", 50, min = 0),
-    numericInput("ESEGRomer_pc_lambda_newval", "New Value of lambda", 0.8, step = 0.05)),
+    numericInput("ESEGRomer_pc_lambda_newval", "New Value of lambda", 0.6, step = 0.05)),
 hr(),
 
 
 
 # sectiontitle ---------------------------------
-numericInput("ESEGRomer_initparam_rho", "Rho", 0.5, step = 0.1),
+numericInput("ESEGRomer_initparam_rho", "Rho", 1, step = 0.1),
 checkboxInput("ESEGRomer_changeinparam_rho", "Change in Rho?"),
 conditionalPanel(
     condition = "input.ESEGRomer_changeinparam_rho == true", 
     numericInput("ESEGRomer_pc_rho_period", "Period of Change in Rho", 50, min = 0),
-    numericInput("ESEGRomer_pc_rho_newval", "New Value of Rho", 0.6, step = 0.1)),
+    numericInput("ESEGRomer_pc_rho_newval", "New Value of Rho", 0.75, step = 0.1)),
 hr(),
 
 
@@ -86,7 +86,7 @@ hr(),
 
 
 # sectiontitle ---------------------------------
-numericInput("ESEGRomer_initparam_sR", "Prop. Labor Force in R&D", 0.05, step = 0.05),
+numericInput("ESEGRomer_initparam_sR", "Prop. Labor Force in R&D", 0.03, step = 0.05),
 checkboxInput("ESEGRomer_changeinparam_sR", "Change in Prop. Labor Force in R&D?"),
 conditionalPanel(
     condition = "input.ESEGRomer_changeinparam_sR == true", 

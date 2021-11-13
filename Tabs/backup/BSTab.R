@@ -99,14 +99,14 @@ wBSTab <-
       withMathJax(),
       # insert math here
       '$$
-\\\\begin{aligned}
-Y_t &= BK_t^\\\\alpha L_t^{1-\\\\alpha} \\\\\\\\
-r_t &= \\\\alpha B \\\\left(\\\\frac{K_t}{L_t}\\\\right)^{\\\\alpha -1}\\\\\\\\
-w_t &= (1-\\\\alpha) \\\\left(\\\\frac{K_t}{L_t}\\\\right)^\\\\alpha \\\\\\\\
-S_t &= sY_t \\\\\\\\
-K_{t+1}&= sY_t + (1-\\\\delta)K_t \\\\\\\\
+\\\\\\\\begin{aligned}
+Y_t &= BK_t^\\\\\\\\alpha L_t^{1-\\\\\\\\alpha} \\\\\\\\\\\\\\\\
+r_t &= \\\\\\\\alpha B \\\\\\\\left(\\\\\\\\frac{K_t}{L_t}\\\\\\\\right)^{\\\\\\\\alpha -1}\\\\\\\\\\\\\\\\
+w_t &= (1-\\\\\\\\alpha) \\\\\\\\left(\\\\\\\\frac{K_t}{L_t}\\\\\\\\right)^\\\\\\\\alpha \\\\\\\\\\\\\\\\
+S_t &= sY_t \\\\\\\\\\\\\\\\
+K_{t+1}&= sY_t + (1-\\\\\\\\delta)K_t \\\\\\\\\\\\\\\\
 L_{t+1}&=(1+n)L_t
-\\\\end{aligned}
+\\\\\\\\end{aligned}
 $$',
       # Visualisation  ---------------------------------
       # textOutput("test"),

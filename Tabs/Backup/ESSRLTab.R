@@ -123,12 +123,12 @@ ESSRLTab <-
       titlePanel("Model Equations"),
       withMathJax(),
       '$$
-\\\\begin{aligned}
-Y_t &= K_t^\\\\alpha  * (A_t * L_t)^{(1- \\\\beta)} * X_t^\\\\kappa: \\\\alpha + \\\\beta + \\\\kappa = 1 \\\\\\\\
-K_{t+1} &= s_KY_t + (1-\\\\delta)K_{t} \\\\\\\\
-L_{t+1}&=(1+n)L_t \\\\\\\\
-A_{t+1}&=(1+g)A_t \\\\\\\\
-\\\\end{aligned}
+\\\\\\\\begin{aligned}
+Y_t &= K_t^\\\\\\\\alpha  * (A_t * L_t)^{(1- \\\\\\\\beta)} * X_t^\\\\\\\\kappa: \\\\\\\\alpha + \\\\\\\\beta + \\\\\\\\kappa = 1 \\\\\\\\\\\\\\\\
+K_{t+1} &= s_KY_t + (1-\\\\\\\\delta)K_{t} \\\\\\\\\\\\\\\\
+L_{t+1}&=(1+n)L_t \\\\\\\\\\\\\\\\
+A_{t+1}&=(1+g)A_t \\\\\\\\\\\\\\\\
+\\\\\\\\end{aligned}
 $$',
       # Visualisation  ---------------------------------
       # textOutput("test"),
