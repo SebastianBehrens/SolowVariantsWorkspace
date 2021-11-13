@@ -1,33 +1,3 @@
-## Setup =================================
-# Clean Start ---------------------------------
-# rm(list = ls())
-
-# Set Path
-# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariantsWorkspace")
-# getwd()
-
-####################################
-# Remark: simulation_correctness checker underwent a change in setup! Change the function calls to incorporate the SolowVariant package as published on github.
-####################################
-
-
-
-# Loading Libraries ---------------------------------
-
-# temporarily abandoned package managing function
-
-# detach_package <- function(pkg, character.only = FALSE)
-# {
-#   if(!character.only)
-#   {
-#     pkg <- deparse(substitute(pkg))
-#   }
-#   search_item <- paste("package", pkg, sep = ":")
-#   while(search_item %in% search())
-#   {
-#     detach(search_item, unload = TRUE, character.only = TRUE)
-#   }
-# }
 
 # detach_package("broom", TRUE)
 # broom::augment()
@@ -45,7 +15,8 @@
 # #
 
 
-devtools::install_github("SebastianBehrens/SolowVariants", force = T, build_vignettes = T)
+
+# devtools::install_github("SebastianBehrens/SolowVariants", force = T, build_vignettes = T)
 library(SolowVariants)
 # library(tidyverse)
 library(shiny)
@@ -126,7 +97,7 @@ shinyApp(
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
-    session$onSessionEnded(stopApp)
+    # session$onSessionEnded(stopApp)
   }
 )
 
