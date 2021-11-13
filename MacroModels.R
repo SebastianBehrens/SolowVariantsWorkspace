@@ -97,7 +97,7 @@ shinyApp(
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
-    # session$onSessionEnded(stopApp)
+    session$onSessionEnded(stopApp)
   }
 )
 
