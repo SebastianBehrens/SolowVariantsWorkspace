@@ -17,7 +17,7 @@ conditionalPanel(
     numericInput("ComparingModels1_BS_parameterchange_valueafter_TFP", "New Value of TFP", 3, step = 1)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels1_BS_parameterchange_valuebefore_alpha", "Alpha", 2/5, step = 0.05),
+numericInput("ComparingModels1_BS_parameterchange_valuebefore_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ComparingModels1_BS_parameterchange_indicator_alpha", "Change in Alpha?"),
 conditionalPanel(
     condition = "input.ComparingModels1_BS_parameterchange_indicator_alpha == true", 

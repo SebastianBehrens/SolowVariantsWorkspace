@@ -1,6 +1,6 @@
 ESHC_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESHC_parameternames <- c("alpha", "phi", "n", "g", "sK", "sH", "delta")
+  ESHC_parameternames <- getRequiredParams("ESHC")
   # Periods of Changes ---------------------------------
   ESHC_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -44,7 +44,7 @@ if(input$ESHC_changeinparam_delta) input$ESHC_pc_delta_newval else NA
   )
   
 })
-ESHC_parametergrid_debounced <- ESHC_parametergrid %>% debounce(1000)
+ESHC_parametergrid_debounced <- ESHC_parametergrid %>% debounce(500)
 
 ESHC_vtv_select_encoded <- reactive({
   variable_encoder(input$ESHC_vtv)
@@ -52,25 +52,21 @@ ESHC_vtv_select_encoded <- reactive({
 
 ESHC_aux_data <- reactive({
   SimulateExtendedSolowModelHumanCapital(
-    ESHC_parametergrid(), input$ESHC_nperiods_selected,
+    ESHC_parametergrid_debounced(), input$ESHC_nperiods_selected,
     list(H = input$ESHC_initval_H, L = input$ESHC_initval_L, K = input$ESHC_initval_K, A = input$ESHC_initval_A)
   )
 })
 
-output$ESHC_Data <- renderDataTable(
-  ESHC_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  ))
-
+output$ESHC_Data <- renderDataTable({
+  ESHC_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$ESHC_Viz <- renderPlot({
   VisualiseSimulation(ESHC_aux_data(), ESHC_vtv_select_encoded(), input$ESHC_scales_free_or_fixed)
 })
 
 ESHC_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     ESHC_aux_data(),
     ESHC_parametergrid(),
     "ESHC"

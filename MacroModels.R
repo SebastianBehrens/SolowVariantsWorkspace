@@ -1,33 +1,3 @@
-## Setup =================================
-# Clean Start ---------------------------------
-# rm(list = ls())
-
-# Set Path
-# setwd("/Users/sebastianbehrens/Documents/GitHub/SolowVariants")
-# getwd()
-
-####################################
-# Remark: simulation_correctness checker underwent a change in setup! Change the function calls to incorporate the SolowVariant package as published on github.
-####################################
-
-
-
-# Loading Libraries ---------------------------------
-
-# temporarily abandoned package managing function
-
-# detach_package <- function(pkg, character.only = FALSE)
-# {
-#   if(!character.only)
-#   {
-#     pkg <- deparse(substitute(pkg))
-#   }
-#   search_item <- paste("package", pkg, sep = ":")
-#   while(search_item %in% search())
-#   {
-#     detach(search_item, unload = TRUE, character.only = TRUE)
-#   }
-# }
 
 # detach_package("broom", TRUE)
 # broom::augment()
@@ -45,17 +15,20 @@
 # #
 
 
-library(tidyverse)
+
+# devtools::install_github("SebastianBehrens/SolowVariants", force = T, build_vignettes = T)
+library(SolowVariants)
+# library(tidyverse)
 library(shiny)
 library(hexbin)
 library(plotly)
 library(shinythemes)
 library(DT)
-library(tidyverse)
+# library(tidyverse)
 # library(modelr)
-library(ggplot2)
+# library(ggplot2)
 # library(stargazer)
-library(R.utils)
+# library(R.utils)
 # library(reactlog)
 # reactlog_enable()
 
@@ -63,72 +36,15 @@ library(R.utils)
 
 
 # ggplot2 Setup ---------------------------------
-
-theme_set(
-  theme_classic() +
-    theme(
-      axis.ticks.length = unit(-0.25, "cm"),
-      axis.text.x = element_text(margin = unit(c(0.4, 0, 0, 0), "cm")),
-      axis.text.y = element_text(margin = unit(c(0, 0.4, 0, 0), "cm")),
-      axis.line = element_blank(),
-      panel.grid.major.y = element_line(linetype = 2),
-      plot.title = element_text(hjust = 0.5),
-      text = element_text(family = "serif"),
-      # legend.justification = c("right", "top"),
-      legend.position = "top",
-      # legend.position = c(1, 1),
-      # legend.position = c(.98, .98),
-      legend.background = element_rect(fill = NA, color = "black"),
-      panel.border = element_rect(fill = NA, size = 1.25),
-      strip.text = element_text(size = 12)
-      # legend.margin = margin(6, 10, 6, 6)
-      # legend.box.background = element_rect(colour = "black")
-    )
-)
+set_default_theme()
 
 # Sourcing Simulation Functions and Helper Functions ---------------------------------
-source("HelperFunctions.R")
-source("SimulationFunctions/BS.R")
-source("SimulationFunctions/GS.R")
-source("SimulationFunctions/ESSOE.R")
-source("SimulationFunctions/ESHC.R")
-source("SimulationFunctions/ESSRO.R")
-source("SimulationFunctions/ESSRL.R")
-source("SimulationFunctions/ESSROL.R")
 source("CompareModels.R")
+source("AdditionalHelperFunctions.R")
 
 # Essential Sourcing Function ---------------------------------
 source("ShinyAppSourcer.R")
-# getShinyPart <- function(kind, which, n_ModelComparison=0) {
-#   # kind for "server" or "tab"
-#   # which for the abbreviation of the respective part
-#   # kind <- "S"
-#   # which <- "BS"
-#   # n_ModelComparison <- 1
-#   if (kind %in% c("S", "T", "D")) {} else {
-#     stop("The entered value for 'kind' in getShinyPart() is not defined.")
-#   }
-#   if(kind == "D" && n_ModelComparison == 0){stop("When using 'D' in getShinyPart() make sure to deliver an appropriate value to n_ModelComparison")}
-#   source_part1 <- if(kind == "T"){"Tabs"}else if(kind == "S"){"ServerParts"}else if(kind == "D"){"DynamicInterfaces"}
-#   source_part2 <- if(kind == "T"){"Tab.R"}else if(kind == "S"){"Server.R"}else if(kind == "D"){"DynamicInterface.R"}
-#   path_to_source <- paste0(
-#     source_part1, 
-#     "/", 
-#     ifelse(kind == "D", paste0("Group", n_ModelComparison, "/"), ""),
-#     which, 
-#     source_part2
-#   )
-#   
-#   if(kind == "T"){
-#     source(path_to_source)
-#     return(get(paste0(which, "Tab")))
-#   }else if(kind == "S"){
-#     # source(path_to_source, local = TRUE)
-#   }else if(kind == "D"){
-#     source(path_to_source)
-#     return(get(paste0(which, "DynamicInterface")))
-#   }
-# }
+
 # Shiny App =================================
 shinyApp(
   ui = fluidPage(
@@ -158,6 +74,10 @@ shinyApp(
       getShinyPart("T", "ESSRO"),
       getShinyPart("T", "ESSRL"),
       getShinyPart("T", "ESSROL"),
+      getShinyPart("T", "ESEG"),
+      getShinyPart("T", "ESEGRomer"),
+      getShinyPart("T", "ESEGCozziOne"),
+      getShinyPart("T", "ESEGCozziTwo"),
       getShinyPart("T", "Comparison")
     )
   ),
@@ -170,10 +90,14 @@ shinyApp(
     source("ServerParts/ESSROServer.R", local = TRUE)
     source("ServerParts/ESSRLServer.R", local = TRUE)
     source("ServerParts/ESSROLServer.R", local = TRUE)
+    source("ServerParts/ESEGServer.R", local = TRUE)
+    source("ServerParts/ESEGRomerServer.R", local = TRUE)
+    source("ServerParts/ESEGCozziOneServer.R", local = TRUE)
+    source("ServerParts/ESEGCozziTwoServer.R", local = TRUE)
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
-    session$onSessionEnded(stopApp)
+    # session$onSessionEnded(stopApp)
   }
 )
 

@@ -11,7 +11,7 @@ numericInput("ComparingModels2_ESHC_initval_H", "Initial Value of Human Capital"
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer
 # sectiontitle ---------------------------------
-numericInput("ComparingModels2_ESHC_parameterchange_valuebefore_alpha", "Alpha", 2/5, step = 0.05),
+numericInput("ComparingModels2_ESHC_parameterchange_valuebefore_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ComparingModels2_ESHC_parameterchange_indicator_alpha", "Change in Alpha?"),
 conditionalPanel(
     condition = "input.ComparingModels2_ESHC_parameterchange_indicator_alpha == true", 
@@ -19,7 +19,7 @@ conditionalPanel(
     numericInput("ComparingModels2_ESHC_parameterchange_valueafter_alpha", "New Value of Alpha", 3/5, step = 0.05)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels2_ESHC_parameterchange_valuebefore_phi", "Phi", 2/5, step = 0.05),
+numericInput("ComparingModels2_ESHC_parameterchange_valuebefore_phi", "Phi", 1/6, step = 0.05),
 checkboxInput("ComparingModels2_ESHC_parameterchange_indicator_phi", "Change in Phi?"),
 conditionalPanel(
     condition = "input.ComparingModels2_ESHC_parameterchange_indicator_phi == true", 

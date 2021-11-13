@@ -10,7 +10,7 @@ numericInput("ComparingModels1_ESSRL_initval_L", "Initial Value of Labor", 1),
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer
 # sectiontitle ---------------------------------
-numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_alpha", "Alpha", 2/5, step = 0.05),
+numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ComparingModels1_ESSRL_parameterchange_indicator_alpha", "Change in Alpha?"),
 conditionalPanel(
     condition = "input.ComparingModels1_ESSRL_parameterchange_indicator_alpha == true", 
@@ -18,7 +18,7 @@ conditionalPanel(
     numericInput("ComparingModels1_ESSRL_parameterchange_valueafter_alpha", "New Value of Alpha", 3/5, step = 0.05)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_beta", "Beta", 2/5, step = 0.05),
+numericInput("ComparingModels1_ESSRL_parameterchange_valuebefore_beta", "Beta", 1/3, step = 0.05),
 checkboxInput("ComparingModels1_ESSRL_parameterchange_indicator_beta", "Change in Beta?"),
 conditionalPanel(
     condition = "input.ComparingModels1_ESSRL_parameterchange_indicator_beta == true", 

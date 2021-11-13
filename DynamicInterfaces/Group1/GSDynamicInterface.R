@@ -18,7 +18,7 @@ conditionalPanel(
     numericInput("ComparingModels1_GS_parameterchange_valueafter_tfpgrowth", "New Value of TFP Growth", 0.05, step = 0.01)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels1_GS_parameterchange_valuebefore_alpha", "Alpha", 2/5, step = 0.05),
+numericInput("ComparingModels1_GS_parameterchange_valuebefore_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ComparingModels1_GS_parameterchange_indicator_alpha", "Change in Alpha?"),
 conditionalPanel(
     condition = "input.ComparingModels1_GS_parameterchange_indicator_alpha == true", 

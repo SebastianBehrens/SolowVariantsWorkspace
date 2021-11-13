@@ -11,7 +11,7 @@ numericInput("ComparingModels2_ESSRO_initval_R", "Initial Value of Resource Stoc
                                        titlePanel("Parameter Values"),
                                        # ParameterCodeAutoFillLineIndexer
 # sectiontitle ---------------------------------
-numericInput("ComparingModels2_ESSRO_parameterchange_valuebefore_alpha", "Alpha", 2/5, step = 0.05),
+numericInput("ComparingModels2_ESSRO_parameterchange_valuebefore_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ComparingModels2_ESSRO_parameterchange_indicator_alpha", "Change in Alpha?"),
 conditionalPanel(
     condition = "input.ComparingModels2_ESSRO_parameterchange_indicator_alpha == true", 
@@ -19,7 +19,7 @@ conditionalPanel(
     numericInput("ComparingModels2_ESSRO_parameterchange_valueafter_alpha", "New Value of Alpha", 3/5, step = 0.05)),
 hr(),
 # sectiontitle ---------------------------------
-numericInput("ComparingModels2_ESSRO_parameterchange_valuebefore_beta", "Beta", 2/5, step = 0.05),
+numericInput("ComparingModels2_ESSRO_parameterchange_valuebefore_beta", "Beta", 1/3, step = 0.05),
 checkboxInput("ComparingModels2_ESSRO_parameterchange_indicator_beta", "Change in Beta?"),
 conditionalPanel(
     condition = "input.ComparingModels2_ESSRO_parameterchange_indicator_beta == true", 

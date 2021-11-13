@@ -1,6 +1,6 @@
 ESSROL_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  ESSROL_parameternames <- c("alpha", "beta", "kappa", "delta", "n", "s", "sE", "g", "X")
+  ESSROL_parameternames <- getRequiredParams("ESSROL")
   # Periods of Changes ---------------------------------
   ESSROL_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)
@@ -50,7 +50,7 @@ if(input$ESSROL_changeinparam_land) input$ESSROL_pc_land_newval else NA
   )
   
 })
-ESSROL_parametergrid_debounced <- ESSROL_parametergrid %>% debounce(1000)
+ESSROL_parametergrid_debounced <- ESSROL_parametergrid %>% debounce(500)
 
 ESSROL_vtv_select_encoded <- reactive({
   variable_encoder(input$ESSROL_vtv)
@@ -58,25 +58,21 @@ ESSROL_vtv_select_encoded <- reactive({
 
 ESSROL_aux_data <- reactive({
   SimulateExtendedSolowModelScarceResourceOilAndLand(
-    ESSROL_parametergrid(), input$ESSROL_nperiods_selected,
+    ESSROL_parametergrid_debounced(), input$ESSROL_nperiods_selected,
     list(R = input$ESSROL_initval_R, L = input$ESSROL_initval_L, K = input$ESSROL_initval_K, A = input$ESSROL_initval_A)
   )
 })
 
-output$ESSROL_Data <- renderDataTable(
-  ESSROL_aux_data() %>% mutate_all(round, digits = 3),
-  extensions = c("Scroller"),
-  options = list(
-    scrollX = TRUE
-  )
-)
+output$ESSROL_Data <- renderDataTable({
+  ESSROL_aux_data() %>% mutate_all(round, digits = 3)
+})
 
 output$ESSROL_Viz <- renderPlot({
   VisualiseSimulation(ESSROL_aux_data(), ESSROL_vtv_select_encoded(), input$ESSROL_scales_free_or_fixed)
 })
 
 ESSROL_aux_correcttable <- reactive({
-  simulation_correctness_checker(
+  steadystate_checker(
     ESSROL_aux_data(),
     ESSROL_parametergrid(),
     "ESSROL"

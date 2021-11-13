@@ -8,8 +8,9 @@ ESHCTab <-
                             titlePanel("Variables"),
                             checkboxGroupInput("ESHC_vtv", 
                                                label = "",
-                                               choices = meta_ESHC_variables, 
-                                               selected = meta_ESHC_variables[1:5]),
+                                               choices = getModelVars("ESHC"), 
+                                               selected = getModelVars("ESHC")[1:5]
+                            ),
                             hr(),
                             # Scale Selector ---------------------------------
                             selectInput("ESHC_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
@@ -34,7 +35,7 @@ ESHCTab <-
         # Model Equations  ---------------------------------
         titlePanel("Model Equations"),
         withMathJax(),
-# insert math here
+        aux_modelmath,
         # Visualisation  ---------------------------------
         # textOutput("test"),
         titlePanel("Simulation"),
@@ -46,4 +47,5 @@ ESHCTab <-
         titlePanel("How does the simulation compare to the theoretic steady state values?"),
         dataTableOutput("ESHC_Correctness_Table")
     )  
-))
+    )
+    )

@@ -37,7 +37,7 @@ MacroModels.R — contains the whole shiny app
 \<SolowVariant\>ModelFunctions.R — contain model functions (so-called structural equations) of every solow variant as well as formulae for the steady state values of some key endogeneous variables.
 (Solow Variants are (for now) the Basic Solow Model (BS), the General Solow Model (GS), the Extended Solow Model for a Small Open Economy (ESSOE).
 
-\<SolowVariant\>.R` — each contain the simulation function for the respective Solow Variant as outlined above with steps 1. to 4..
+`\<SolowVariant\>.R` — each contain the simulation function for the respective Solow Variant as outlined above with steps 1. to 4..
 
 The shiny app uses the frontend code written in (and sourced from) the folders `ServerParts` and `Tabs`.
 

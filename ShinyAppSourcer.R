@@ -34,3 +34,12 @@ getShinyPart <- function(kind, which, n_ModelComparison=0) {
 # kind <- "D"
 # which <- "GS"
 # n_ModelComparison <- 1
+getVariablesAvailableToBeVisualised <- function(ModelCode1,
+                                                ModelCode2){
+
+  
+  variables1 <- getModelVars(ModelCode1)
+  variables2 <- getModelVars(ModelCode2)
+  shared_variables <- intersect(variables1, variables2)
+  return(shared_variables)
+}

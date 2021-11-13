@@ -1,6 +1,6 @@
 BS_parametergrid <- reactive({
   # Names of Parameters ---------------------------------
-  BS_parameternames <- auxparameternamevector
+  BS_parameternames <- getRequiredParams("BS")
   # Periods of Changes ---------------------------------
   BS_parameterchange_period <- c(
     # auxspot1 (first spot to fill in the code for dynamically created code)

@@ -26,11 +26,11 @@ getRequiredParams_as_string <- function(ModelCode) {
     }
     return(out)
 }
-sourceSimulationFile <- function(ModelCode){
-  path_to_source <- paste0("SimulationFunctions/",
-                           ModelCode, ".R")
-  source(path_to_source)
-}
+# sourceSimulationFile <- function(ModelCode){
+#   path_to_source <- paste0("SimulationFunctions/",
+#                            ModelCode, ".R")
+#   source(path_to_source)
+# }
 # sourceSimulationFile("BS")
 
 create_startvals_list <- function(ModelCode, n_ModelComparison, input){
@@ -92,9 +92,14 @@ partAhelper_1 <- function(parameter){
     parameter == "kappa"~ "kappa",
     parameter == "phi"~ "phi",
     parameter == "alpha"~ "alpha",
+    parameter == "lambda"~ "lambda",
     parameter == "s"~ "savings",
     parameter == "sK"~ "sK",
     parameter == "sH"~ "sH",
+    parameter == "sR"~ "sR",
+    parameter == "k"~ "k",
+    parameter == "rho"~ "rho",
+    parameter == "lambda"~ "lambda",
     parameter == "n"~ "popgrowth",
     parameter == "r"~ "realint",
     parameter == "g"~ "tfpgrowth",
@@ -118,6 +123,10 @@ partAhelper_2 <- function(parameter){
     parameter == "s"~ "Savings Rate",
     parameter == "sK"~ "Savings Rate to Physical Capital",
     parameter == "sH"~ "Savings Rate to Human Capital",
+    parameter == "sR"~ "Prop. Labor Force in R&D",
+    parameter == "k"~ "k (see structural equations)",
+    parameter == "rho"~ "Rho",
+    parameter == "lambda"~ "Lambda",
     parameter == "n"~ "Population Growth",
     parameter == "r"~ "Real Interest Rate",
     parameter == "g"~ "TFP Growth",
