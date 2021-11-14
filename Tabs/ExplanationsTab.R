@@ -1,52 +1,56 @@
 ExplanationsTab <- 
   tabItem("Explanation",
+          # tags$head(
+          #     # Note the wrapping of the string in HTML()
+          #     tags$style(HTML(
+          #     "tr {border-right: solid;border-width: 1px 0;}"))),
 HTML(
   '
-<div style="text-align:left;justify-content:center;padding-left:25%;padding-right:25%;">
+<div style="text-align:left;justify-content:center;margin-right:auto;margin-left:auto;">
 <h2 style="text-align:center">Abbreviations of Solow Variants</h2>
 <table style="margin-left:auto;margin-right:auto;">
 <thead>
 <tr>
-<th align="left">Solow Variant</th>
-<th align="left">Simulation Function</th>
+<th align="center">&nbsp;&nbsp;&nbsp;Abbreviation &nbsp;&nbsp;&nbsp;</th>
+<th align="left">Full Name of Solow Variant</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td align="center">BS</td>
 <td align="left">Basic Solow Growth Model</td>
-<td align="left">BS</td>
 </tr>
 <tr>
+<td align="center">GS</td>
 <td align="left">General Solow Growth Model</td>
-<td align="left">GS</td>
 </tr>
 <tr>
+<td align="center">ESHC</td>
 <td align="left">Extended Solow Growth Model with Human Capital</td>
-<td align="left">ESHC</td>
 </tr>
 <tr>
+<td align="center">ESSOE</td>
 <td align="left">Extended Solow Growth Model for the Small and Open Economy</td>
-<td align="left">ESSOE</td>
 </tr>
 <tr>
+<td align="center">ESSRL</td>
 <td align="left">Extended Solow Growth Model with Scarce Resource Land</td>
-<td align="left">ESSRL</td>
 </tr>
 <tr>
+<td align="center">ESSRO</td>
 <td align="left">Extended Solow Growth Model with Scarce Resource Oil</td>
-<td align="left">ESSRO</td>
 </tr>
 <tr>
+<td align="center">ESSROL</td>
 <td align="left">Extended Solow Growth Model with Scarce Resources Oil <em>and</em> Land</td>
-<td align="left">ESSROL</td>
 </tr>
 <tr>
+<td align="center">ESEGRomer</td>
 <td align="left">Extended Solow Growth Model with Endogenous Technological Growth by Romer</td>
-<td align="left">ESEGRomer</td>
 </tr>
 <tr>
+<td align="center">ESEG</td>
 <td align="left">Extended Solow Growth Model with Endogenous Technological Growth by Cozzi</td>
-<td align="left">ESEG</td>
 </tr>
 </tbody>
 </table>
@@ -56,7 +60,7 @@ HTML(
 <thead>
 <tr>
 <th>Full Variable Name</th>
-<th align="center">Variable</th>
+<th align="center">&nbsp;&nbsp;&nbsp;Abbreviation&nbsp;&nbsp;&nbsp;</th>
 </tr>
 </thead>
 <tbody>
@@ -135,7 +139,7 @@ HTML(
 <table style="margin-left:auto;margin-right:auto;">
 <thead>
 <tr>
-<th align="center">Prefix/Suffix</th>
+<th align="center">&nbsp;&nbsp;&nbsp;Prefix/Suffix &nbsp;&nbsp;&nbsp;</th>
 <th>Meaning</th>
 </tr>
 </thead>
