@@ -5,10 +5,10 @@ account: sebastianshinyapps
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4125372
-bundleId: 5250434
+bundleId: 5251142
 url: https://sebastianshinyapps.shinyapps.io/SolowVariants/
-when: 1636900009.69871
-lastSyncTime: 1636900009.69872
+when: 1636922395.71186
+lastSyncTime: 1636922395.71188
 asMultiple: FALSE
 asStatic: FALSE
 ignoredFiles: AutomatingShinyAppPageCreation.R|LICENSE|Project Reflection.md|README.md|OldStuff|PageCreation|TabCreation
