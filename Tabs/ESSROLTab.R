@@ -1,36 +1,33 @@
-ESSROLTab <- 
-    tabPanel("Extended Solow Model (Scarce Resources: Oil and Land)", fluid = TRUE, sidebarLayout(
-    # Sidebar Panel  ---------------------------------
-    sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height:90%;padding-bottom:100px;",
-                 fluidRow(
-                     column(width = 6,
-                            # Variable Selector ---------------------------------
-                            titlePanel("Variables"),
-                            checkboxGroupInput("ESSROL_vtv", 
-                                               label = "",
-                                               choices = getModelVars("ESSROL"), 
-                                               selected = getModelVars("ESSROL")[1:5]
-                            ),
-                            hr(),
-                            # Scale Selector ---------------------------------
-                            selectInput("ESSROL_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
-                            hr()
-                     ),
-                     column(width = 6,
-                            # Periods ---------------------------------
-                            numericInput("ESSROL_nperiods_selected", "Periods", 200, step = 20),
-                            hr(),
-                            # Starting Values ---------------------------------
-                            titlePanel("Starting Values of Stocks"),
-                            # StartingValuesCodeAutoFillLineIndexer
+ESSROLTab <-
+  tabItem(
+    "ESSROL",
+    sidebarLayout(
+      # Sidebar Panel  ---------------------------------
+      sidebarPanel(
+        width = 2,
+        # Variable Selector ---------------------------------
+        titlePanel("Variables"),
+        checkboxGroupInput("ESSROL_vtv",
+          label = "",
+          choices = getModelVars("ESSROL"),
+          selected = getModelVars("ESSROL")[1:5]
+        ),
+        hr(),
+        # Periods ---------------------------------
+        titlePanel("Number of Periods"),
+        numericInput("ESSROL_nperiods_selected", "Periods", 200, step = 20),
+        hr(),
+        # Starting Values ---------------------------------
+        titlePanel("Starting Values of Stocks"),
+        # StartingValuesCodeAutoFillLineIndexer
 numericInput("ESSROL_initval_A", "Initial Value of Total Factor Productivity", 1),
 numericInput("ESSROL_initval_K", "Initial Value of Physical Capital", 1),
 numericInput("ESSROL_initval_L", "Initial Value of Labor", 1),
 numericInput("ESSROL_initval_R", "Initial Value of Resource Stock (e.g. Oil)", 1),
-                            
-                            # Parameters ---------------------------------
-                            titlePanel("Parameter Values"),
-                            # ParameterCodeAutoFillLineIndexer
+
+        # Parameters ---------------------------------
+        titlePanel("Parameter Values"),
+        # ParameterCodeAutoFillLineIndexer
 # sectiontitle ---------------------------------
 numericInput("ESSROL_initparam_alpha", "Alpha", 1/3, step = 0.05),
 checkboxInput("ESSROL_changeinparam_alpha", "Change in Alpha?"),
@@ -126,29 +123,49 @@ conditionalPanel(
     condition = "input.ESSROL_changeinparam_land == true", 
     numericInput("ESSROL_pc_land_period", "Period of Change in Land", 50, min = 0),
     numericInput("ESSROL_pc_land_newval", "New Value of Land", 3, step = 1)),
-hr()
+hr(),
 
 
 
-                            
-                     )
-                 )),
-    # Main Panel  ---------------------------------
-    mainPanel(
+
+        # Scale Selector ---------------------------------
+        titlePanel("Misc. Settings"),
+        selectInput("ESSROL_scales_free_or_fixed", label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
+        hr()
+      ),
+      # Main Panel  ---------------------------------
+      mainPanel(
+        h1("The Extended Solow Model with Scarce Resources Oil and Land", align = "center"),
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:5px;background-color:#538cb8;border-radius:50px;opacity:1;">'),
+        HTML('<div style="height:50px"></div>'),
         # Model Equations  ---------------------------------
-        titlePanel("Model Equations"),
+        h2("Model Equations", align = "center"),
+        HTML('<div style="height:10px"></div>'),
         withMathJax(),
         '$$ \\begin{aligned} Y_t &= K_t^\\alpha  * (A_t * L_t)^{(1- \\beta)} * X^\\kappa * E_t^\\varepsilon : \\alpha + \\beta + \\varepsilon + \\kappa= 1 \\\\ E_t &= s_ER_t\\\\ R_t &= R_{t-1} - E_{t-1}\\\\ K_{t+1} &= s_KY_t + (1-\\delta)K_{t} \\\\ L_{t+1}&=(1+n)L_t \\\\ A_{t+1}&=(1+g)A_t \\\\ \\end{aligned} $$',
         # Visualisation  ---------------------------------
         # textOutput("test"),
-        titlePanel("Simulation"),
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Simulation Visualised", align = "center"),
+        HTML('<div style="height:20px"></div>'),
         plotOutput("ESSROL_Viz", height = "1000px"),
-        # Model Simulation Data ---------------------------------
-        titlePanel("Simulation Data"),
-        dataTableOutput("ESSROL_Data"),
         # Correctness Checker ---------------------------------
-        titlePanel("How does the simulation compare to the theoretic steady state values?"),
-        dataTableOutput("ESSROL_Correctness_Table")
-    )  
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Economy in Steady State?", align = "center"),
+        HTML('<div style="height:20px"></div>'),
+        dataTableOutput("ESSROL_Correctness_Table"),
+        # Model Simulation Data ---------------------------------
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Simulation Data", align = "center"),
+        HTML('<div style="height:20px"></div>'),
+        dataTableOutput("ESSROL_Data")
+      )
     )
-    )
+  )

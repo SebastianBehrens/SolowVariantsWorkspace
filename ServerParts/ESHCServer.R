@@ -57,9 +57,13 @@ ESHC_aux_data <- reactive({
   )
 })
 
-output$ESHC_Data <- renderDataTable({
-  ESHC_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESHC_Data <- renderDataTable(
+  ESHC_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESHC_Viz <- renderPlot({
   VisualiseSimulation(ESHC_aux_data(), ESHC_vtv_select_encoded(), input$ESHC_scales_free_or_fixed)

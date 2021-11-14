@@ -1,0 +1,32 @@
+<!-- funz alles nicht. lass nicht machen. verwerfen auf die vignetten -->
+
+<div style="text-align:left;justify-content:center;padding-left:25%;padding-right:25%;padding-top:20px;width:50%;margin:auto;">
+<h4>Model defining parameters:</h4>
+<ul style="display:inline-block;>
+<li>TFP (B)</li>
+<li>Alpha (alpha)</li>
+<li>Rate of capital depreciation (delta)</li>
+<li>Population growth rate (n)</li>
+<li>Savings rate (s)</li>
+</ul>
+<ul style="display:inline-block;">
+<h4>Model definining starting values:</h4>
+<li>Starting value of physical capital (K_0)</li>
+<li>Starting value of the labor force (L_0)</li>
+</ul>
+</div>
+
+
+h4("Model defining parameters:", align = "center"),
+tags$ul(
+tags$li("TFP (B)"),
+tags$li("Alpha (alpha)"),
+tags$li("Rate of capital depreciation (delta)"),
+tags$li("Population growth rate (n)"),
+tags$li("Savings rate (s)")
+),
+h4("Model definining starting values:", align = "center"),
+tags$ul(
+tags$il("Starting value of physical capital (K_0)"),
+tags$il("Starting value of the labor force (L_0)")
+)

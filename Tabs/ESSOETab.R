@@ -1,34 +1,31 @@
-ESSOETab <- 
-    tabPanel("Extended Solow Model (Small Open Economy)", fluid = TRUE, sidebarLayout(
-    # Sidebar Panel  ---------------------------------
-    sidebarPanel(width = 3, style = "position:fixed;width:22%;overflow-y:scroll; max-height:90%;padding-bottom:100px;",
-                 fluidRow(
-                     column(width = 6,
-                            # Variable Selector ---------------------------------
-                            titlePanel("Variables"),
-                            checkboxGroupInput("ESSOE_vtv", 
-                                               label = "",
-                                               choices = getModelVars("ESSOE"), 
-                                               selected = getModelVars("ESSOE")[1:5]
-                            ),
-                            hr(),
-                            # Scale Selector ---------------------------------
-                            selectInput("ESSOE_scales_free_or_fixed",label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
-                            hr()
-                     ),
-                     column(width = 6,
-                            # Periods ---------------------------------
-                            numericInput("ESSOE_nperiods_selected", "Periods", 200, step = 20),
-                            hr(),
-                            # Starting Values ---------------------------------
-                            titlePanel("Starting Values of Stocks"),
-                            # StartingValuesCodeAutoFillLineIndexer
+ESSOETab <-
+  tabItem(
+    "ESSOE",
+    sidebarLayout(
+      # Sidebar Panel  ---------------------------------
+      sidebarPanel(
+        width = 2,
+        # Variable Selector ---------------------------------
+        titlePanel("Variables"),
+        checkboxGroupInput("ESSOE_vtv",
+          label = "",
+          choices = getModelVars("ESSOE"),
+          selected = getModelVars("ESSOE")[1:5]
+        ),
+        hr(),
+        # Periods ---------------------------------
+        titlePanel("Number of Periods"),
+        numericInput("ESSOE_nperiods_selected", "Periods", 200, step = 20),
+        hr(),
+        # Starting Values ---------------------------------
+        titlePanel("Starting Values of Stocks"),
+        # StartingValuesCodeAutoFillLineIndexer
 numericInput("ESSOE_initval_L", "Initial Value of Labor", 1),
 numericInput("ESSOE_initval_V", "Initial Value of National Wealth", 1),
-                            
-                            # Parameters ---------------------------------
-                            titlePanel("Parameter Values"),
-                            # ParameterCodeAutoFillLineIndexer
+
+        # Parameters ---------------------------------
+        titlePanel("Parameter Values"),
+        # ParameterCodeAutoFillLineIndexer
 # sectiontitle ---------------------------------
 numericInput("ESSOE_initparam_TFP", "TFP", 1, step = 1),
 checkboxInput("ESSOE_changeinparam_TFP", "Change in TFP?"),
@@ -80,29 +77,49 @@ conditionalPanel(
     condition = "input.ESSOE_changeinparam_realint == true", 
     numericInput("ESSOE_pc_realint_period", "Period of Change in Real Interest Rate", 50, min = 0),
     numericInput("ESSOE_pc_realint_newval", "New Value of Real Interest Rate", 0.05, step = 0.01)),
-hr()
+hr(),
 
 
 
-                            
-                     )
-                 )),
-    # Main Panel  ---------------------------------
-    mainPanel(
+
+        # Scale Selector ---------------------------------
+        titlePanel("Misc. Settings"),
+        selectInput("ESSOE_scales_free_or_fixed", label = "scales free or fixed?", choices = c("fixed", "free"), selected = "free"),
+        hr()
+      ),
+      # Main Panel  ---------------------------------
+      mainPanel(
+        h1("The Extended Solow Model for the Small Open Economy", align = "center"),
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:5px;background-color:#538cb8;border-radius:50px;opacity:1;">'),
+        HTML('<div style="height:50px"></div>'),
         # Model Equations  ---------------------------------
-        titlePanel("Model Equations"),
+        h2("Model Equations", align = "center"),
+        HTML('<div style="height:10px"></div>'),
         withMathJax(),
         '$$ \\begin{aligned} Y_t &= BK_t^\\alpha L_t^{1-\\alpha} \\\\ Y_n &= Y_t + \\bar{r}F_t \\\\ V_t &= K_t + F_t\\\\ r_t &= \\alpha B \\left(\\frac{K_t}{L_t}\\right)^{\\alpha -1}\\\\ w_t &= (1-\\alpha) B \\left(\\frac{K_t}{L_t}\\right)^\\alpha \\\\ S_t &= sY_t \\\\ S_t &= V_{t+1} - V_t\\\\ L_{t+1}&=(1+n)L_t \\\\ \\end{aligned} $$',
         # Visualisation  ---------------------------------
         # textOutput("test"),
-        titlePanel("Simulation"),
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Simulation Visualised", align = "center"),
+        HTML('<div style="height:20px"></div>'),
         plotOutput("ESSOE_Viz", height = "1000px"),
-        # Model Simulation Data ---------------------------------
-        titlePanel("Simulation Data"),
-        dataTableOutput("ESSOE_Data"),
         # Correctness Checker ---------------------------------
-        titlePanel("How does the simulation compare to the theoretic steady state values?"),
-        dataTableOutput("ESSOE_Correctness_Table")
-    )  
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Economy in Steady State?", align = "center"),
+        HTML('<div style="height:20px"></div>'),
+        dataTableOutput("ESSOE_Correctness_Table"),
+        # Model Simulation Data ---------------------------------
+        HTML('<div style="height:50px"></div>'),
+        HTML('<hr style="height:2px;background-color:#538cb8;border-radius:50px;opacity:0.65;max-width:65%;">'),
+        HTML('<div style="height:50px"></div>'),
+        h2("Simulation Data", align = "center"),
+        HTML('<div style="height:20px"></div>'),
+        dataTableOutput("ESSOE_Data")
+      )
     )
-    )
+  )

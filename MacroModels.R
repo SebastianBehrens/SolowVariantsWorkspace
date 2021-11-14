@@ -1,7 +1,4 @@
 
-# detach_package("broom", TRUE)
-# broom::augment()
-# package_organiser("broom")
 
 
 # package_organiser <- function(string){
@@ -20,6 +17,7 @@
 library(SolowVariants)
 # library(tidyverse)
 library(shiny)
+library(shinydashboard)
 library(hexbin)
 library(plotly)
 library(shinythemes)
@@ -47,7 +45,7 @@ source("ShinyAppSourcer.R")
 
 # Shiny App =================================
 shinyApp(
-  ui = fluidPage(
+  ui = dashboardPage(
     # tags$head(
     #   tags$style(
     #     "#inTabset {
@@ -61,24 +59,47 @@ shinyApp(
     #   }"
     #   )
     # ),
-    theme = shinytheme("cerulean"),
-    titlePanel("Solow Growth Models in Macroeconomic Theory"),
     # Loading Tabs ---------------------------------
-    tabsetPanel(type = "pills",
-                # id = "inTabset",
-      getShinyPart("T", "StartPage"),
-      getShinyPart("T", "BS"),
-      getShinyPart("T", "GS"),
-      getShinyPart("T", "ESSOE"),
-      getShinyPart("T", "ESHC"),
-      getShinyPart("T", "ESSRO"),
-      getShinyPart("T", "ESSRL"),
-      getShinyPart("T", "ESSROL"),
-      getShinyPart("T", "ESEG"),
-      getShinyPart("T", "ESEGRomer"),
-      getShinyPart("T", "ESEGCozziOne"),
-      getShinyPart("T", "ESEGCozziTwo"),
-      getShinyPart("T", "Comparison")
+    dashboardHeader(title = "Solow Growth Models"),
+    dashboardSidebar(
+      width = 270,
+      # collapsed = TRUE,
+      sidebarMenu(
+        menuItem("Start Page", tabName = "Start"),
+        menuItem("Explanatory Remarks", tabName = "Explanation"),
+        h4("Select a Solow Variant", align = "center"),
+        menuItem("BS", tabName = "BS"),
+        menuItem("GS", tabName = "GS"),
+        menuItem("ESSOE", tabName = "ESSOE"),
+        menuItem("ESHC", tabName = "ESHC"),
+        menuItem("ESSRO", tabName = "ESSRO"),
+        menuItem("ESSRL", tabName = "ESSRL"),
+        menuItem("ESSROL", tabName = "ESSROL"),
+        menuItem("ESEG", tabName = "ESEG"),
+        menuItem("ESEG (Romer Extension)", tabName = "ESEGRomer"),
+        menuItem("ESEG (Cozzi Extension)", tabName = "ESEGCozziOne"),
+        menuItem("ESEG (Cozzi Hybrid Model)", tabName = "ESEGCozziTwo"),
+        h4("Compare Two Models", align = "center"),
+        menuItem("Comparison", tabName = "Comparison")
+      )
+    ),
+    dashboardBody(
+      tabItems(
+        getShinyPart("T", "StartPage"),
+        getShinyPart("T", "Explanations"),
+        getShinyPart("T", "BS"),
+        getShinyPart("T", "GS"),
+        getShinyPart("T", "ESSOE"),
+        getShinyPart("T", "ESHC"),
+        getShinyPart("T", "ESSRO"),
+        getShinyPart("T", "ESSRL"),
+        getShinyPart("T", "ESSROL"),
+        getShinyPart("T", "ESEG"),
+        getShinyPart("T", "ESEGRomer"),
+        getShinyPart("T", "ESEGCozziOne"),
+        getShinyPart("T", "ESEGCozziTwo"),
+        getShinyPart("T", "Comparison")
+      )
     )
   ),
   server = function(input, output, session) {
@@ -97,7 +118,7 @@ shinyApp(
     source("ServerParts/ComparisonServer.R", local = TRUE)
 
     # to be taken out when app is published
-    session$onSessionEnded(stopApp)
+    # session$onSessionEnded(stopApp)
   }
 )
 

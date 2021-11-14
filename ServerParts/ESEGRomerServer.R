@@ -60,9 +60,13 @@ ESEGRomer_aux_data <- reactive({
   )
 })
 
-output$ESEGRomer_Data <- renderDataTable({
-  ESEGRomer_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESEGRomer_Data <- renderDataTable(
+  ESEGRomer_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESEGRomer_Viz <- renderPlot({
   VisualiseSimulation(ESEGRomer_aux_data(), ESEGRomer_vtv_select_encoded(), input$ESEGRomer_scales_free_or_fixed)

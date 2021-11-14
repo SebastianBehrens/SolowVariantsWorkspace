@@ -51,9 +51,13 @@ GS_aux_data <- reactive({
   )
 })
 
-output$GS_Data <- renderDataTable({
-  GS_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$GS_Data <- renderDataTable(
+  GS_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$GS_Viz <- renderPlot({
   VisualiseSimulation(GS_aux_data(), GS_vtv_select_encoded(), input$GS_scales_free_or_fixed)
