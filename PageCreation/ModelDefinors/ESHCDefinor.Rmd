@@ -1,0 +1,9 @@
+$$
+\\begin{aligned}
+Y_t &= K_t^\\alpha * H_t^\\phi * (A_t * L_t)^{(1- \\alpha - \\phi)} \\\\
+K_{t+1} &= s_KY_t + (1-\\delta)K_{t} \\\\
+H_{t+1} &= s_HY_t + (1-\\delta)H_{t} \\\\
+L_{t+1}&=(1+n)L_t \\\\
+A_{t+1}&=(1+g)A_t \\\\
+\\end{aligned}
+$$

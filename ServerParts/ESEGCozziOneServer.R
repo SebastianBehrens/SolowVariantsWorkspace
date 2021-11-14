@@ -60,9 +60,13 @@ ESEGCozziOne_aux_data <- reactive({
   )
 })
 
-output$ESEGCozziOne_Data <- renderDataTable({
-  ESEGCozziOne_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESEGCozziOne_Data <- renderDataTable(
+  ESEGCozziOne_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESEGCozziOne_Viz <- renderPlot({
   VisualiseSimulation(ESEGCozziOne_aux_data(), ESEGCozziOne_vtv_select_encoded(), input$ESEGCozziOne_scales_free_or_fixed)

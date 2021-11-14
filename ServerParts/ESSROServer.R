@@ -57,9 +57,13 @@ ESSRO_aux_data <- reactive({
   )
 })
 
-output$ESSRO_Data <- renderDataTable({
-  ESSRO_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESSRO_Data <- renderDataTable(
+  ESSRO_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESSRO_Viz <- renderPlot({
   VisualiseSimulation(ESSRO_aux_data(), ESSRO_vtv_select_encoded(), input$ESSRO_scales_free_or_fixed)

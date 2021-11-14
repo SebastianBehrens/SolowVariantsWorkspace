@@ -51,9 +51,13 @@ ESEG_aux_data <- reactive({
   )
 })
 
-output$ESEG_Data <- renderDataTable({
-  ESEG_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESEG_Data <- renderDataTable(
+  ESEG_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESEG_Viz <- renderPlot({
   VisualiseSimulation(ESEG_aux_data(), ESEG_vtv_select_encoded(), input$ESEG_scales_free_or_fixed)

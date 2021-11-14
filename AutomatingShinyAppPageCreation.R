@@ -44,7 +44,8 @@ createpartA <- function(parameternames, new_abbreviation, startvars){
         aux_parameter_code <- gsub(pattern = "auxstep", replace = pageCreationHelper_step(aux_parameter), x = aux_parameter_code)
         aux_parameter_code <- gsub(pattern = "auxnewval", replace = pageCreationHelper_newval(aux_parameter), x = aux_parameter_code)
         if(counter == 1){
-            aux_parameter_code[[8]] <- gsub(pattern = "),", replace = ")", x = aux_parameter_code[[8]])
+          # commented out because the comma after an "hr()" is now needed (redesign to dashboard)
+            # aux_parameter_code[[8]] <- gsub(pattern = "),", replace = ")", x = aux_parameter_code[[8]])
             counter <- counter + 1
         }
         line_number_to_write_to <- grep("ParameterCodeAutoFillLineIndexer", read_lines("TemplatePartA.R"))
@@ -325,19 +326,40 @@ pageCreationHelper_fullname_of_intival_variable_abbreviation <- function(variabl
     return(out)
 }
 
+# pageCreationHelper_paneltitle <- function(ModelCode) {
+# =>>>>>> preserved for old paneltabs
+#     out <- case_when(
+#         ModelCode == "BS" ~ "Basic Solow Model",
+#         ModelCode == "GS" ~ "General Solow Model",
+#         ModelCode == "ESSOE" ~ "Extended Solow Model (Small Open Economy)",
+#         ModelCode == "ESHC" ~ "Extended Solow Model with Human Capital",
+#         ModelCode == "ESSRO" ~ "Extended Solow Model (Scarce Resource: Oil)",
+#         ModelCode == "ESSRL" ~ "Extended Solow Model (Scarce Resource: Land)",
+#         ModelCode == "ESSROL" ~ "Extended Solow Model (Scarce Resources: Oil and Land)",
+#         ModelCode == "ESEG" ~ "Extended Solow Model (Endogenous Growth)",
+#         ModelCode == "ESEGRomer" ~ "Extended Solow Model (Endogenous Growth Romer Extension)",
+#         ModelCode == "ESEGCozziOne" ~ "Extended Solow Model (Endogenous Growth Cozzi Extension)",
+#         ModelCode == "ESEGCozziTwo" ~ "Extended Solow Model (Endogenous Growth Cozzi Hybrid Model)",
+#         TRUE ~ "NaN"
+#     )
+#     if (out == "NaN") {
+#         warning("The entered shortcode for a model variant does not exist.")
+#     }
+#     return(out)
+# }
 pageCreationHelper_paneltitle <- function(ModelCode) {
     out <- case_when(
-        ModelCode == "BS" ~ "Basic Solow Model",
-        ModelCode == "GS" ~ "General Solow Model",
-        ModelCode == "ESSOE" ~ "Extended Solow Model (Small Open Economy)",
-        ModelCode == "ESHC" ~ "Extended Solow Model with Human Capital",
-        ModelCode == "ESSRO" ~ "Extended Solow Model (Scarce Resource: Oil)",
-        ModelCode == "ESSRL" ~ "Extended Solow Model (Scarce Resource: Land)",
-        ModelCode == "ESSROL" ~ "Extended Solow Model (Scarce Resources: Oil and Land)",
-        ModelCode == "ESEG" ~ "Extended Solow Model (Endogenous Growth)",
-        ModelCode == "ESEGRomer" ~ "Extended Solow Model (Endogenous Growth Romer Extension)",
-        ModelCode == "ESEGCozziOne" ~ "Extended Solow Model (Endogenous Growth Cozzi Extension)",
-        ModelCode == "ESEGCozziTwo" ~ "Extended Solow Model (Endogenous Growth Cozzi Hybrid Model)",
+        ModelCode == "BS" ~ "The Basic Solow Model",
+        ModelCode == "GS" ~ "The General Solow Model",
+        ModelCode == "ESSOE" ~ "The Extended Solow Model for the Small Open Economy",
+        ModelCode == "ESHC" ~ "The Extended Solow Model with Human Capital",
+        ModelCode == "ESSRO" ~ "The Extended Solow Model with the Scarce Resource Oil",
+        ModelCode == "ESSRL" ~ "The Extended Solow Model with the Scarce Resource Land",
+        ModelCode == "ESSROL" ~ "The Extended Solow Model with Scarce Resources Oil and Land",
+        ModelCode == "ESEG" ~ "The Extended Solow Model with Endogenous Growth",
+        ModelCode == "ESEGRomer" ~ "The Extended Solow Model with Endogenous Growth (Romer Extension)",
+        ModelCode == "ESEGCozziOne" ~ "The Extended Solow Model with Endogenous Growth (Cozzi Extension)",
+        ModelCode == "ESEGCozziTwo" ~ "The Extended Solow Model with Endogenous Growth (Cozzi's Hybrid Model)",
         TRUE ~ "NaN"
     )
     if (out == "NaN") {
@@ -412,16 +434,15 @@ createParameterInterface <- function(parameters, ModelCode, number){
 # aux_ModelCode <- "ESHC"
 # createParameterInterface(getRequiredParams(aux_ModelCode), aux_ModelCode, 2)
 
-all_abbrevs <- c("BS", "GS", "ESSOE", "ESHC", "ESSRO", "ESSRL", "ESSROL", "ESEG", "ESEGRomer", "ESEGCozziOne", "ESEGCozziTwo")
-for(variant in all_abbrevs){
-  for(group in c(1,2)){
-    createParameterInterface(getRequiredParams(variant), variant, group)
-}
-}
+# all_abbrevs <- c("BS", "GS", "ESSOE", "ESHC", "ESSRO", "ESSRL", "ESSROL", "ESEG", "ESEGRomer", "ESEGCozziOne", "ESEGCozziTwo")
+# for(variant in all_abbrevs){
+#   for(group in c(1,2)){
+#     createParameterInterface(getRequiredParams(variant), variant, group)
+# }
+# }
 
 all_abbrevs <- c("BS", "GS", "ESSOE", "ESHC", "ESSRO", "ESSRL", "ESSROL", "ESEG", "ESEGRomer", "ESEGCozziOne", "ESEGCozziTwo")
 # all_abbrevs <- c("BS", "GS")
-all_abbrevs <- c("ESEGCozziTwo")
 for(i in all_abbrevs){
   print(paste("Creating Parts to the", i, "Variant."))
   aux_params <- getRequiredParams(i)
@@ -431,6 +452,10 @@ for(i in all_abbrevs){
              i,
              aux_simfun,
              aux_initvals)
-  print("Loop finished")
+  print("----------------------")
+  print("                      ")
+  print("                      ")
+  print("                      ")
+  print("                      ")
 }
 warnings()

@@ -13,7 +13,7 @@ Two options are available.
   3. The Shiny App will be launched on your machine.
 
 
-# Explanations on the Structure of the Project:
+<!-- # Explanations on the Structure of the Project:
 MacroModels.R is the main file ('first layer') containing the code for the shiny app. 
 
 The 'second layer' is/are the simulation functions created in solow-variant-separate files. (BasicSolowModel.R, GeneralSolowModel.R, ExtendedSolowModelSOE.R [SOE for Small Open Economy], ...)
@@ -39,7 +39,7 @@ MacroModels.R — contains the whole shiny app
 
 `\<SolowVariant\>.R` — each contain the simulation function for the respective Solow Variant as outlined above with steps 1. to 4..
 
-The shiny app uses the frontend code written in (and sourced from) the folders `ServerParts` and `Tabs`.
+The shiny app uses the frontend code written in (and sourced from) the folders `ServerParts` and `Tabs`. -->
 
 # Reflection
 

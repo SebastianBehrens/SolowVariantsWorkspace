@@ -51,9 +51,13 @@ ESSOE_aux_data <- reactive({
   )
 })
 
-output$ESSOE_Data <- renderDataTable({
-  ESSOE_aux_data() %>% mutate_all(round, digits = 3)
-})
+output$ESSOE_Data <- renderDataTable(
+  ESSOE_aux_data() %>% mutate_all(round, digits = 3),
+  extensions = c("Scroller"),
+  options = list(
+    scrollX = TRUE
+  )
+)
 
 output$ESSOE_Viz <- renderPlot({
   VisualiseSimulation(ESSOE_aux_data(), ESSOE_vtv_select_encoded(), input$ESSOE_scales_free_or_fixed)

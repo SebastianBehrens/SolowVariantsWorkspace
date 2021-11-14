@@ -1,7 +1,7 @@
 ComparisonTab <-
-  tabPanel("Comparing Models", fluid = TRUE,
+  tabItem("Comparison",
            sidebarLayout(
-             sidebarPanel(width = 3, style = "position:fixed;width:24%;overflow-y:scroll;max-height:90%;padding-bottom:300px;",
+             sidebarPanel(width = 3,
                           fluidRow(
                               column(12,
                                      
@@ -11,17 +11,17 @@ ComparisonTab <-
                                      "ComparingModels_VariantSelection1",
                                      "",
                                      c(
-                                       "Basic Solow Model" = "BS",
-                                       "General Solow Model" = "GS",
-                                       "Extended Solow Model for a Small Open Economy" = "ESSOE",
-                                       "Extended Solow Model with Human Capital" = "ESHC",
-                                       "Extended Solow Model with Scarce Resources (Oil)" = "ESSRO",
-                                       "Solow Model with Scarce Resources (Land)" = "ESSRL",
-                                       "Solow Model with Scarce Resources (Oil and Land)" = "ESSROL",
-                                       "Solow Model with Endogenous Growth" = "ESEG",
-                                       "Solow Model with Endogenous Growth (Romer Extension)" = "ESEGRomer",
-                                       "Solow Model with Endogenous Growth (Cozzi Extension)" = "ESEGCozziOne",
-                                       "Solow Model with Endogenous Growth (Cozzi Hybrid Model)" = "ESEGCozziTwo"
+                                       "BS" = "BS",
+                                       "GS" = "GS",
+                                       "ESSOE" = "ESSOE",
+                                       "ESHC" = "ESHC",
+                                       "ESSRO" = "ESSRO",
+                                       "ESSRL" = "ESSRL",
+                                       "ESSROL" = "ESSROL",
+                                       "ESEG" = "ESEG",
+                                       "ESEG (Romer Extension)" = "ESEGRomer",
+                                       "ESEG (Cozzi Extension)" = "ESEGCozziOne",
+                                       "ESEG (Cozzi Hybrid Model)" = "ESEGCozziTwo"
                                      ),
                                      "BS"
                                    ),
@@ -45,17 +45,17 @@ ComparisonTab <-
                                        "ComparingModels_VariantSelection2",
                                        "",
                                        c(
-                                           "Basic Solow Model" = "BS",
-                                           "General Solow Model" = "GS",
-                                           "Extended Solow Model for a Small Open Economy" = "ESSOE",
-                                           "Solow Model with Human Capital" = "ESHC",
-                                           "Solow Model with Scarce Resources (Oil)" = "ESSRO",
-                                           "Solow Model with Scarce Resources (Land)" = "ESSRL",
-                                           "Solow Model with Scarce Resoures (Oil and Land)" = "ESSROL",
-                                           "Solow Model with Endogenous Growth" = "ESEG",
-                                           "Solow Model with Endogenous Growth (Romer Extension)" = "ESEGRomer",
-                                           "Solow Model with Endogenous Growth (Cozzi Extension)" = "ESEGCozziOne",
-                                           "Solow Model with Endogenous Growth (Cozzi Hybrid Model)" = "ESEGCozziTwo"
+                                       "BS" = "BS",
+                                       "GS" = "GS",
+                                       "ESSOE" = "ESSOE",
+                                       "ESHC" = "ESHC",
+                                       "ESSRO" = "ESSRO",
+                                       "ESSRL" = "ESSRL",
+                                       "ESSROL" = "ESSROL",
+                                       "ESEG" = "ESEG",
+                                       "ESEG (Romer Extension)" = "ESEGRomer",
+                                       "ESEG (Cozzi Extension)" = "ESEGCozziOne",
+                                       "ESEG (Cozzi Hybrid Model)" = "ESEGCozziTwo"
                                        ),
                                        "GS"
                                    ),
